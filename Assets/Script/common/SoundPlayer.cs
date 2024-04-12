@@ -1,0 +1,47 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class SoundPlayer : MonoBehaviour {
+    public AudioSource audioSource;
+
+    public AudioClip clipSource;
+    public AudioClip[] audioClips;
+    public float currentPitchMin = 1;
+    public float currentPitchMax = 1;
+    private void Awake() {
+        audioSource = GetComponent<AudioSource>();
+        if (clipSource) {
+            audioSource.clip = clipSource;
+        }
+
+    } 
+    public void PlayClip(AudioClip audioClip, float pitchMin = 1, float pitchMax = 1) {
+        audioSource.pitch = Random.Range(pitchMin, pitchMax);
+        audioSource.PlayOneShot(audioClip);
+    }
+    public void PlayRandomSound() {
+        audioSource.pitch = Random.Range(currentPitchMin, currentPitchMax);
+        audioSource.PlayOneShot(audioClips[Random.Range(0, audioClips.Length)]);
+    }
+
+    public void PlaySound(bool loop = false) {
+        if (clipSource) {
+            audioSource.clip = clipSource;
+        }
+        if (audioSource.clip != null) {
+            if (!audioSource.isPlaying) {
+                audioSource.loop = loop;
+                audioSource.Play();
+            }
+        }
+    }
+    public void PlayOneShot() {
+        if (clipSource) {
+            audioSource.clip = clipSource;
+        }
+        if (audioSource.clip != null) { 
+            audioSource.PlayOneShot(audioSource.clip); 
+        }
+    }
+}
