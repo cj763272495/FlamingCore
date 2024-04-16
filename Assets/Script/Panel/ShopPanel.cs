@@ -5,13 +5,11 @@ using UnityEngine;
 public class ShopPanel : MonoBehaviour
 {
     public HomeWnd homeWnd;
-    public void OpenShopPanel() {
-        homeWnd.mainShow.SetActive(false);
+    public void OpenShopPanel() { 
         gameObject.SetActive(true);
     }
 
-    public void CloseShopPanel() {
-        homeWnd.mainShow.SetActive(false);
+    public void CloseShopPanel() { 
         gameObject.SetActive(true);
     }
 }

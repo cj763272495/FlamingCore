@@ -8,16 +8,23 @@ public class FloatingJoystick : Joystick
     public Vector3 UpDirection;
     public float UpH;
     public float UpV;
+    private bool isShow = true;
     protected override void Start()
     {
         base.Start();
         background.gameObject.SetActive(false);
     }
 
+    public void SetIsShow(bool show) {
+        isShow = show;
+    }
+
     public override void OnPointerDown(PointerEventData eventData)
     {
         background.anchoredPosition = ScreenPointToAnchoredPosition(eventData.position);
-        background.gameObject.SetActive(true);
+        if (isShow) {
+            background.gameObject.SetActive(true); 
+        }
         base.OnPointerDown(eventData);
     }
 
@@ -26,7 +33,9 @@ public class FloatingJoystick : Joystick
         UpDirection = Vector3.forward * Vertical + Vector3.right * Horizontal;
         UpH = Horizontal;
         UpV = Vertical;
-        background.gameObject.SetActive(false);
+        if (isShow) {
+            background.gameObject.SetActive(false);
+        }
         base.OnPointerUp(eventData);
     }
 }

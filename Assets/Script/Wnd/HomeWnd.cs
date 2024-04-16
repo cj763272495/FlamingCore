@@ -52,12 +52,15 @@ public class HomeWnd : MonoBehaviour
         switch (pageType) {
             case PageType.Level:
                 ActivatePanel(levelPanel);
+                mainShow.SetActive(true);
                 break;
             case PageType.Store:
                 ActivatePanel(storePanel);
+                mainShow.SetActive(false);
                 break;
             case PageType.Settings:
                 ActivatePanel(settingsPanel);
+                mainShow.SetActive(true);
                 break;
         }
         onPageChanged?.Invoke(pageType);

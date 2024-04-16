@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3070525916578116638}
   - component: {fileID: 3681347191838913423}
   - component: {fileID: 3865571075389104493}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: qiu_1_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -259,10 +259,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   joystick: {fileID: 0}
-  vmcamera: {fileID: 0}
-  CameraObj: {fileID: 0}
   laser: {fileID: 0}
   rb: {fileID: 6479018079855812632}
+  camTrans: {fileID: 0}
 --- !u!114 &6479018079855812634
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -290,7 +289,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6479018079505685035}
   - component: {fileID: 6479018079505685034}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Trail (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

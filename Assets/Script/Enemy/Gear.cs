@@ -13,8 +13,7 @@ public class Gear : Enemy
     public bool loopMove = true;
 
     private void Start() {
-        transform.position = new Vector3(trans[0].position.x,
-            transform.position.y, trans[0].position.z);
+        transform.position = trans[0].position;
     }
     private void Update() {
         transform.Rotate(Vector3.up * GearRotateSpeed * Time.deltaTime);

@@ -2,11 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-
+using System.IO;
 using UnityEngine.SceneManagement;
+
+
+[System.Serializable]
+public class GameSettings {
+    public bool bgAudio;
+    public bool showJoyStick;
+}
 
 public class ResSvc : MonoBehaviour {
     public static ResSvc Instance = null;
+    public TextAsset jsonConfig;
 
     public void InitSvc() {
         Instance = this;
@@ -31,6 +39,8 @@ public class ResSvc : MonoBehaviour {
         };
 
     }
+
+    private GameSettings gameSetting;
 
     private void Update() {
         if (prgCB != null) {
@@ -64,5 +74,38 @@ public class ResSvc : MonoBehaviour {
             }
         }
         return au;
+    }
+
+    private Dictionary<string, Sprite> spDic = new Dictionary<string, Sprite>();
+    public Sprite LoadSprite(string path, bool cache = false) {
+        Sprite sp = null;
+        if (!spDic.TryGetValue(path, out sp)) {
+            sp = Resources.Load<Sprite>(path);
+            if (cache) {
+                spDic.Add(path, sp);
+            }
+        }
+        return sp;
+    }
+
+
+
+
+    public GameSettings LoadConf() {
+        gameSetting = JsonUtility.FromJson<GameSettings>(jsonConfig.text);
+        return gameSetting;
+    }
+    public void ChangeBgAudioConf(bool isOn) {
+        gameSetting.bgAudio = isOn;
+         SaveConf();
+    }
+    
+    public void ChangeShowJoyStickConf(bool isShow) {
+        gameSetting.showJoyStick = isShow;
+        SaveConf();
+    }
+
+    public void SaveConf() {
+        File.WriteAllText(Constants.ConfigPath, JsonUtility.ToJson(gameSetting));
     }
 }

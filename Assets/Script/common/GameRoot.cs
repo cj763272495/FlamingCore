@@ -11,6 +11,8 @@ public class GameRoot : MonoBehaviour
     public BattleWnd battleWnd;
     public BattleMgr battleMgr;
     public SoundPlayer bgPlayer;
+    public GameSettings gameSettings;
+    private ResSvc resSvc;
 
     // public LoadingWnd loadingWnd;
 
@@ -41,8 +43,18 @@ public class GameRoot : MonoBehaviour
     public void GameStart() {
         HomeWnd.gameObject.SetActive(true);
         battleMgr = GetComponent<BattleMgr>();
-        bgPlayer.clipSource = ResSvc.Instance.LoadAudio(Constants.BG1);
-        bgPlayer.PlaySound(true);
+        PlayBgAudio(UIManager.Instance.setPanel.GetBgAudioOn());
+    }
+
+    public void PlayBgAudio(bool isOn) {
+        if (isOn) {
+            bgPlayer.clipSource = ResSvc.Instance.LoadAudio(Constants.BG1);
+            bgPlayer.PlaySound(true);
+        } else {
+            if (bgPlayer.audioSource.isPlaying) {
+                bgPlayer.audioSource.Pause();
+            }
+        }
     }
 
     public void GameOver() {
@@ -50,8 +62,11 @@ public class GameRoot : MonoBehaviour
     }
 
     private void Init() {
-        ResSvc res = GetComponent<ResSvc>();
-        res.InitSvc();
+        resSvc = GetComponent<ResSvc>();
+        resSvc.InitSvc();
+        gameSettings = resSvc.LoadConf();
+        UIManager.Instance.SetBgAuidoOn(gameSettings.bgAudio);
+        UIManager.Instance.ShowJoyStick(gameSettings.showJoyStick);
         //AudioSvc audio = GetComponent<AudioSvc>();
         //audio.InitSvc();
 
@@ -60,8 +75,8 @@ public class GameRoot : MonoBehaviour
 
         //LoginSys login = GetComponent<LoginSys>();
         //login.InitSys();
- 
- 
+
+
         //BattleSys battle = GetComponent<BattleSys>();
         //battle.InitSys();
     }

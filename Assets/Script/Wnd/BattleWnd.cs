@@ -40,8 +40,10 @@ public class BattleWnd : MonoBehaviour
         //    player.IsMove = true;
         //    player.Pos = player.transform.position;
         //}
-        GameRoot.Instance.bgPlayer.clipSource = ResSvc.Instance.LoadAudio(Constants.BG2);
-        GameRoot.Instance.bgPlayer.PlaySound(true);
+        if (GameRoot.Instance.gameSettings.bgAudio) {
+            GameRoot.Instance.bgPlayer.clipSource = ResSvc.Instance.LoadAudio(Constants.BG2);
+            GameRoot.Instance.bgPlayer.PlaySound(true);
+        }
     }
 
     public void ClickPauseBtn() {

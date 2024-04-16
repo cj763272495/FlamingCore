@@ -31,6 +31,7 @@ public class SlideScrollView : MonoBehaviour,IBeginDragHandler,IEndDragHandler {
     public Text pageText;
 
     public bool needSendMessage;
+    public bool replaceImg;
 
     private void Awake()
     {
@@ -46,16 +47,20 @@ public class SlideScrollView : MonoBehaviour,IBeginDragHandler,IEndDragHandler {
         }
     }
     private void Update() {
-        for (int i = 0; i < totalItemNum-1; i++) {
+        for (int i = 0; i <= totalItemNum-1; i++) {
             Transform curTrans = content.transform.GetChild(i); 
             if (i == currentIndex-1) {
                 curTrans.localScale = new Vector3(1.2f, 1.2f, 1.2f);
-                curTrans.GetComponentInChildren<Image>().sprite =
-                    Resources.Load("Sprite/bg_stage_selected", typeof(Sprite)) as Sprite;
+                if (replaceImg) {
+                    curTrans.GetComponent<Image>().sprite =
+                    ResSvc.Instance.LoadSprite("Sprite/bg_stage_selected");
+                }
             } else {
                 curTrans.localScale = new Vector3(1f, 1f, 1f);
-                curTrans.GetComponentInChildren<Image>().sprite =
-    Resources.Load("Sprite/bg_stage_passed", typeof(Sprite)) as Sprite;
+                if (replaceImg) {
+                curTrans.GetComponent<Image>().sprite = 
+                    ResSvc.Instance.LoadSprite("Sprite/bg_stage_passed");
+                }
             }
         }
 

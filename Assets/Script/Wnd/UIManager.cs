@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-    public GameObject HomWnd;
-    public GameObject PauseWnd;
+    public HomeWnd homeWnd;
+    public PausePanel pausePanel;
+    public SetPanel setPanel;
     public static UIManager Instance { get; private set; }
 
     private void Awake() {
@@ -13,11 +14,17 @@ public class UIManager : MonoBehaviour
     }
      
     public void OpenPasueWnd(bool open = true) {
-        PauseWnd.SetActive(open);
+        pausePanel.gameObject.SetActive(open);
     }
 
     public void GameOver() {
-        PauseWnd.SetActive(true);
+        pausePanel.gameObject.SetActive(true);
     }
 
+    public void SetBgAuidoOn(bool isOn) {
+        setPanel.SetBgAudio(isOn);
+    }
+    public void ShowJoyStick(bool isOn) {
+        setPanel.SetJoyStick(isOn);
+    }
 }

@@ -14,20 +14,6 @@ public class ToggleBtn : MonoBehaviour
     public HomeWnd HomeWnd;
     private Toggle toggle;
     public PageType pageType;
-    //public  void OnSelect(bool select) {
-    //    tg.isOn = select;
-    //    if (select) {
-    //        soundPlayer.clipSource = Resources.Load<AudioClip>(Constants.ButtonClip);
-    //        soundPlayer.PlayOneShot(); 
-    //        imgBarSelect.SetActive(true);
-    //        bg.SetActive(true); 
-    //        ChangeTextAlpha(txt, 1f);
-    //    } else {
-    //        imgBarSelect.SetActive(false);
-    //        bg.SetActive(false);
-    //        ChangeTextAlpha(txt, 0.5f);
-    //    }
-    //}
 
     public void ChangeTextAlpha(Text textComponent, float alpha) {
         Color textColor = textComponent.color;

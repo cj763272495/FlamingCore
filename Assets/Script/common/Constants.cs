@@ -19,7 +19,7 @@ public class Constants{
 
 
     //最大guideline长度
-    public const float MaxGuideLineLen = 10;
+    public const float MaxGuideLineLen = 6;
     //最大反射次数
     public const float MaxReflections = 5;
 
@@ -33,6 +33,8 @@ public class Constants{
 
     public const string BG1 = "AudioClip/Tiero - Action Dubstep";
     public const string BG2 = "AudioClip/Tiero - Dubstep A";
+
+    public const string ConfigPath = "Assets/Conf/config.json";
     
 }
 
