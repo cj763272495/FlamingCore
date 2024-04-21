@@ -6,6 +6,8 @@ public class UIManager : MonoBehaviour
 {
     public HomeWnd homeWnd;
     public PausePanel pausePanel;
+    public DeadPanel deadPanel;
+    public WinPanel winPanel;
     public SetPanel setPanel;
     public static UIManager Instance { get; private set; }
 
@@ -18,7 +20,13 @@ public class UIManager : MonoBehaviour
     }
 
     public void GameOver() {
+        deadPanel.gameObject.SetActive(true);
+    }
+    public void GamePause() {
         pausePanel.gameObject.SetActive(true);
+    }
+    public void GameWin() {
+        winPanel.gameObject.SetActive(true);
     }
 
     public void SetBgAuidoOn(bool isOn) {

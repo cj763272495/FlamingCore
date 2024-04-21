@@ -7,14 +7,16 @@ public class GameRoot : MonoBehaviour
     public LoadingWnd loadingWnd;
     public bool gameStart = false;
     public bool gamePause = false;
-    public GameObject HomeWnd;
     public BattleWnd battleWnd;
+    public HomeWnd homeWnd;
     public BattleMgr battleMgr;
     public SoundPlayer bgPlayer;
     public GameSettings gameSettings;
     private ResSvc resSvc;
+    public int curWaveIndex { private set;  get; }
 
     // public LoadingWnd loadingWnd;
+    public PlayerData playerData { private set; get; }
 
     public static GameRoot Instance { get; private set; }
 
@@ -27,6 +29,7 @@ public class GameRoot : MonoBehaviour
         }
     }
 
+    //仅测试用
     private void Start() {
         ClearUIRoot();
         Init();
@@ -41,9 +44,12 @@ public class GameRoot : MonoBehaviour
     }
 
     public void GameStart() {
-        HomeWnd.gameObject.SetActive(true);
-        battleMgr = GetComponent<BattleMgr>();
+        homeWnd.gameObject.SetActive(true);
+        playerData = resSvc.GetPlayerData("11");
         PlayBgAudio(UIManager.Instance.setPanel.GetBgAudioOn());
+    }
+    public void ContinueBattle() {//玩家重生继续游戏
+        battleMgr.ContinueBattle();
     }
 
     public void PlayBgAudio(bool isOn) {
@@ -57,16 +63,44 @@ public class GameRoot : MonoBehaviour
         }
     }
 
+    public void StartBattle(int wave) {
+        if (playerData.current_wave < wave) {
+            return;
+        }
+        curWaveIndex = wave;
+        homeWnd.gameObject.SetActive(false);
+        GameObject go = new GameObject {
+            name = "BattleRoot"
+        };
+        go.transform.SetParent(transform);
+        battleMgr = go.AddComponent<BattleMgr>();
+        battleMgr.battleWnd = battleWnd;
+        battleMgr.Init(curWaveIndex);
+        battleWnd.Init();
+        playerData.energy--;
+    }
+
     public void GameOver() {
         UIManager.Instance.GameOver();
     }
-
+    public void GamePause() {
+        UIManager.Instance.GameOver();
+    }
+    public void GameWin() {
+        UIManager.Instance.GameOver();
+    }
+    public void LevelSettlement(int coin) {//关卡结算
+        playerData.coin += coin;
+        playerData.current_wave = curWaveIndex + 1;
+    }
     private void Init() {
         resSvc = GetComponent<ResSvc>();
         resSvc.InitSvc();
         gameSettings = resSvc.LoadConf();
+        playerData = resSvc.GetPlayerData("1231");
         UIManager.Instance.SetBgAuidoOn(gameSettings.bgAudio);
         UIManager.Instance.ShowJoyStick(gameSettings.showJoyStick);
+        EnterMainCity();
         //AudioSvc audio = GetComponent<AudioSvc>();
         //audio.InitSvc();
 
@@ -79,6 +113,12 @@ public class GameRoot : MonoBehaviour
 
         //BattleSys battle = GetComponent<BattleSys>();
         //battle.InitSys();
+    }
+
+    public void EnterMainCity() {
+        resSvc.AsyncLoadScene("MainScene", () => {
+            homeWnd.gameObject.SetActive(true);
+        });
     }
 
     public void ClickPauseBtn() {

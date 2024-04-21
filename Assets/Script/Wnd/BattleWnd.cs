@@ -2,44 +2,35 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 using System.Threading.Tasks;
 
 public class BattleWnd : MonoBehaviour
 {
-    private bool m_game_pause;
     public Image btn_pause;
     public Sprite[] img_pause_continue;
-    public GameObject pause_panel;
+    public PausePanel pause_panel;
+    public WinPanel win_panel;
+    public DeadPanel dead_panel;
+    public FailPanel fail_panel;
     public PlayerController player;
     public FloatingJoystick joystick;
-    public Text CoinTxt;
+    public Text coin_txt;
+    public Text hp_txt;
+    public Text countdownText;
 
-    public Text countdownText; 
-    private float countdownTimeLeft; // 剩余倒计时时间
+    public GameObject coinShow;
+    public GameObject energyShow;
+    public GameObject hpShow;
 
     public Laser laser;
-    private BattleMgr battleMgr;
+    public BattleMgr battleMgr;
 
-    // Start is called before the first frame update
     public void Init()
     {
-
         gameObject.SetActive(true);
-        //if (joystick.IsDown) {
-        //    player.Speed = Constants.SlowDownSpeed;
-        //    //m_rotate_speed = Constants.SlowRotateSpeed;
-        //    laser.SetEnable(true);
-        //} else {
-        //    laser.SetEnable(false);
-        //}
-        //if (Input.GetMouseButtonUp(0)) {
-        //    player.Dir = joystick.UpDirection == Vector3.zero ? player.Dir : joystick.UpDirection;
-        //    player.Speed = Constants.PlayerNormalSpeed;
-        //    //m_rotate_speed = Constants.NormalRotateSpeed;
-        //    player.IsMove = true;
-        //    player.Pos = player.transform.position;
-        //}
+        win_panel.gameObject.SetActive(false);
+        dead_panel.gameObject.SetActive(false);
+        pause_panel.gameObject.SetActive(false);
         if (GameRoot.Instance.gameSettings.bgAudio) {
             GameRoot.Instance.bgPlayer.clipSource = ResSvc.Instance.LoadAudio(Constants.BG2);
             GameRoot.Instance.bgPlayer.PlaySound(true);
@@ -50,45 +41,50 @@ public class BattleWnd : MonoBehaviour
         if (GameRoot.Instance.gamePause == false) {
             GameRoot.Instance.gamePause = true; 
             btn_pause.sprite = img_pause_continue[1];
-            Time.timeScale = 0f;
-            pause_panel.SetActive(true);
+            pause_panel.gameObject.SetActive(true);
+            battleMgr.PauseBattle();
         } else {
-            pause_panel.SetActive(false);
-            btn_pause.sprite = img_pause_continue[0]; 
-            countdownText.gameObject.SetActive(true);
-            StartCountDown();
+            btn_pause.sprite = img_pause_continue[0];
+            pause_panel.gameObject.SetActive(false);  
+            countdownText.gameObject.SetActive(true);  
+            StartCountDown3Seconds(countdownText);
+            battleMgr.ResumeBattle();
         }
     }
 
-    public void EarnMoney() {
-        CoinTxt.text = battleMgr.GetCoinNum().ToString();
-    }
-    private async void StartCountDown() {
-        countdownText.text = "3"; 
+    private async void StartCountDown3Seconds(Text countdownText) {
+        countdownText.text = "3";
         // 等待3秒
-        await Task.Delay(1000); // 第1秒
+        await Task.Delay(1000);
         countdownText.text = "2";
-        await Task.Delay(1000); // 第2秒
+        await Task.Delay(1000);
         countdownText.text = "1";
-        await Task.Delay(1000); // 第3秒
-        ResumeGame();
-    }
-    private void ResumeGame() { 
-        GameRoot.Instance.gamePause = false;
+        await Task.Delay(1000);
         countdownText.gameObject.SetActive(false);
-        // 这里执行恢复逻辑
-        joystick.IsDown = true;
+    }
+    public void EarnMoney() {
+        coin_txt.text = battleMgr.GetCoinNum().ToString();
     }
 
-    private IEnumerator FadeCoroutine(float targetAlpha, float duration) {
-        float startTime = Time.time;
-        while (Time.time - startTime < duration) {
-            float t = (Time.time - startTime) / duration;
-            countdownText.color = new Color(countdownText.color.r, countdownText.color.g, countdownText.color.b, targetAlpha * t);
-            yield return null;
+    public void ShowHp(bool isShow=true) {
+        if (isShow) {
+            hpShow.SetActive(true);
+            energyShow.SetActive(false);
+            coinShow.SetActive(false);
+        } else {
+            hpShow.SetActive(false);
+            energyShow.SetActive(true);
+            coinShow.SetActive(true);
         }
-        countdownText.color = new Color(countdownText.color.r, countdownText.color.g, countdownText.color.b, targetAlpha);
     }
-
-
+    
+    //private IEnumerator FadeCoroutine(float targetAlpha, float duration) {
+    //    float startTime = Time.time;
+    //    while (Time.time - startTime < duration) {
+    //        float t = (Time.time - startTime) / duration;
+    //        countdownText.color = new Color(countdownText.color.r, countdownText.color.g, countdownText.color.b, targetAlpha * t);
+    //        yield return null;
+    //    }
+    //    countdownText.color = new Color(countdownText.color.r, countdownText.color.g, countdownText.color.b, targetAlpha);
+    //} 
 }

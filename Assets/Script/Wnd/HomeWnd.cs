@@ -29,17 +29,7 @@ public class HomeWnd : MonoBehaviour
         ActivatePanel(levelPanel);
         tgLevel.isOn = true;
     }
-    public void StartGame() {
-        gameObject.SetActive(false);
-        GameObject go = new GameObject {
-            name = "BattleRoot"
-        };
-        go.transform.SetParent(GameRoot.Instance.transform);
-        battleMgr = go.AddComponent<BattleMgr>();
-        //battleMgr.joystick = joystick;
-        battleMgr.Init(1, () => { });
-        battleWnd.Init();
-    }
+
     public void ActivatePanel(GameObject panel) {
         levelPanel.SetActive(panel == levelPanel);
         storePanel.SetActive(panel == storePanel);

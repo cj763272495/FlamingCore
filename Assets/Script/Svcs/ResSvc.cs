@@ -4,13 +4,7 @@ using UnityEngine;
 using System;
 using System.IO;
 using UnityEngine.SceneManagement;
-
-
-[System.Serializable]
-public class GameSettings {
-    public bool bgAudio;
-    public bool showJoyStick;
-}
+using Newtonsoft.Json;
 
 public class ResSvc : MonoBehaviour {
     public static ResSvc Instance = null;
@@ -18,6 +12,8 @@ public class ResSvc : MonoBehaviour {
 
     public void InitSvc() {
         Instance = this;
+        LoadMap();
+        LoadPlayerData();
     }
 
     private Action prgCB = null;
@@ -38,14 +34,6 @@ public class ResSvc : MonoBehaviour {
             }
         };
 
-    }
-
-    private GameSettings gameSetting;
-
-    private void Update() {
-        if (prgCB != null) {
-            prgCB();
-        }
     }
 
     private Dictionary<string, GameObject> goDic = new Dictionary<string, GameObject>();
@@ -88,16 +76,31 @@ public class ResSvc : MonoBehaviour {
         return sp;
     }
 
+    #region SetCfg
+    /// <summary>
+    /// 游戏设置配置文件
+    /// </summary>
+    private GameSettings gameSetting;
 
-
-
+    private void Update() {
+        if (prgCB != null) {
+            prgCB();
+        }
+    }
     public GameSettings LoadConf() {
-        gameSetting = JsonUtility.FromJson<GameSettings>(jsonConfig.text);
+        string filePath = Constants.ConfigPath;
+        if (File.Exists(filePath)) {
+            string textAsset = File.ReadAllText(filePath);
+            gameSetting = JsonConvert.DeserializeObject<GameSettings>(textAsset);
+        } else {
+            gameSetting = new GameSettings { bgAudio = true, showJoyStick = true };
+            SaveConf();
+        } 
         return gameSetting;
     }
     public void ChangeBgAudioConf(bool isOn) {
         gameSetting.bgAudio = isOn;
-         SaveConf();
+        SaveConf();
     }
     
     public void ChangeShowJoyStickConf(bool isShow) {
@@ -107,5 +110,89 @@ public class ResSvc : MonoBehaviour {
 
     public void SaveConf() {
         File.WriteAllText(Constants.ConfigPath, JsonUtility.ToJson(gameSetting));
+    } 
+    #endregion
+
+    #region MapCfg 
+    /// <summary>
+    /// 关卡文件
+    /// </summary>
+    private Dictionary<string, LevelData> mapCfgDataDic = new Dictionary<string, LevelData>();
+    public void LoadMap() {
+        try {
+            TextAsset textAsset = Resources.Load<TextAsset>(Constants.MapCfg);
+            string jsonText = null;
+            if (textAsset != null) {
+                jsonText = textAsset.text; 
+            } else {
+                Debug.LogError("Failed to load resource: " + Constants.MapCfg);
+            }
+            LevelConfig levelConfig = JsonConvert.DeserializeObject<LevelConfig>(jsonText);
+            if (levelConfig != null) {
+                mapCfgDataDic = levelConfig;
+            } else {
+                Debug.LogError("Failed to parse JSON data.");
+            }
+        } catch (UnityException ex) {
+            // 捕获并处理异常
+            Debug.LogError("Exception occurred while loading resource: " + ex.Message);
+        } catch (Exception ex) {
+            // 捕获其他可能的异常
+            Debug.LogError("An error occurred: " + ex.Message);
+        }
+    }
+    public LevelData GetMapCfgData(string id) {
+        LevelData data;
+        if (mapCfgDataDic.TryGetValue("level"+id, out data)) {
+            return data;
+        }
+        return null;
+    }
+    #endregion
+
+
+    #region PlayerData
+    PlayerDataBase playerDataDic = new PlayerDataBase();
+    public void  LoadPlayerData() {
+        string filePath = Constants.PlayerDataPath;
+        if (File.Exists(filePath)) {
+            string json = File.ReadAllText(filePath);
+            playerDataDic = JsonConvert.DeserializeObject<PlayerDataBase>(json);
+        } else {
+            PlayerData pd = new PlayerData {
+                coin = 0,
+                skin = new int[] {1},
+                trail = new int[] {1},
+                energy = 5,
+                current_wave = 1
+            };
+            SavePlayerData("11", pd);
+        }
+    }
+    public PlayerData GetPlayerData(string Playerid) {
+        PlayerData data;
+        if (playerDataDic.TryGetValue(Playerid, out data)) {
+            return data;
+        }
+        return null;
+    }
+
+    public void SavePlayerData(string playerID, PlayerData pd) {
+        if (playerDataDic.ContainsKey(playerID)) {
+            playerDataDic[playerID] = pd;
+        } else {
+            playerDataDic.Add(playerID, pd);
+        }
+        string json = JsonConvert.SerializeObject(playerDataDic, Formatting.Indented);
+        WriteJsonToFile(json, Constants.PlayerDataPath);
+    }
+    #endregion
+
+    void WriteJsonToFile(string json, string filePath) {
+        string directoryPath = Path.GetDirectoryName(filePath); // 确保文件路径的目录存在
+        if (!string.IsNullOrEmpty(directoryPath) && !Directory.Exists(directoryPath)) {
+            Directory.CreateDirectory(directoryPath);
+        }
+        File.WriteAllText(filePath, json);
     }
 }

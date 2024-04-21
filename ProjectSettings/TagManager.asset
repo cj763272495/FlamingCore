@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - GuideLine
+  - JoyStick
   layers:
   - Default
   - TransparentFX
@@ -17,7 +18,7 @@ TagManager:
   - Player
   - PickUpItem
   - Wall
-  - 
+  - Chest
   - 
   - 
   - 

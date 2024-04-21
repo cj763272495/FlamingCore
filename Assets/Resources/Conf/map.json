@@ -1,0 +1,38 @@
+{
+  "level1": {
+    "playerStartPosition": {
+      "x": 4.0,
+      "y": 0.9,
+      "z": 3.0
+    },
+    "cameraOffset": {
+      "x": 18,
+      "y": 23,
+      "z": -11
+    },
+    "cameraRotation": {
+      "x": 45.0,
+      "y": -45.0,
+      "z": 0
+    },
+    "enemyNum": 1
+  },
+  "level2": {
+    "playerStartPosition": {
+      "x": 4.0,
+      "y": 0.9,
+      "z": 3.0
+    },
+    "cameraOffset": {
+      "x": 18,
+      "y": 23,
+      "z": -11
+    },
+    "cameraRotation": {
+      "x": 45.0,
+      "y": -45.0,
+      "z": 0
+    },
+    "enemyNum": 1
+  }
+}

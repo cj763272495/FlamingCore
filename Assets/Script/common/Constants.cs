@@ -4,6 +4,7 @@
 *****************************************************/
 
 using UnityEngine;
+using System.IO;
 
 public class Constants{
 
@@ -34,8 +35,13 @@ public class Constants{
     public const string BG1 = "AudioClip/Tiero - Action Dubstep";
     public const string BG2 = "AudioClip/Tiero - Dubstep A";
 
-    public const string ConfigPath = "Assets/Conf/config.json";
-    
+
+    public const string MapCfg = "Conf/map";
+
+    public static string ConfigPath = Path.Combine(Application.persistentDataPath, "config.json");
+    public static string PlayerDataPath = Path.Combine(Application.persistentDataPath,"playerData.json");
+
+    public const int ReviceCost = 80;
 }
 
 public enum PageType {

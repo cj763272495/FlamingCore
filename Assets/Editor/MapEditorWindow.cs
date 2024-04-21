@@ -10,10 +10,7 @@ public class MapEditorWindow : EditorWindow {
     private int instanceNum;
     private Vector3 instateDir;
 
-    private GameObject selectedObject = null;
-
-    private List<GameObject> prefabList = new List<GameObject>(); 
-
+    //private GameObject selectedObject = null;
     private string[] prefabNames;
 
     private string[] dir ={

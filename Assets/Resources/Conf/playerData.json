@@ -1,0 +1,16 @@
+{
+  "1231": {
+    "coin": 100,
+    "skin": [1, 2],
+    "trail": [1],
+    "energy": 5,
+    "current_wave": 1
+  },
+  "123": {
+    "coin": 150,
+    "skin": [1, 3],
+    "trail": [2],
+    "energy": 3,
+    "current_wave": 2
+  }
+}

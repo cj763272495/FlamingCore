@@ -26,7 +26,7 @@ public class SlideScrollView : MonoBehaviour,IBeginDragHandler,IEndDragHandler {
     private Vector2 contentTransSize;//Content初始大小
 
     public int totalItemNum;
-    private int currentIndex;
+    public int currentIndex { private set; get; }
 
     public Text pageText;
 

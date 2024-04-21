@@ -38,17 +38,19 @@ public class PlayerController : MonoBehaviour {
     }
     public Transform camTrans;
     private Vector3 camOffset;
-
+    public BattleMgr battleMgr;
 
     private SoundPlayer soundPlayer;
 
-    public void Start() {
+    public void Init() {
+        laser = GameObject.FindGameObjectWithTag("GuideLine").GetComponent<Laser>();
         laser.gameObject.SetActive(false);
-        rb = transform.GetComponent<Rigidbody>();
+        laser.player = gameObject;
+        rb = GetComponent<Rigidbody>();
         rb.maxAngularVelocity = 30;
         pos = transform.position;
         soundPlayer = GetComponent<SoundPlayer>();
-        GameRoot.Instance.battleWnd.joystick = joystick;
+        joystick = GameObject.FindGameObjectWithTag("JoyStick").GetComponent<FloatingJoystick>();
         joystick.gameObject.SetActive(true);
         joystick.SetIsShow(GameRoot.Instance.gameSettings.showJoyStick);
         camTrans = Camera.main.transform;
@@ -91,11 +93,11 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void OnCollisionEnter(Collision collision) {
-        if (collision.gameObject.layer == 7) {//bullet
-            gameObject.SetActive(false); 
-            GameRoot.Instance.GameOver();
+        if (!battleMgr.startBattle && collision.gameObject.layer == 7) {//bullet 
+            battleMgr.EndBattle(false);
+            Destroy(gameObject);
         }else if (collision.gameObject.layer == 6) {//enemy
-
+            battleMgr.EliminateEnemy();
         }else if (collision.gameObject.layer == 9) { //pickupitem
             if (collision.transform.tag=="coin") {
                 GameRoot.Instance.battleMgr.EarnCoin(collision.gameObject.GetComponent<Coin>().coinValue);
@@ -110,9 +112,6 @@ public class PlayerController : MonoBehaviour {
         }
         Vector3 inDirection = (transform.position - pos).normalized;
         Vector3 inNormal = collision.contacts[0].normal;
-        //if (inNormal.y!=0) {
-        //    Debug.Log("XXXXXXXXXX");
-        //}
         dir = Vector3.Reflect(inDirection, inNormal);
         if (dir==Vector3.zero) {
             Debug.Log(collision.collider.tag);
