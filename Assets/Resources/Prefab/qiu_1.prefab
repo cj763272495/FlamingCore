@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3070525916578116638}
   - component: {fileID: 3681347191838913423}
   - component: {fileID: 3865571075389104493}
+  - component: {fileID: 4333546299089037211}
   m_Layer: 0
   m_Name: qiu_1_0
   m_TagString: Untagged
@@ -83,6 +84,22 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!54 &4333546299089037211
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5075911025795334381}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 3
 --- !u!1 &6137123489044143428
 GameObject:
   m_ObjectHideFlags: 0
@@ -92,7 +109,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6800613423888386046}
-  - component: {fileID: 6479018079855812632}
   - component: {fileID: 6479018079855812630}
   - component: {fileID: 6479018079855812635}
   - component: {fileID: 6479018079855812633}
@@ -121,22 +137,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!54 &6479018079855812632
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6137123489044143428}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 36
-  m_CollisionDetection: 0
 --- !u!135 &6479018079855812630
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -260,8 +260,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   joystick: {fileID: 0}
   laser: {fileID: 0}
-  rb: {fileID: 6479018079855812632}
+  rb: {fileID: 0}
   camTrans: {fileID: 0}
+  battleMgr: {fileID: 0}
 --- !u!114 &6479018079855812634
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -295,7 +296,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6479018079505685035
 Transform:
   m_ObjectHideFlags: 0

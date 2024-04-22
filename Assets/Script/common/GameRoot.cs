@@ -11,6 +11,8 @@ public class GameRoot : MonoBehaviour
     public HomeWnd homeWnd;
     public BattleMgr battleMgr;
     public SoundPlayer bgPlayer;
+    public SoundPlayer effectAudioPlayer;
+
     public GameSettings gameSettings;
     private ResSvc resSvc;
     public int curWaveIndex { private set;  get; }
@@ -45,7 +47,6 @@ public class GameRoot : MonoBehaviour
 
     public void GameStart() {
         homeWnd.gameObject.SetActive(true);
-        playerData = resSvc.GetPlayerData("11");
         PlayBgAudio(UIManager.Instance.setPanel.GetBgAudioOn());
     }
     public void ContinueBattle() {//玩家重生继续游戏
@@ -97,7 +98,7 @@ public class GameRoot : MonoBehaviour
         resSvc = GetComponent<ResSvc>();
         resSvc.InitSvc();
         gameSettings = resSvc.LoadConf();
-        playerData = resSvc.GetPlayerData("1231");
+        playerData = resSvc.GetPlayerData("11");
         UIManager.Instance.SetBgAuidoOn(gameSettings.bgAudio);
         UIManager.Instance.ShowJoyStick(gameSettings.showJoyStick);
         EnterMainCity();

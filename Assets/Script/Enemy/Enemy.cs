@@ -7,7 +7,7 @@ public class Enemy : MonoBehaviour
     protected float rotateSpeed = 100;
     public PlayerController player;
     public Rigidbody rb;
-    public SoundPlayer soundPlayer;
+    private SoundPlayer soundPlayer;
 
     private void OnCollisionEnter(Collision collision) {
         if (collision.transform.tag == "Player") {

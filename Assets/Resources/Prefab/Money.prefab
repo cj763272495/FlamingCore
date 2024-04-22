@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6441086740671671349}
   - component: {fileID: 2906363979751340898}
   - component: {fileID: 267707421559073129}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: RoundCube_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -96,9 +96,9 @@ GameObject:
   - component: {fileID: 653899036}
   - component: {fileID: 653899035}
   - component: {fileID: 653899037}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Money
-  m_TagString: Untagged
+  m_TagString: coin
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

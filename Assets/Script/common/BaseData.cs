@@ -31,6 +31,8 @@ public class PlayerData {
     public int[] trail;
     public int energy;
     public int current_wave;
+    public int cur_skin;
+    public int cur_trail;
 }
 
 public class PlayerDataBase: Dictionary<string, PlayerData> { 

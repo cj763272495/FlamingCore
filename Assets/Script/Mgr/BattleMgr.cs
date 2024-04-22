@@ -76,7 +76,13 @@ public class BattleMgr : MonoBehaviour {
     }
 
     private void LoadPlayer(Vector3 pos) {
-        GameObject player = resSvc.LoadPrefab("Prefab/qiu_1");
+        string skinId = GameRoot.Instance.playerData.cur_skin.ToString();
+        string trailId = GameRoot.Instance.playerData.cur_trail.ToString();
+        GameObject player = resSvc.LoadPrefab("Prefab/qiu_"+ skinId);
+        GameObject trail = resSvc.LoadPrefab("Prefab/Trails/2");
+        trail.transform.parent = player.transform;
+        trail.transform.localScale = Vector3.one;
+        trail.transform.localPosition = Vector3.zero;
         m_player = player;
         player.transform.position = pos;
         player.transform.localEulerAngles = Vector3.zero;
@@ -84,6 +90,7 @@ public class BattleMgr : MonoBehaviour {
         PlayerController playerController = player.GetComponent<PlayerController>();
         playerController.Init();
         playerController.battleMgr = this;
+        playerController.effectAudioPlayer = GameRoot.Instance.effectAudioPlayer;
         cam = Camera.main;
     }
 
@@ -109,11 +116,10 @@ public class BattleMgr : MonoBehaviour {
     }
 
     public void EndBattle(bool isWin) {
-        startBattle = false;
-        battleWnd.ShowHp(false);
+
         if (isWin) {
             StartCoroutine(SmoothTransitionToFov());
-            Time.timeScale = 0.5f;
+            Time.timeScale = 0.01f;
             Invoke("GameWin", 2f);
         } else {
             if (m_hp > 0) {//剩余生命值大于0才能复活继续
@@ -132,6 +138,8 @@ public class BattleMgr : MonoBehaviour {
     }
 
     private void GameWin() {
+        startBattle = false;
+        battleWnd.ShowHp(false);
         GameRoot.Instance.battleWnd.win_panel.OpenWinPanel(m_coin);
         PauseBattle();
         LevelSettlement();

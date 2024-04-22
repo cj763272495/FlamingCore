@@ -161,10 +161,12 @@ public class ResSvc : MonoBehaviour {
         } else {
             PlayerData pd = new PlayerData {
                 coin = 0,
-                skin = new int[] {1},
-                trail = new int[] {1},
+                skin = new int[] { 1 },
+                trail = new int[] { 1 },
                 energy = 5,
-                current_wave = 1
+                current_wave = 1,
+                cur_skin = 1,
+                cur_trail =1
             };
             SavePlayerData("11", pd);
         }
@@ -173,8 +175,10 @@ public class ResSvc : MonoBehaviour {
         PlayerData data;
         if (playerDataDic.TryGetValue(Playerid, out data)) {
             return data;
+        } else {
+            Debug.Log("未获取到玩家数据");
+            return null;
         }
-        return null;
     }
 
     public void SavePlayerData(string playerID, PlayerData pd) {

@@ -15,7 +15,7 @@ public class Coin : PickUpItem {
         if (other.transform.tag == "Player") {
             other.gameObject.GetComponent<SoundPlayer>().clipSource
                 = Resources.Load<AudioClip>(Constants.EarnMoneyClip);
-            other.gameObject.GetComponent<SoundPlayer>().PlayOneShot();
+            other.gameObject.GetComponent<SoundPlayer>().PlaySound();
             Destroy(gameObject);
         }
     }

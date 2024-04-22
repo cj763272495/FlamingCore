@@ -6,6 +6,7 @@ TagManager:
   tags:
   - GuideLine
   - JoyStick
+  - coin
   layers:
   - Default
   - TransparentFX

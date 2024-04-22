@@ -41,12 +41,16 @@ public class PlayerController : MonoBehaviour {
     public BattleMgr battleMgr;
 
     private SoundPlayer soundPlayer;
+    public SoundPlayer effectAudioPlayer;
+
+    private float lastCollisionTime = 0f;
+    private float collisionThresholdTime = 0.01f; // 时间阈值，单位秒
 
     public void Init() {
         laser = GameObject.FindGameObjectWithTag("GuideLine").GetComponent<Laser>();
         laser.gameObject.SetActive(false);
         laser.player = gameObject;
-        rb = GetComponent<Rigidbody>();
+        rb = GetComponentInChildren<Rigidbody>();
         rb.maxAngularVelocity = 30;
         pos = transform.position;
         soundPlayer = GetComponent<SoundPlayer>();
@@ -75,7 +79,7 @@ public class PlayerController : MonoBehaviour {
         }
 
         MakeGuideLine(); 
-        if (m_is_move) { 
+        if (m_is_move && battleMgr.startBattle) { 
             SetMove();
             SetRotate();
             SetCam();
@@ -93,28 +97,29 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void OnCollisionEnter(Collision collision) {
-        if (!battleMgr.startBattle && collision.gameObject.layer == 7) {//bullet 
+        if (Time.time - lastCollisionTime < collisionThresholdTime) { 
+            return;
+        }
+        lastCollisionTime = Time.time;
+
+        if (battleMgr.startBattle && collision.gameObject.layer == 7) {//bullet 
             battleMgr.EndBattle(false);
+            effectAudioPlayer.clipSource = Resources.Load<AudioClip>(Constants.DeadClip);
+            effectAudioPlayer.PlaySound();
             Destroy(gameObject);
         }else if (collision.gameObject.layer == 6) {//enemy
             battleMgr.EliminateEnemy();
-        }else if (collision.gameObject.layer == 9) { //pickupitem
-            if (collision.transform.tag=="coin") {
-                GameRoot.Instance.battleMgr.EarnCoin(collision.gameObject.GetComponent<Coin>().coinValue);
-            }
-        } else {
-            if (joystick.IsDown) {
-                soundPlayer.clipSource = Resources.Load<AudioClip>(Constants.HitWallSlowlyClip);
-            } else { 
-                soundPlayer.clipSource = Resources.Load<AudioClip>(Constants.HitWallClip);
-            }
+        }else {
+            soundPlayer.clipSource = Resources.Load<AudioClip>(Constants.HitWallClip);
             soundPlayer.PlaySound();
         }
         Vector3 inDirection = (transform.position - pos).normalized;
-        Vector3 inNormal = collision.contacts[0].normal;
-        dir = Vector3.Reflect(inDirection, inNormal);
-        if (dir==Vector3.zero) {
+        Vector3 inNormal = collision.contacts[0].normal; 
+        if (dir == Vector3.zero) {
             Debug.Log(collision.collider.tag);
+            dir = -dir;
+        } else {
+            dir = Vector3.Reflect(inDirection, inNormal);
         }
         if (dir.y != 0) {
             dir.y = 0;
@@ -122,6 +127,14 @@ public class PlayerController : MonoBehaviour {
     }
     private void OnCollisionExit(Collision collision) {
         pos = transform.position;
+    }
+
+    private void OnTriggerEnter(Collider other) {
+        if (other.gameObject.layer == 9) { //pickupitem
+            if (other.transform.tag == "coin") {
+                battleMgr.EarnCoin(other.gameObject.GetComponent<Coin>().coinValue);
+            }
+        }
     }
 
     private void SetMove() {

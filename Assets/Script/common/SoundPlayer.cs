@@ -33,6 +33,9 @@ public class SoundPlayer : MonoBehaviour {
             if (!audioSource.isPlaying) {
                 audioSource.loop = loop;
                 audioSource.Play();
+            } else {
+                audioSource.Stop();
+                audioSource.Play();
             }
         }
     }
