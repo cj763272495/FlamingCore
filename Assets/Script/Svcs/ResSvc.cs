@@ -36,10 +36,9 @@ public class ResSvc : MonoBehaviour {
 
     }
 
-    private Dictionary<string, GameObject> goDic = new Dictionary<string, GameObject>();
+    private readonly Dictionary<string, GameObject> goDic = new();
     public GameObject LoadPrefab(string path, bool cache = false) {
-        GameObject prefab = null;
-        if (!goDic.TryGetValue(path, out prefab)) {
+        if (!goDic.TryGetValue(path, out GameObject prefab)) {
             prefab = Resources.Load<GameObject>(path);
             if (cache) {
                 goDic.Add(path, prefab);
@@ -52,10 +51,9 @@ public class ResSvc : MonoBehaviour {
         return go;
     }
 
-    private Dictionary<string, AudioClip> adDic = new Dictionary<string, AudioClip>();
-    public AudioClip LoadAudio(string path, bool cache = false) {
-        AudioClip au = null;
-        if (!adDic.TryGetValue(path, out au)) {
+    private readonly Dictionary<string, AudioClip> adDic = new();
+    public AudioClip LoadAudio(string path, bool cache = false) { 
+        if (!adDic.TryGetValue(path, out AudioClip au)) {
             au = Resources.Load<AudioClip>(path);
             if (cache) {
                 adDic.Add(path, au);
@@ -64,10 +62,9 @@ public class ResSvc : MonoBehaviour {
         return au;
     }
 
-    private Dictionary<string, Sprite> spDic = new Dictionary<string, Sprite>();
-    public Sprite LoadSprite(string path, bool cache = false) {
-        Sprite sp = null;
-        if (!spDic.TryGetValue(path, out sp)) {
+    private readonly Dictionary<string, Sprite> spDic = new();
+    public Sprite LoadSprite(string path, bool cache = false) { 
+        if (!spDic.TryGetValue(path, out Sprite sp)) {
             sp = Resources.Load<Sprite>(path);
             if (cache) {
                 spDic.Add(path, sp);
@@ -117,7 +114,7 @@ public class ResSvc : MonoBehaviour {
     /// <summary>
     /// 关卡文件
     /// </summary>
-    private Dictionary<string, LevelData> mapCfgDataDic = new Dictionary<string, LevelData>();
+    private Dictionary<string, LevelData> mapCfgDataDic = new();
     public void LoadMap() {
         try {
             TextAsset textAsset = Resources.Load<TextAsset>(Constants.MapCfg);
@@ -141,9 +138,8 @@ public class ResSvc : MonoBehaviour {
             Debug.LogError("An error occurred: " + ex.Message);
         }
     }
-    public LevelData GetMapCfgData(string id) {
-        LevelData data;
-        if (mapCfgDataDic.TryGetValue("level"+id, out data)) {
+    public LevelData GetMapCfgData(string id) { 
+        if (mapCfgDataDic.TryGetValue("level"+id, out LevelData data)) {
             return data;
         }
         return null;
@@ -152,28 +148,27 @@ public class ResSvc : MonoBehaviour {
 
 
     #region PlayerData
-    PlayerDataBase playerDataDic = new PlayerDataBase();
+    PlayerDataBase playerDataDic = new();
     public void  LoadPlayerData() {
         string filePath = Constants.PlayerDataPath;
         if (File.Exists(filePath)) {
             string json = File.ReadAllText(filePath);
             playerDataDic = JsonConvert.DeserializeObject<PlayerDataBase>(json);
         } else {
-            PlayerData pd = new PlayerData {
+            PlayerData pd = new() { 
                 coin = 0,
-                skin = new int[] { 1 },
-                trail = new int[] { 1 },
+                skin = new List<int> { 0 },
+                trail = new List<int> { 0 },
                 energy = 5,
                 current_wave = 1,
-                cur_skin = 1,
-                cur_trail =1
+                cur_skin = 0,
+                cur_trail = 0
             };
             SavePlayerData("11", pd);
         }
     }
-    public PlayerData GetPlayerData(string Playerid) {
-        PlayerData data;
-        if (playerDataDic.TryGetValue(Playerid, out data)) {
+    public PlayerData GetPlayerData(string Playerid) { 
+        if (playerDataDic.TryGetValue(Playerid, out PlayerData data)) {
             return data;
         } else {
             Debug.Log("未获取到玩家数据");

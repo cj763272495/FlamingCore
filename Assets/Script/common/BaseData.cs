@@ -9,16 +9,16 @@ public class GameSettings {
     public bool showJoyStick;
 }
 public class Vector3Data {
-    public float x { get; set; }
-    public float y { get; set; }
-    public float z { get; set; }
+    public float X { get; set; }
+    public float Y { get; set; }
+    public float Z { get; set; }
 }
 
 public class LevelData {
-    public Vector3Data playerStartPosition { get; set; }
-    public Vector3Data cameraOffset { get; set; }
-    public Vector3Data cameraRotation { get; set; }
-    public int enemyNum { get; set; }
+    public Vector3Data PlayerStartPosition { get; set; }
+    public Vector3Data CameraOffset { get; set; }
+    public Vector3Data CameraRotation { get; set; }
+    public int EnemyNum { get; set; }
 }
 
 public class LevelConfig: Dictionary<string, LevelData> { 
@@ -27,8 +27,8 @@ public class LevelConfig: Dictionary<string, LevelData> {
 [System.Serializable]
 public class PlayerData {
     public int coin;
-    public int[] skin;
-    public int[] trail;
+    public List<int> skin;
+    public List<int> trail;
     public int energy;
     public int current_wave;
     public int cur_skin;

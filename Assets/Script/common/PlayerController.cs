@@ -44,7 +44,8 @@ public class PlayerController : MonoBehaviour {
     public SoundPlayer effectAudioPlayer;
 
     private float lastCollisionTime = 0f;
-    private float collisionThresholdTime = 0.01f; // 时间阈值，单位秒
+    private readonly float collisionThresholdTime = 0.01f; // 时间阈值，单位秒
+    public bool destructible;
 
     public void Init() {
         laser = GameObject.FindGameObjectWithTag("GuideLine").GetComponent<Laser>();
@@ -59,6 +60,7 @@ public class PlayerController : MonoBehaviour {
         joystick.SetIsShow(GameRoot.Instance.gameSettings.showJoyStick);
         camTrans = Camera.main.transform;
         camOffset = transform.position - camTrans.position;
+        destructible = true;
     }
 
     void Update() {
@@ -78,8 +80,8 @@ public class PlayerController : MonoBehaviour {
             Time.timeScale = 1;
         }
 
-        MakeGuideLine(); 
-        if (m_is_move && battleMgr.startBattle) { 
+        MakeGuideLine();
+        if (m_is_move && battleMgr.StartBattle) { 
             SetMove();
             SetRotate();
             SetCam();
@@ -102,7 +104,7 @@ public class PlayerController : MonoBehaviour {
         }
         lastCollisionTime = Time.time;
 
-        if (battleMgr.startBattle && collision.gameObject.layer == 7) {//bullet 
+        if (destructible && collision.gameObject.layer == 7) {//bullet 
             battleMgr.EndBattle(false);
             effectAudioPlayer.clipSource = Resources.Load<AudioClip>(Constants.DeadClip);
             effectAudioPlayer.PlaySound();
@@ -131,8 +133,8 @@ public class PlayerController : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other) {
         if (other.gameObject.layer == 9) { //pickupitem
-            if (other.transform.tag == "coin") {
-                battleMgr.EarnCoin(other.gameObject.GetComponent<Coin>().coinValue);
+            if (other.transform.CompareTag("coin")) {
+                battleMgr.EarnCoin(other.gameObject.GetComponent<Coin>().CoinValue);
             }
         }
     }
@@ -162,6 +164,6 @@ public class PlayerController : MonoBehaviour {
         if (direction == Vector3.zero) {
             direction = dir;
         }
-        laser.setDir(direction);
+        laser.SetDir(direction);
     }
 }

@@ -6,7 +6,7 @@ public class StartPanel : MonoBehaviour
 {
     void Start()
     {
-        Invoke("GameStart", 1);
+        Invoke(nameof(GameStart), 1);
     }
 
     private void GameStart() { 

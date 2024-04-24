@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Coin : PickUpItem {
-    public int coinValue { get; private set; }
+    public int CoinValue { get; private set; }
 
     private void Start() {
-        coinValue = 5;
+        CoinValue = 5;
         audioSource = GetComponent<AudioSource>();
     }
 
 
     private void OnTriggerEnter(Collider other) {
-        if (other.transform.tag == "Player") {
+        if (other.transform.CompareTag("Player")) {
             other.gameObject.GetComponent<SoundPlayer>().clipSource
                 = Resources.Load<AudioClip>(Constants.EarnMoneyClip);
             other.gameObject.GetComponent<SoundPlayer>().PlaySound();

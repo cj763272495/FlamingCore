@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class PickUpItem : MonoBehaviour
 {
-    private float rotateSpeed=400;
+    private readonly float rotateSpeed=400;
     public AudioSource audioSource; 
     void Update() {
-        transform.Rotate(Vector3.up * rotateSpeed * Time.deltaTime);
+        transform.Rotate(rotateSpeed * Time.deltaTime * Vector3.up);
     }
 
 

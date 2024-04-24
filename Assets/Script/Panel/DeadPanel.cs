@@ -5,8 +5,6 @@ using UnityEngine.UI;
 public class DeadPanel : MonoBehaviour
 {
     public BattleWnd battleWnd;
-    private float m_Time = 3;
-    private float m_Timer = 3;
     public Image countDown;
     public Text countDownTxt;
     public Text reviveCoinTxt;
@@ -56,13 +54,14 @@ public class DeadPanel : MonoBehaviour
 
     void FinishCountdown() {
         // 倒计时结束
+        gameObject.SetActive(false);
         GameRoot.Instance.EnterMainCity();
     }
 
     public void ClickContinueBtn() {
         //如果当前剩余金额大于所需，继续进行,玩家原地重生
-        if (GameRoot.Instance.playerData.coin >= m_reviveCost) {
-            GameRoot.Instance.playerData.coin -= m_reviveCost;
+        if (GameRoot.Instance.PlayerData.coin >= m_reviveCost) {
+            GameRoot.Instance.PlayerData.coin -= m_reviveCost;
             GameRoot.Instance.ContinueBattle();
         }
     }

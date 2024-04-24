@@ -26,14 +26,19 @@ public class SlideScrollView : MonoBehaviour,IBeginDragHandler,IEndDragHandler {
     private Vector2 contentTransSize;//Content初始大小
 
     public int totalItemNum;
-    public int currentIndex { private set; get; }
+    public int CurrentIndex { private set; get; }
 
     public Text pageText;
 
     public bool needSendMessage;
     public bool replaceImg;
+    public float maxScale;
+    public float minScale;
 
-    private void Awake()
+
+    private ResSvc resSvc;
+
+    private void Start()
     {
         scrollRect = GetComponent<ScrollRect>();
         contentTrans = scrollRect.content;
@@ -41,41 +46,49 @@ public class SlideScrollView : MonoBehaviour,IBeginDragHandler,IEndDragHandler {
         currentContentLocalPos = contentTrans.localPosition;
         contentTransSize = contentTrans.sizeDelta;
         contentInitPos = contentTrans.localPosition;
-        currentIndex = 1;
+        CurrentIndex = 1;
         if (pageText != null) {
-            pageText.text = currentIndex.ToString() + "/" + totalItemNum;
+            pageText.text = CurrentIndex.ToString() + "/" + totalItemNum;
         }
+        resSvc = ResSvc.Instance;
     }
     private void Update() {
         for (int i = 0; i <= totalItemNum-1; i++) {
             Transform curTrans = content.transform.GetChild(i); 
-            if (i == currentIndex-1) {
-                curTrans.localScale = new Vector3(1.2f, 1.2f, 1.2f);
-                if (replaceImg) {
-                    curTrans.GetComponent<Image>().sprite =
-                    ResSvc.Instance.LoadSprite("Sprite/bg_stage_selected");
+            Image img = curTrans.GetComponent<Image>();
+            if (i == CurrentIndex-1) {
+                curTrans.localScale = new Vector3(maxScale, maxScale, maxScale);
+                if (replaceImg) { 
+                    img.sprite = resSvc.LoadSprite("Sprite/bg_stage_selected");
                 }
+                ChangeImgAlpha(img, 1);
             } else {
-                curTrans.localScale = new Vector3(1f, 1f, 1f);
-                if (replaceImg) {
-                curTrans.GetComponent<Image>().sprite = 
-                    ResSvc.Instance.LoadSprite("Sprite/bg_stage_passed");
+                curTrans.localScale = new Vector3(minScale, minScale, minScale);
+                if (replaceImg) { 
+                    img.sprite = resSvc.LoadSprite("Sprite/bg_stage_passed");
                 }
+                ChangeImgAlpha(img, 0.5f);
             }
         }
 
     }
 
+    private void ChangeImgAlpha(Image img, float a) {
+        Color co = img.color;
+        co.a = a;
+        img.color = co;
+    }
+
     public void Init()
     {
-        currentIndex = 1;
+        CurrentIndex = 1;
        
         if (contentTrans != null)
         {
             contentTrans.localPosition = contentInitPos;
             currentContentLocalPos = contentInitPos;
             if (pageText != null) {
-                pageText.text = currentIndex.ToString() + "/" + totalItemNum;
+                pageText.text = CurrentIndex.ToString() + "/" + totalItemNum;
             }
         }
     }
@@ -94,7 +107,7 @@ public class SlideScrollView : MonoBehaviour,IBeginDragHandler,IEndDragHandler {
 
         if (offSetX>0)//右滑
         {
-            if (currentIndex>=totalItemNum)
+            if (CurrentIndex>=totalItemNum)
             {
                 return;
             }
@@ -104,11 +117,11 @@ public class SlideScrollView : MonoBehaviour,IBeginDragHandler,IEndDragHandler {
             }
             
             moveDistance = -moveOneItemLength;
-            currentIndex++;
+            CurrentIndex++;
         }
         else//左滑
         {
-            if (currentIndex<=1)
+            if (CurrentIndex<=1)
             {
                 return;
             }
@@ -117,11 +130,11 @@ public class SlideScrollView : MonoBehaviour,IBeginDragHandler,IEndDragHandler {
                 UpdatePanel(false);
             }
             moveDistance = moveOneItemLength;
-            currentIndex--;
+            CurrentIndex--;
         }
         if (pageText != null)
         {
-            pageText.text = currentIndex.ToString() + "/" + totalItemNum;
+            pageText.text = CurrentIndex.ToString() + "/" + totalItemNum;
         }
         DOTween.To(
             ()=>contentTrans.localPosition,lerpValue
@@ -136,16 +149,16 @@ public class SlideScrollView : MonoBehaviour,IBeginDragHandler,IEndDragHandler {
     public void ToNextPage()
     {
         float moveDistance = 0;
-        if (currentIndex>=totalItemNum)
+        if (CurrentIndex>=totalItemNum)
         {
             return;
         }
 
         moveDistance = -moveOneItemLength;
-        currentIndex++;
+        CurrentIndex++;
         if (pageText!=null)
         {
-            pageText.text = currentIndex.ToString() + "/" + totalItemNum;
+            pageText.text = CurrentIndex.ToString() + "/" + totalItemNum;
         }
         if (needSendMessage)
         {
@@ -158,15 +171,15 @@ public class SlideScrollView : MonoBehaviour,IBeginDragHandler,IEndDragHandler {
     public void ToLastPage()
     {
         float moveDistance = 0;
-        if (currentIndex <=1)
+        if (CurrentIndex <=1)
         {
             return;
         }
 
         moveDistance = moveOneItemLength;
-        currentIndex--;
+        CurrentIndex--;
         if (pageText != null){
-            pageText.text = currentIndex.ToString() + "/" + totalItemNum;
+            pageText.text = CurrentIndex.ToString() + "/" + totalItemNum;
         }
         if (needSendMessage)
         {

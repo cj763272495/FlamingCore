@@ -18,7 +18,7 @@ public class Laser : MonoBehaviour
         lineRenderer.positionCount = 2; // 设置顶点数量为2
     }
 
-    public void setDir(Vector3 dir) {
+    public void SetDir(Vector3 dir) {
         index = 1;
         lineRenderer.positionCount = 2;
         if (gameObject.activeSelf) {
@@ -30,9 +30,8 @@ public class Laser : MonoBehaviour
             void BounceRay(Vector3 origin, Vector3 direction, float currentLength) {
                 if (dir == Vector3.zero) {
                     dir = player.GetComponent<PlayerController>().Dir;
-                }
-                RaycastHit hit;
-                if (Physics.Raycast(origin, direction, out hit, currentLength, collisionLayer)) {
+                } 
+                if (Physics.Raycast(origin, direction, out RaycastHit hit, currentLength, collisionLayer)) {
                     // 如果射线遇到碰撞，计算反射向量
                     Vector3 reflectionDir = Vector3.Reflect(direction, hit.normal);
                     // 计算新的反射后的射线长度

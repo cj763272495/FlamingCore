@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class LevelPanel : MonoBehaviour
 {
-    public SlideScrollView scrollView;
-
+    private SlideScrollView scrollView;
+    private void Start() {
+        scrollView = GetComponentInChildren<SlideScrollView>();
+        scrollView.Init();
+    }
 
     public void OpenLevelPanel() {
         gameObject.SetActive(true);
@@ -16,6 +19,6 @@ public class LevelPanel : MonoBehaviour
     }
 
     public void ClickStartBtn() {
-        GameRoot.Instance.StartBattle(scrollView.currentIndex);
+        GameRoot.Instance.StartBattle(scrollView.CurrentIndex);
     }
 }

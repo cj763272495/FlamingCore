@@ -8,9 +8,9 @@ public class WinPanel : MonoBehaviour
     public Text curLevel;
     public Text coinTxt;
 
-    private int minSize = 30;
-    private int maxSize = 80;
-    private float cycleDuration = 2.0f;
+    private readonly int minSize = 30;
+    private readonly int maxSize = 80;
+    private readonly float cycleDuration = 2.0f;
     public ParticleSystem chestParticle;
     public float breathRate = 2.0f;
     public Image BreathImage;
@@ -24,7 +24,7 @@ public class WinPanel : MonoBehaviour
         gameObject.SetActive(true);
         chestParticle.Play();
         StartCoroutine(CycleTextMeshProSize());
-        InvokeRepeating("Breathe", 0f, breathRate);
+        InvokeRepeating(nameof(Breathe), 0f, breathRate);
     }
     private IEnumerator CycleTextMeshProSize() {
         while (true) {
@@ -34,8 +34,7 @@ public class WinPanel : MonoBehaviour
                 currentTime += Time.deltaTime;
                 yield return null;
             }
-            coinTxt.fontSize = minSize; // 确保文本大小达到最大值
-            currentTime = 0f; // 重置计时器
+            coinTxt.fontSize = minSize; // 确保文本大小达到最大值 
         }
     }
     void Breathe() {
@@ -45,25 +44,25 @@ public class WinPanel : MonoBehaviour
     }
 
     public void ClickReturnHomeBtn() {
-        StopAllCoroutines();
-        CancelInvoke("Breathe");
-        chestParticle.Stop();
+        LeaveWinPanel();
         GameRoot.Instance.EnterMainCity();
     }
 
     public void ClickNextWaveBtn() {
-        StopAllCoroutines();
-        CancelInvoke("Breathe");
-        chestParticle.Stop();
-        int nextWave = GameRoot.Instance.curWaveIndex + 1;
+        LeaveWinPanel();
+        int nextWave = GameRoot.Instance.CurWaveIndex + 1;
         GameRoot.Instance.StartBattle(nextWave);
     }
 
     public void ClickAgainBtn() {
+        LeaveWinPanel();
+        GameRoot.Instance.StartBattle(GameRoot.Instance.CurWaveIndex);
+    }
+
+    private void LeaveWinPanel() {
         StopAllCoroutines();
         CancelInvoke("Breathe");
         chestParticle.Stop();
-        GameRoot.Instance.StartBattle(GameRoot.Instance.curWaveIndex);
     }
 
 

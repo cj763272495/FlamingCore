@@ -10,7 +10,7 @@ public class Enemy : MonoBehaviour
     private SoundPlayer soundPlayer;
 
     private void OnCollisionEnter(Collision collision) {
-        if (collision.transform.tag == "Player") {
+        if (collision.transform.CompareTag("Player")) {
             soundPlayer = collision.gameObject.GetComponent<SoundPlayer>();
             soundPlayer.clipSource = ResSvc.Instance.LoadAudio(Constants.HitEnenmyClip);
             soundPlayer.PlaySound();

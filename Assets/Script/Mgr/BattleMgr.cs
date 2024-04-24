@@ -8,14 +8,13 @@ public class BattleMgr : MonoBehaviour {
     private ResSvc resSvc; 
     private int m_coin;
     public Camera cam;
-    private bool endBattle;
     private GameObject m_player;
     private Vector3 dead_pos;
     public BattleWnd battleWnd;
     private int m_hp;
     private LevelData levelData;
     private int eliminate_enemy_num;
-    public bool startBattle { private set; get; }
+    public bool StartBattle { private set; get; }
 
     public void EarnCoin(int num) {
         m_coin += num;
@@ -40,11 +39,11 @@ public class BattleMgr : MonoBehaviour {
         if (levelData!=null) {
             resSvc.AsyncLoadScene(waveName, () => {
                 LoadPlayer(new Vector3(
-                    levelData.playerStartPosition.x,
-                    levelData.playerStartPosition.y,
-                    levelData.playerStartPosition.z));
+                    levelData.PlayerStartPosition.X,
+                    levelData.PlayerStartPosition.Y,
+                    levelData.PlayerStartPosition.Z));
                 SetCameraPositionAndRotation(levelData);
-                startBattle = true;
+                StartBattle = true;
                 battleWnd.ShowHp();
                 if (cb != null) {
                     cb();
@@ -54,32 +53,33 @@ public class BattleMgr : MonoBehaviour {
     }
 
     private void Update() {
-        if (!startBattle) {
+        if (!StartBattle) {
             return;
         }
-        if (eliminate_enemy_num == levelData.enemyNum) {// 根据当前消灭得敌人数量来判断游戏是否胜利
+        if (eliminate_enemy_num == levelData.EnemyNum) {// 根据当前消灭得敌人数量来判断游戏是否胜利
+            m_player.GetComponent<PlayerController>().destructible = false;
             EndBattle(true);
         }
     }
     void SetCameraPositionAndRotation(LevelData levelData) {
         cam.transform.position = new Vector3(
-            levelData.cameraOffset.x,
-            levelData.cameraOffset.y,
-            levelData.cameraOffset.z
+            levelData.CameraOffset.X,
+            levelData.CameraOffset.Y,
+            levelData.CameraOffset.Z
         );
 
         cam.transform.eulerAngles = new Vector3(
-            levelData.cameraRotation.x,
-            levelData.cameraRotation.y,
-            levelData.cameraRotation.z
+            levelData.CameraRotation.X,
+            levelData.CameraRotation.Y,
+            levelData.CameraRotation.Z
         );
     }
 
     private void LoadPlayer(Vector3 pos) {
-        string skinId = GameRoot.Instance.playerData.cur_skin.ToString();
-        string trailId = GameRoot.Instance.playerData.cur_trail.ToString();
+        string skinId = GameRoot.Instance.PlayerData.cur_skin.ToString();
+        string trailId = GameRoot.Instance.PlayerData.cur_trail.ToString();
         GameObject player = resSvc.LoadPrefab("Prefab/qiu_"+ skinId);
-        GameObject trail = resSvc.LoadPrefab("Prefab/Trails/2");
+        GameObject trail = resSvc.LoadPrefab("Prefab/Trails/" + trailId);
         trail.transform.parent = player.transform;
         trail.transform.localScale = Vector3.one;
         trail.transform.localPosition = Vector3.zero;
@@ -96,12 +96,12 @@ public class BattleMgr : MonoBehaviour {
 
     public void PauseBattle() {
         Time.timeScale = 0f;
-        startBattle = false;
+        StartBattle = false;
         battleWnd.ShowHp(false);
     }
 
     public void ResumeBattle() {//取消暂停恢复游戏
-        startBattle = true;
+        StartBattle = true;
         battleWnd.ShowHp();
         GameRoot.Instance.gamePause = false;
         battleWnd.joystick.IsDown = true;
@@ -111,7 +111,7 @@ public class BattleMgr : MonoBehaviour {
         battleWnd.hp_txt.text = "x " + m_hp;
         LoadPlayer(dead_pos);
         ResumeBattle();
-        startBattle = true;
+        StartBattle = true;
         battleWnd.ShowHp();
     }
 
@@ -120,7 +120,7 @@ public class BattleMgr : MonoBehaviour {
         if (isWin) {
             StartCoroutine(SmoothTransitionToFov());
             Time.timeScale = 0.01f;
-            Invoke("GameWin", 2f);
+            Invoke(nameof(GameWin), 2f);
         } else {
             if (m_hp > 0) {//剩余生命值大于0才能复活继续
                 dead_pos = m_player.transform.position;
@@ -138,7 +138,7 @@ public class BattleMgr : MonoBehaviour {
     }
 
     private void GameWin() {
-        startBattle = false;
+        StartBattle = false;
         battleWnd.ShowHp(false);
         GameRoot.Instance.battleWnd.win_panel.OpenWinPanel(m_coin);
         PauseBattle();
@@ -165,10 +165,10 @@ public class BattleMgr : MonoBehaviour {
         while (Time.time < startTime + transitionDuration) {
             float t = (Time.time - startTime) / transitionDuration;
             // 使用EaseIn函数来实现先快后慢的效果
-            t = t * t;// 根据需要调整这个方程来改变过渡曲线
-
-            cam.fieldOfView = Mathf.SmoothStep(cam.fieldOfView, targetFov, t); 
-
+            t *= t;// 根据需要调整这个方程来改变过渡曲线
+            if (cam) {
+                cam.fieldOfView = Mathf.SmoothStep(cam.fieldOfView, targetFov, t);
+            }
             yield return null; // 等待下一帧
         }
 

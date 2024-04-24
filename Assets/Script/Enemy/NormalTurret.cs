@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class NormalTurret : Enemy
 {
-    private float shootTime = 2;
+    private readonly float shootTime = 2;
     private float shootTimer;
     public Transform shootPoint;
     public Image countDown;

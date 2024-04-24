@@ -7,16 +7,16 @@ public class Gear : Enemy
 
     public Transform[] trans;
     public int cur_index=0;
-    private float speed=2;
+    public float speed=2;
     public int moveDir=1;
-    private float GearRotateSpeed = 500;
+    public float GearRotateSpeed = 500;
     public bool loopMove = true;
 
     private void Start() {
         transform.position = trans[0].position;
     }
     private void Update() {
-        transform.Rotate(Vector3.up * GearRotateSpeed * Time.deltaTime);
+        transform.Rotate(GearRotateSpeed * Time.deltaTime * Vector3.up);
         if (loopMove) {
             LoopMove();
         } else {

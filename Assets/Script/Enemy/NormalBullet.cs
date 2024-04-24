@@ -5,12 +5,12 @@ using UnityEngine;
 public class NormalBullet : MonoBehaviour
 {
 
-    private float BulletSpeed = 15;
-    private float remainTime = 3;
+    private readonly float BulletSpeed = 15;
+    private readonly float remainTime = 3;
     private float timer = 0;
 
     void Update() {
-        transform.Translate(transform.right * BulletSpeed * Time.deltaTime);
+        transform.Translate(BulletSpeed * Time.deltaTime * transform.right);
         timer += Time.deltaTime;
         if (timer >= remainTime) {
             Destroy(gameObject);

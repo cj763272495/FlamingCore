@@ -52,7 +52,7 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
         if (canvas == null)
             Debug.LogError("The Joystick is not placed inside a canvas");
 
-        Vector2 center = new Vector2(0.5f, 0.5f);
+        Vector2 center = new(0.5f, 0.5f);
         background.pivot = center;
         handle.anchorMin = center;
         handle.anchorMax = center;
@@ -142,11 +142,10 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
 
     protected Vector2 ScreenPointToAnchoredPosition(Vector2 screenPosition)
     {
-        Vector2 localPoint = Vector2.zero;
-        if (RectTransformUtility.ScreenPointToLocalPointInRectangle(baseRect, screenPosition, cam, out localPoint))
-        {
-            Vector2 pivotOffset = baseRect.pivot * baseRect.sizeDelta;
-            return localPoint - (background.anchorMax * baseRect.sizeDelta) + pivotOffset;
+        if (RectTransformUtility.ScreenPointToLocalPointInRectangle(baseRect, screenPosition,
+            cam, out Vector2 localPoint)) {
+                Vector2 pivotOffset = baseRect.pivot * baseRect.sizeDelta;
+                return localPoint - (background.anchorMax * baseRect.sizeDelta) + pivotOffset;
         }
         return Vector2.zero;
     }

@@ -142,7 +142,7 @@ Material:
     - _LightingEnabled: 1
     - _LineScale: 1
     - _LineWidth: 1
-    - _Metallic: 0
+    - _Metallic: 0.42
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
@@ -150,7 +150,7 @@ Material:
     - _ReceiveShadows: 0
     - _Rotation: 0
     - _Shininess: 0.078125
-    - _Smoothness: 0.5
+    - _Smoothness: 0.46
     - _SmoothnessTextureChannel: 0
     - _SoftParticlesEnabled: 0
     - _SoftParticlesFarFadeDistance: 1

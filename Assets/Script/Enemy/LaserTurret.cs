@@ -5,6 +5,6 @@ using UnityEngine;
 public class LaserTurret : Enemy
 {
     private void Update() {
-        transform.Rotate(Vector3.up * rotateSpeed * Time.deltaTime); 
+        transform.Rotate(rotateSpeed * Time.deltaTime * Vector3.up); 
     }
 }

@@ -20,7 +20,7 @@ public class PoolManager : MonoBehaviour {
         if (poolsDict.ContainsKey(prefab)) {
             return;
         }
-        Queue<Object> queue = new Queue<Object>();
+        Queue<Object> queue = new();
         for (int i = 0; i < size; i++) {
             Object go = Instantiate(prefab);
             CreateGameObjectAndSetActive(go, false);
@@ -30,7 +30,7 @@ public class PoolManager : MonoBehaviour {
     }
 
     private void CreateGameObjectAndSetActive(Object obj, bool active) {
-        GameObject itemGo = null;
+        GameObject itemGo;
         if (obj is Component) {
             Component component = obj as Component;
             itemGo = component.gameObject;
@@ -42,8 +42,7 @@ public class PoolManager : MonoBehaviour {
     }
 
     public T GetInstance<T>(Object prefab) where T : Object {
-        Queue<Object> queue;
-        if (poolsDict.TryGetValue(prefab, out queue)) {
+        if (poolsDict.TryGetValue(prefab, out Queue<Object> queue)) {
             Object obj;
             if (queue.Count > 0) {
                 obj = queue.Dequeue();

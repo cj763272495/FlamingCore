@@ -5,15 +5,16 @@ using UnityEditor;
 
 public class MapEditorWindow : EditorWindow { 
     public Vector3 curPos;
-    private Vector3 lastPos;
-    string path_front = "Assets/Resources/Prefab/Env/";
+
+    //private Vector3 lastPos;
+    readonly string path_front = "Assets/Resources/Prefab/Env/";
     private int instanceNum;
     private Vector3 instateDir;
 
     //private GameObject selectedObject = null;
     private string[] prefabNames;
 
-    private string[] dir ={
+    private readonly string[] dir ={
         "X+",
         "X-",
         "Y+",
@@ -31,7 +32,7 @@ public class MapEditorWindow : EditorWindow {
     }
     private void OnEnable() {
         curPos = new Vector3(0,1,0);//Ä¬ÈÏÎ»ÖÃ
-        lastPos = curPos;
+        //lastPos = curPos;
         instanceNum = 0;
         prefabNames = new string[] {
             "CubeEdge.prefab",
@@ -76,7 +77,7 @@ public class MapEditorWindow : EditorWindow {
             GameObject go = InstantiateSelectedPrefab(path_front+prefabNames[selectedPrefabIndex], curPos);
             if (go != null) {
                 Selection.activeGameObject = go;
-                lastPos = curPos;
+                //lastPos = curPos;
             }
         }
 

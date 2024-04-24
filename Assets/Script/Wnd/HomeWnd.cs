@@ -6,7 +6,7 @@ using UnityEngine.Events;
 
 public class HomeWnd : MonoBehaviour
 {
-    private BattleMgr battleMgr;
+    //private BattleMgr battleMgr;
     public BattleWnd battleWnd;
     //public FloatingJoystick joystick;
     [SerializeField] private ToggleGroup toggleGroup;
@@ -18,16 +18,23 @@ public class HomeWnd : MonoBehaviour
     public Toggle tgSet;
 
     public Text coinTxt;
-    public Text EnergyTxt;
+    public Text energyTxt;
     public GameObject mainShow;
 
 
     public class PageChangedEvent : UnityEvent<PageType> {
     }
 
-    private void Start() {
+    public void Init() {
+        gameObject.SetActive(true);
         ActivatePanel(levelPanel);
         tgLevel.isOn = true;
+        UpdateHomeWndCoinAndEnergy();
+    }
+
+    public void UpdateHomeWndCoinAndEnergy() { 
+        coinTxt.text = GameRoot.Instance.PlayerData.coin.ToString();
+        energyTxt.text = GameRoot.Instance.PlayerData.energy.ToString();
     }
 
     public void ActivatePanel(GameObject panel) {
@@ -54,5 +61,9 @@ public class HomeWnd : MonoBehaviour
                 break;
         }
         onPageChanged?.Invoke(pageType);
+    }
+
+    public void ClickAddEnergy() {
+        Debug.Log("Add energy");
     }
 }
