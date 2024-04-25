@@ -115,6 +115,7 @@ public class BattleMgr : MonoBehaviour {
         battleWnd.ShowHp();
     }
 
+
     public void EndBattle(bool isWin) {
 
         if (isWin) {
@@ -124,8 +125,10 @@ public class BattleMgr : MonoBehaviour {
         } else {
             if (m_hp > 0) {//剩余生命值大于0才能复活继续
                 dead_pos = m_player.transform.position;
-                GameRoot.Instance.battleWnd.dead_panel.ShowAndStartCountDown();
-                GameRoot.Instance.battleWnd.dead_panel.CannotContinueByCoin();
+                BattleSys.Instance.battleWnd.dead_panel.ShowAndStartCountDown();
+                if (GameRoot.Instance.PlayerData.coin < 100) { 
+                    BattleSys.Instance.battleWnd.dead_panel.CannotContinueByCoin();
+                }
             } else {
                 GameRoot.Instance.battleWnd.fail_panel.gameObject.SetActive(true);
                 LevelSettlement();
@@ -133,21 +136,20 @@ public class BattleMgr : MonoBehaviour {
         }
     }
 
-    private void LevelSettlement() {//关卡结算
-        GameRoot.Instance.LevelSettlement(m_coin);
-    }
+
 
     private void GameWin() {
         StartBattle = false;
         battleWnd.ShowHp(false);
-        GameRoot.Instance.battleWnd.win_panel.OpenWinPanel(m_coin);
+        BattleSys.Instance.battleWnd.win_panel.OpenWinPanel(m_coin);
         PauseBattle();
         LevelSettlement();
     }
 
-    public void DestoryBattle() {
-        Destroy(gameObject);
+    private void LevelSettlement() {//关卡结算
+        GameRoot.Instance.LevelSettlement(m_coin);
     }
+     
 
     //拉近镜头
     IEnumerator SmoothTransitionToFov() {
@@ -175,4 +177,10 @@ public class BattleMgr : MonoBehaviour {
         // 确保最终的FOV是targetFov
         cam.fieldOfView = targetFov;
     }
+
+    public void DestoryBattle() {
+        Destroy(gameObject);
+    }
+
+
 }

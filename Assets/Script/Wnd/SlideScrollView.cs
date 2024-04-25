@@ -35,7 +35,6 @@ public class SlideScrollView : MonoBehaviour,IBeginDragHandler,IEndDragHandler {
     public float maxScale;
     public float minScale;
 
-
     private ResSvc resSvc;
 
     private void Start()
@@ -58,19 +57,18 @@ public class SlideScrollView : MonoBehaviour,IBeginDragHandler,IEndDragHandler {
             Image img = curTrans.GetComponent<Image>();
             if (i == CurrentIndex-1) {
                 curTrans.localScale = new Vector3(maxScale, maxScale, maxScale);
-                if (replaceImg) { 
+                if (replaceImg && resSvc) {
                     img.sprite = resSvc.LoadSprite("Sprite/bg_stage_selected");
                 }
                 ChangeImgAlpha(img, 1);
             } else {
                 curTrans.localScale = new Vector3(minScale, minScale, minScale);
-                if (replaceImg) { 
+                if (replaceImg && resSvc) {
                     img.sprite = resSvc.LoadSprite("Sprite/bg_stage_passed");
                 }
                 ChangeImgAlpha(img, 0.5f);
             }
         }
-
     }
 
     private void ChangeImgAlpha(Image img, float a) {
@@ -82,7 +80,6 @@ public class SlideScrollView : MonoBehaviour,IBeginDragHandler,IEndDragHandler {
     public void Init()
     {
         CurrentIndex = 1;
-       
         if (contentTrans != null)
         {
             contentTrans.localPosition = contentInitPos;
@@ -96,8 +93,7 @@ public class SlideScrollView : MonoBehaviour,IBeginDragHandler,IEndDragHandler {
     /// <summary>
     /// 通过拖拽与松开来达成翻页效果
     /// </summary>
-    /// <param name="eventData"></param>
-
+    /// <param name="eventData"></param> 
     public void OnEndDrag(PointerEventData eventData)
     {
         endMousePositionX = Input.mousePosition.x;

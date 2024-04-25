@@ -14,6 +14,12 @@ public class ShopPanel : MonoBehaviour
     private bool selectBuySkin;
 
     public Button buyBtn;
+    public Image buyBtnCoinImag;
+    public Text buyButtonCoinTxt;
+    public Text equiptTxt;
+
+    public Toggle skintg;
+    public Toggle trailtg;
 
     private GameRoot gameRoot;
 
@@ -22,20 +28,49 @@ public class ShopPanel : MonoBehaviour
         skinView.gameObject.SetActive(true);
         trailView.gameObject.SetActive(false);
         gameRoot = GameRoot.Instance;
+        selectBuySkin = true;
         UpdateScrowViewLockInfo(skinView, gameRoot.PlayerData.skin);
         UpdateScrowViewLockInfo(trailView, gameRoot.PlayerData.trail);
     }
 
     private void Update() {
+
+        SetPurchaseBtnInfo();
+    }
+
+    // 定义一个方法用于设置购买按钮和装备文本的状态
+    void SetPurchaseBtnInfo( ) {
+        int currentViewIndex;
+        bool hasBuy;
+        int currentPlayerDataIndex;
         if (selectBuySkin) {
-            priceTxt.text = Constants.skinPrice[skinView.CurrentIndex-1].ToString(); 
+            currentViewIndex = skinView.CurrentIndex;
+            currentPlayerDataIndex = gameRoot.PlayerData.cur_skin;
+            hasBuy = gameRoot.PlayerData.skin.Contains(skinView.CurrentIndex-1);
+            priceTxt.text = Constants.skinPrice[currentViewIndex - 1].ToString();
+            skintg.Select();
         } else {
-            priceTxt.text = Constants.trailPrice[trailView.CurrentIndex-1].ToString();
+            currentViewIndex = trailView.CurrentIndex;
+            currentPlayerDataIndex = gameRoot.PlayerData.cur_trail;
+            hasBuy = gameRoot.PlayerData.trail.Contains(trailView.CurrentIndex - 1);
+            priceTxt.text = Constants.trailPrice[currentViewIndex - 1].ToString();
+            trailtg.Select();
         }
-        if (int.Parse(priceTxt.text) > GameRoot.Instance.PlayerData.coin) {
-            //更改图片
-            buyBtn.image.sprite = ResSvc.Instance.LoadSprite("Sprite/bg_btn_small_disable_new");
-        }
+
+        bool isEquipped = currentViewIndex - 1 == currentPlayerDataIndex;
+        bool canBuy = GameRoot.Instance.PlayerData.coin > int.Parse(priceTxt.text);
+        equiptTxt.gameObject.SetActive(hasBuy);
+        equiptTxt.text = isEquipped ? "已装备" : "装备"; 
+
+        SetBuyInfoView(!hasBuy); 
+        // 更新购买按钮的sprite，如果当前皮肤或拖尾已装备或无法购买则使用禁用的sprite
+        string spriteKey = isEquipped ? "bg_btn_small_disable_new" : "bg_btn_small_normal_new";
+        buyBtn.image.sprite = canBuy ? ResSvc.Instance.LoadSprite("Sprite/" + spriteKey): 
+            ResSvc.Instance.LoadSprite("Sprite/bg_btn_small_disable_new");
+    } 
+    private void SetBuyInfoView(bool show) { 
+        buyBtnCoinImag.gameObject.SetActive(show);
+        buyButtonCoinTxt.gameObject.SetActive(show); 
     }
 
     public void OpenShopPanel() { 

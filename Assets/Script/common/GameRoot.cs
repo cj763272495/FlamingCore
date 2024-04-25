@@ -50,6 +50,9 @@ public class GameRoot : MonoBehaviour
     private void Init() {
         resSvc = GetComponent<ResSvc>();
         resSvc.InitSvc();
+
+        BattleSys battle = GetComponent<BattleSys>();
+        battle.InitSys();
         gameSettings = resSvc.LoadConf();
         PlayerData = resSvc.GetPlayerData(playerID);
         UIManager.Instance.SetBgAuidoOn(gameSettings.bgAudio);
@@ -63,37 +66,10 @@ public class GameRoot : MonoBehaviour
         PlayBgAudio(UIManager.Instance.setPanel.GetBgAudioOn());
     }
 
+
     public void StartBattle(int wave) {
-        if (PlayerData.current_wave < wave) {
-            return;
-        }
-        CurWaveIndex = wave;
         homeWnd.gameObject.SetActive(false);
-        GameObject go = new() {
-            name = "BattleRoot"
-        };
-        go.transform.SetParent(transform);
-        battleMgr = go.AddComponent<BattleMgr>();
-        battleMgr.battleWnd = battleWnd;
-        battleMgr.Init(CurWaveIndex);
-        battleWnd.Init();
-        PlayerData.energy--;
-    }
-
-    public void ContinueBattle() {//玩家重生继续游戏
-        battleMgr.ContinueBattle();
-    }
-
-    public void GamePause() {
-        UIManager.Instance.GameOver();
-    }
-
-    public void GameOver() {
-        UIManager.Instance.GameOver();
-    }
-
-    public void GameWin() {
-        UIManager.Instance.GameOver();
+        BattleSys.Instance.StartBattle(wave);
     }
 
     public void LevelSettlement(int coin) {//关卡结算
@@ -109,9 +85,6 @@ public class GameRoot : MonoBehaviour
         });
     }
 
-    public void ClickPauseBtn() {
-        battleWnd.ClickPauseBtn();
-    }
 
     private void Update() {
         bgPlayer.audioSource.volume = gamePause==true ? 0.2f:1f;

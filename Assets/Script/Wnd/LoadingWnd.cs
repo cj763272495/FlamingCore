@@ -7,9 +7,7 @@ public class LoadingWnd : MonoBehaviour {
     public Image imgFG;
     public Image imgPoint;
     public Text txtPrg;
-
     public Image logo;
-
     private float fgWidth;
 
     private void Start() {
@@ -32,7 +30,6 @@ public class LoadingWnd : MonoBehaviour {
 
         float posX = prg * fgWidth - 545;
         imgPoint.GetComponent<RectTransform>().anchoredPosition = new Vector2(posX, 0);
-
     }
 
     public void SetWndState(bool state = true) {

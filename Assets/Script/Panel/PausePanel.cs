@@ -14,6 +14,6 @@ public class PausePanel : MonoBehaviour
         gameObject.SetActive(false);
     }
     public void ClickBack() {//¼ÌÐøÓÎÏ·
-        GameRoot.Instance.ClickPauseBtn();
+        BattleSys.Instance.ClickPauseBtn();
     }
 }
