@@ -18,7 +18,6 @@ public class Constants {
     public const float SlowDownSpeed = 0.8f;
     public const float SlowRotateSpeed = 4;
 
-
     //最大guideline长度
     public const float MaxGuideLineLen = 7;
 

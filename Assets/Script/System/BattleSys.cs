@@ -16,7 +16,7 @@ public class BattleSys : MonoBehaviour
         gameRoot = GameRoot.Instance;
     }
 
-    public void StartBattle(int wave) {
+    public void StartBattle(int wave) { 
         CurWaveIndex = wave;
         GameObject go = new() {
             name = "BattleRoot"
@@ -27,6 +27,7 @@ public class BattleSys : MonoBehaviour
         battleMgr.Init(CurWaveIndex);
         battleWnd.Init();
         gameRoot.PlayerData.energy--;
+
     }
 
     public void ContinueBattle() {//玩家重生继续游戏

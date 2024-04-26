@@ -60,10 +60,9 @@ public class WinPanel : MonoBehaviour
     }
 
     private void LeaveWinPanel() {
+        BattleSys.Instance.battleMgr.DestoryBattle();
         StopAllCoroutines();
         CancelInvoke("Breathe");
         chestParticle.Stop();
     }
-
-
 }

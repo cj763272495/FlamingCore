@@ -23,6 +23,8 @@ public class ShopPanel : MonoBehaviour
 
     private GameRoot gameRoot;
 
+    private bool hasBuy;
+
 
     private void Start() {
         skinView.gameObject.SetActive(true);
@@ -41,7 +43,6 @@ public class ShopPanel : MonoBehaviour
     // 定义一个方法用于设置购买按钮和装备文本的状态
     void SetPurchaseBtnInfo( ) {
         int currentViewIndex;
-        bool hasBuy;
         int currentPlayerDataIndex;
         if (selectBuySkin) {
             currentViewIndex = skinView.CurrentIndex;
@@ -94,18 +95,26 @@ public class ShopPanel : MonoBehaviour
     }
 
     public void ClickBuy() {
-        if (gameRoot.PlayerData.coin < int.Parse(priceTxt.text)) {
-            Debug.Log("余额不足");
-            return;
-        }
-        gameRoot.PlayerData.coin -= int.Parse(priceTxt.text);
-        if (selectBuySkin) {
-            gameRoot.PlayerData.skin.Add(skinView.CurrentIndex-1);
-            UpdateScrowViewLockInfo(skinView, gameRoot.PlayerData.skin);
+        if (!hasBuy) {
+            if (gameRoot.PlayerData.coin < int.Parse(priceTxt.text)) {
+                Debug.Log("余额不足");
+                return;
+            }
+            gameRoot.PlayerData.coin -= int.Parse(priceTxt.text);
+            if (selectBuySkin) {
+                gameRoot.PlayerData.skin.Add(skinView.CurrentIndex - 1);
+                UpdateScrowViewLockInfo(skinView, gameRoot.PlayerData.skin);
+            } else {
+                gameRoot.PlayerData.trail.Add(trailView.CurrentIndex - 1);
+                UpdateScrowViewLockInfo(trailView, gameRoot.PlayerData.trail);
+            }
         } else {
-            gameRoot.PlayerData.trail.Add(trailView.CurrentIndex-1);
-            UpdateScrowViewLockInfo(trailView, gameRoot.PlayerData.trail);
-        }
+            if (selectBuySkin) {//已经购买直接装备上
+                gameRoot.PlayerData.cur_skin = skinView.CurrentIndex - 1;
+            } else {
+                gameRoot.PlayerData.cur_trail = trailView.CurrentIndex - 1;
+            }
+        } 
     }
 
     public void UpdateScrowViewLockInfo(SlideScrollView view, List<int> data) {

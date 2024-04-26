@@ -15,6 +15,7 @@ public class BattleMgr : MonoBehaviour {
     private LevelData levelData;
     private int eliminate_enemy_num;
     public bool StartBattle { private set; get; }
+    public ParticleMgr particleMgr;
 
     public void EarnCoin(int num) {
         m_coin += num;
@@ -34,7 +35,10 @@ public class BattleMgr : MonoBehaviour {
         m_coin = 0;
         eliminate_enemy_num = 0;
         string waveName = "Level" + mapid;
-        battleWnd.hp_txt.text = "x "+m_hp;
+        battleWnd.hp_txt.text = "x "+ m_hp;
+        particleMgr = gameObject.AddComponent<ParticleMgr>();
+        particleMgr.battleMgr = this;
+        particleMgr.Init();
         levelData = resSvc.GetMapCfgData(mapid.ToString());
         if (levelData!=null) {
             resSvc.AsyncLoadScene(waveName, () => {
@@ -78,7 +82,7 @@ public class BattleMgr : MonoBehaviour {
     private void LoadPlayer(Vector3 pos) {
         string skinId = GameRoot.Instance.PlayerData.cur_skin.ToString();
         string trailId = GameRoot.Instance.PlayerData.cur_trail.ToString();
-        GameObject player = resSvc.LoadPrefab("Prefab/qiu_"+ skinId);
+        GameObject player = resSvc.LoadPrefab("Prefab/qiu_" + skinId);
         GameObject trail = resSvc.LoadPrefab("Prefab/Trails/" + trailId);
         trail.transform.parent = player.transform;
         trail.transform.localScale = Vector3.one;
@@ -130,7 +134,7 @@ public class BattleMgr : MonoBehaviour {
                     BattleSys.Instance.battleWnd.dead_panel.CannotContinueByCoin();
                 }
             } else {
-                GameRoot.Instance.battleWnd.fail_panel.gameObject.SetActive(true);
+                BattleSys.Instance.battleWnd.fail_panel.gameObject.SetActive(true);
                 LevelSettlement();
             }
         }

@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class GameRoot : MonoBehaviour
 {
-    public LoadingWnd loadingWnd;
     public bool gameStart = false;
     public bool gamePause = false;
-    public BattleWnd battleWnd;
     public HomeWnd homeWnd;
+    public LoadingWnd loadingWnd;
+
     public BattleMgr battleMgr;
     public SoundPlayer bgPlayer;
     public SoundPlayer effectAudioPlayer;
@@ -16,8 +16,7 @@ public class GameRoot : MonoBehaviour
     public GameSettings gameSettings;
     private ResSvc resSvc;
     public int CurWaveIndex { private set;  get; }
-
-    // public LoadingWnd loadingWnd;
+     
     public PlayerData PlayerData { private set; get; }
 
     public static GameRoot Instance { get; private set; }
@@ -60,14 +59,16 @@ public class GameRoot : MonoBehaviour
         EnterMainCity();
     }
 
-
     public void GameStart() {
         homeWnd.Init();
         PlayBgAudio(UIManager.Instance.setPanel.GetBgAudioOn());
     }
 
-
     public void StartBattle(int wave) {
+        if (PlayerData.energy<0) {
+            Debug.Log("ÄÜÁ¿²»×ã");
+            return;
+        }
         homeWnd.gameObject.SetActive(false);
         BattleSys.Instance.StartBattle(wave);
     }
@@ -86,7 +87,7 @@ public class GameRoot : MonoBehaviour
     }
 
 
-    private void Update() {
+    private void Update() { 
         bgPlayer.audioSource.volume = gamePause==true ? 0.2f:1f;
     }
 
@@ -99,6 +100,6 @@ public class GameRoot : MonoBehaviour
                 bgPlayer.audioSource.Pause();
             }
         }
-    }
+    } 
 
 }

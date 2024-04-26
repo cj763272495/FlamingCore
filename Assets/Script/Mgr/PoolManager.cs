@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PoolManager : MonoBehaviour {
@@ -16,7 +17,7 @@ public class PoolManager : MonoBehaviour {
     /// </summary>
     /// <param name="prefab">指定预制体的类型</param>
     /// <param name="size">当前对应类型的对象池的长度</param>
-    public void InitPool(Object prefab, int size) {
+    public void InitPool(Object prefab, int size, Transform parent = null) {
         if (poolsDict.ContainsKey(prefab)) {
             return;
         }
@@ -24,6 +25,9 @@ public class PoolManager : MonoBehaviour {
         for (int i = 0; i < size; i++) {
             Object go = Instantiate(prefab);
             CreateGameObjectAndSetActive(go, false);
+            if (parent != null) {
+                go.GameObject().transform.parent = parent;
+            }
             queue.Enqueue(go);
         }
         poolsDict[prefab] = queue;

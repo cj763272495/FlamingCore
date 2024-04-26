@@ -54,8 +54,7 @@ public class DeadPanel : MonoBehaviour
 
     void FinishCountdown() {
         // µ¹¼ÆÊ±½áÊø
-        gameObject.SetActive(false);
-        GameRoot.Instance.EnterMainCity();
+        ClickCancelBtn();
     }
 
     public void ClickContinueBtn() {
@@ -67,6 +66,8 @@ public class DeadPanel : MonoBehaviour
     }
 
     public void ClickCancelBtn() {
+        gameObject.SetActive(false);
+        BattleSys.Instance.battleMgr.DestoryBattle();
         GameRoot.Instance.EnterMainCity();
     }
 }

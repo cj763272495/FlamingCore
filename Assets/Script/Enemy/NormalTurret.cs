@@ -17,7 +17,6 @@ public class NormalTurret : Enemy
         transform.rotation = Quaternion.Lerp(transform.rotation,
             Quaternion.LookRotation(player.transform.position - transform.position),
             rotateSpeed * Time.deltaTime);
-
         if (shootTimer > shootTime) {
             GameObject go =  ResSvc.Instance.LoadPrefab("Prefab/Enemy/Bullet",true);
             go.transform.localPosition = shootPoint.position;

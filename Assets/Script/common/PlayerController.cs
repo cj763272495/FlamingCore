@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 public class PlayerController : MonoBehaviour {
     public FloatingJoystick joystick;
 
+
     private float m_speed = 0;
     public float Speed {
         get { return m_speed; }
@@ -86,7 +87,7 @@ public class PlayerController : MonoBehaviour {
             SetRotate();
             SetCam();
         }
-        if (Input.GetMouseButtonUp(0)){ 
+        if (Input.GetMouseButtonUp(0)){
             if (joystick.UpDirection != Vector3.zero) {
                 Quaternion rotation = Quaternion.Euler(0, -45, 0);
                 dir = rotation * joystick.UpDirection;
@@ -112,6 +113,8 @@ public class PlayerController : MonoBehaviour {
         }else if (collision.gameObject.layer == 6) {//enemy
             battleMgr.EliminateEnemy();
         }else {
+            battleMgr.particleMgr.PlayHitWallParticle(collision.contacts[0].point);
+            // 这里应该使用audiomanager
             soundPlayer.clipSource = Resources.Load<AudioClip>(Constants.HitWallClip);
             soundPlayer.PlaySound();
         }
