@@ -61,7 +61,7 @@ public class DeadPanel : MonoBehaviour
         //如果当前剩余金额大于所需，继续进行,玩家原地重生
         if (GameRoot.Instance.PlayerData.coin >= m_reviveCost) {
             GameRoot.Instance.PlayerData.coin -= m_reviveCost;
-            BattleSys.Instance.ContinueBattle();
+            BattleSys.Instance.ReviveAndContinueBattle();
         }
     }
 

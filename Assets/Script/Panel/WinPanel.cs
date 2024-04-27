@@ -30,11 +30,11 @@ public class WinPanel : MonoBehaviour
         while (true) {
             float currentTime = 0f;
             while (currentTime < cycleDuration) {
-                coinTxt.fontSize = Mathf.FloorToInt(Mathf.Lerp(minSize, maxSize, currentTime / 2*cycleDuration));
+                coinTxt.fontSize = Mathf.FloorToInt(Mathf.Lerp(minSize, maxSize, currentTime / cycleDuration));
                 currentTime += Time.deltaTime;
                 yield return null;
             }
-            coinTxt.fontSize = minSize; // 确保文本大小达到最大值 
+            coinTxt.fontSize = maxSize; // 确保文本大小达到最大值 
         }
     }
     void Breathe() {
@@ -50,13 +50,14 @@ public class WinPanel : MonoBehaviour
 
     public void ClickNextWaveBtn() {
         LeaveWinPanel();
-        int nextWave = GameRoot.Instance.CurWaveIndex + 1;
-        GameRoot.Instance.StartBattle(nextWave);
+        BattleSys.Instance.battleMgr.StratNextLevel();
     }
 
     public void ClickAgainBtn() {
-        LeaveWinPanel();
-        GameRoot.Instance.StartBattle(GameRoot.Instance.CurWaveIndex);
+        StopAllCoroutines();
+        CancelInvoke("Breathe");
+        chestParticle.Stop();
+        BattleSys.Instance.battleMgr.PlayAgain();
     }
 
     private void LeaveWinPanel() {

@@ -5,7 +5,6 @@ using UnityEngine;
 public class GameRoot : MonoBehaviour
 {
     public bool gameStart = false;
-    public bool gamePause = false;
     public HomeWnd homeWnd;
     public LoadingWnd loadingWnd;
 
@@ -84,11 +83,6 @@ public class GameRoot : MonoBehaviour
             homeWnd.UpdateHomeWndCoinAndEnergy();
             homeWnd.gameObject.SetActive(true);
         });
-    }
-
-
-    private void Update() { 
-        bgPlayer.audioSource.volume = gamePause==true ? 0.2f:1f;
     }
 
     public void PlayBgAudio(bool isOn) {

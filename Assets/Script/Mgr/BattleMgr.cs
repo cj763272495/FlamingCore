@@ -17,6 +17,13 @@ public class BattleMgr : MonoBehaviour {
     public bool StartBattle { private set; get; }
     public ParticleMgr particleMgr;
 
+
+    public int CurWaveIndex { private set; get; }
+
+    public void SetBattleStateStart() {
+        StartBattle = true;
+    }
+
     public void EarnCoin(int num) {
         m_coin += num;
     }
@@ -30,6 +37,7 @@ public class BattleMgr : MonoBehaviour {
     }
 
     public void Init(int mapid, Action cb = null) {
+        CurWaveIndex = mapid;
         resSvc = ResSvc.Instance;
         m_hp = 3; //3条命
         m_coin = 0;
@@ -46,8 +54,7 @@ public class BattleMgr : MonoBehaviour {
                     levelData.PlayerStartPosition.X,
                     levelData.PlayerStartPosition.Y,
                     levelData.PlayerStartPosition.Z));
-                SetCameraPositionAndRotation(levelData);
-                StartBattle = true;
+                SetCameraPositionAndRotation(levelData); 
                 battleWnd.ShowHp();
                 if (cb != null) {
                     cb();
@@ -105,18 +112,31 @@ public class BattleMgr : MonoBehaviour {
     }
 
     public void ResumeBattle() {//取消暂停恢复游戏
-        StartBattle = true;
+        battleWnd.StartCountDown3Seconds();
         battleWnd.ShowHp();
-        GameRoot.Instance.gamePause = false;
-        battleWnd.joystick.IsDown = true;
+        StartCoroutine(EnterLeveL());
     }
-    public void ContinueBattle() {//消耗生命继续游戏
+
+    IEnumerator EnterLeveL() {
+        yield return new WaitForSecondsRealtime(3f);
+        StartBattle = true; 
+        //Time.timeScale = 1;
+        GameObject.FindWithTag("JoyStick").GetComponent<FloatingJoystick>().IsDown = true;
+    }
+
+
+    public void ReviveAndContinueBattle() {//消耗生命继续游戏
         m_hp--;
         battleWnd.hp_txt.text = "x " + m_hp;
         LoadPlayer(dead_pos);
         ResumeBattle();
-        StartBattle = true;
-        battleWnd.ShowHp();
+    }
+    public void StratNextLevel() {
+        CurWaveIndex++;
+        Init(CurWaveIndex);
+    }
+    public void PlayAgain() {
+        Init(CurWaveIndex);
     }
 
 
@@ -139,8 +159,6 @@ public class BattleMgr : MonoBehaviour {
             }
         }
     }
-
-
 
     private void GameWin() {
         StartBattle = false;
@@ -185,6 +203,5 @@ public class BattleMgr : MonoBehaviour {
     public void DestoryBattle() {
         Destroy(gameObject);
     }
-
 
 }

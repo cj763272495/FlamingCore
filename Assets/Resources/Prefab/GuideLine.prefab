@@ -106,7 +106,7 @@ LineRenderer:
       serializedVersion: 2
       key0: {r: 0, g: 0.76983976, b: 1, a: 1}
       key1: {r: 0, g: 0.6984129, b: 1, a: 0.96153843}
-      key2: {r: 0, g: 0, b: 0, a: 0.7254902}
+      key2: {r: 0, g: 0, b: 0, a: 0.41568628}
       key3: {r: 0.76954174, g: 0.9268319, b: 1, a: 0.41568628}
       key4: {r: 1, g: 0.8506834, b: 0.2688679, a: 0}
       key5: {r: 1, g: 0.8506834, b: 0.2688679, a: 0}
@@ -122,7 +122,7 @@ LineRenderer:
       ctime7: 0
       atime0: 0
       atime1: 39128
-      atime2: 54163
+      atime2: 65535
       atime3: 65535
       atime4: 0
       atime5: 0
@@ -130,7 +130,7 @@ LineRenderer:
       atime7: 0
       m_Mode: 0
       m_NumColorKeys: 3
-      m_NumAlphaKeys: 4
+      m_NumAlphaKeys: 3
     numCornerVertices: 3
     numCapVertices: 0
     alignment: 0
@@ -153,5 +153,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collisionLayer:
     serializedVersion: 2
-    m_Bits: 1111
+    m_Bits: 1088
   player: {fileID: 0}

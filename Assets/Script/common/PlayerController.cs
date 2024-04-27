@@ -65,12 +65,9 @@ public class PlayerController : MonoBehaviour {
     }
 
     void Update() {
-        if (GameRoot.Instance.gamePause) {
-            return; 
-        }
         if (joystick.IsDown) {
-            if (!GameRoot.Instance.gameStart) {
-                GameRoot.Instance.gameStart = true;
+            if (!battleMgr.StartBattle) {
+                battleMgr.SetBattleStateStart();
             }
             Time.timeScale = 0.2f;
             m_speed = Constants.PlayerNormalSpeed;

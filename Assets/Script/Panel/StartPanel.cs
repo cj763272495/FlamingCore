@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class StartPanel : MonoBehaviour
 {
+    //todo：实现点击触摸屏幕开始游戏的方法 
+    
     void Start()
     {
         Invoke(nameof(GameStart), 1);

@@ -9,7 +9,6 @@ public class BattleSys : MonoBehaviour
     private GameRoot gameRoot;
     public BattleWnd battleWnd;
 
-    public int CurWaveIndex { private set; get; }
 
     public void InitSys() {
         Instance = this;
@@ -17,21 +16,23 @@ public class BattleSys : MonoBehaviour
     }
 
     public void StartBattle(int wave) { 
-        CurWaveIndex = wave;
         GameObject go = new() {
             name = "BattleRoot"
         };
         go.transform.SetParent(gameRoot.transform);
         battleMgr = go.AddComponent<BattleMgr>();
         battleMgr.battleWnd = battleWnd;
-        battleMgr.Init(CurWaveIndex);
+        battleMgr.Init(wave);
+
         battleWnd.Init();
+        battleWnd.battleMgr = battleMgr;
+
         gameRoot.PlayerData.energy--;
 
     }
 
-    public void ContinueBattle() {//玩家重生继续游戏
-        battleMgr.ContinueBattle();
+    public void ReviveAndContinueBattle() {//玩家重生继续游戏
+        battleMgr.ReviveAndContinueBattle();
     }
 
     public void ClickPauseBtn() {
