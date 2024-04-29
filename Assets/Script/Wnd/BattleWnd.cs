@@ -19,6 +19,7 @@ public class BattleWnd:MonoBehaviour {
     public GameObject coinShow;
     public GameObject energyShow;
     public GameObject hpShow;
+    public ParticleSystem chestParticle;
 
     public BattleMgr battleMgr;
 
@@ -31,6 +32,7 @@ public class BattleWnd:MonoBehaviour {
             GameRoot.Instance.bgPlayer.clipSource = ResSvc.Instance.LoadAudio(Constants.BG2);
             GameRoot.Instance.bgPlayer.PlaySound(true);
         }
+        chestParticle.Stop();
     }
 
     private void Update() {

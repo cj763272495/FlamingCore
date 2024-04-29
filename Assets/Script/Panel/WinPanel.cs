@@ -15,6 +15,10 @@ public class WinPanel : MonoBehaviour
     public float breathRate = 2.0f;
     public Image BreathImage;
 
+    private void Start() {
+        chestParticle.Stop();
+    }
+
     public void SetWinPanelLevelTxt(string wave) {
         curLevel.text = wave;
     }
@@ -57,10 +61,12 @@ public class WinPanel : MonoBehaviour
         StopAllCoroutines();
         CancelInvoke("Breathe");
         chestParticle.Stop();
+        gameObject.SetActive(false);
         BattleSys.Instance.battleMgr.PlayAgain();
     }
 
     private void LeaveWinPanel() {
+        gameObject.SetActive(false);
         BattleSys.Instance.battleMgr.DestoryBattle();
         StopAllCoroutines();
         CancelInvoke("Breathe");

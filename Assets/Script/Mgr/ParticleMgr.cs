@@ -7,6 +7,9 @@ public class ParticleMgr : MonoBehaviour
 {
     public static ParticleMgr Instance { get; private set; }
     public GameObject hitWallParticle;
+    public GameObject enemyDeadParticle;
+    public GameObject deadParticle;
+    public GameObject bulletDestoryParticle;
     public BattleMgr battleMgr;
 
     private void Awake() {
@@ -14,15 +17,71 @@ public class ParticleMgr : MonoBehaviour
     }
 
     public void Init() {
-        hitWallParticle = ResSvc.Instance.LoadPrefab("Prefab/HitWallParticle");
-        PoolManager.Instance.InitPool(hitWallParticle, 2, battleMgr.transform);
+        // 碰撞墙壁的粒子特效
+        hitWallParticle = ResSvc.Instance.LoadPrefab("Prefab/Particles/HitWallParticle");
+        PoolManager.Instance.InitPool(hitWallParticle, 3, battleMgr.transform);
+
+        //碰撞敌人的粒子特效
+        enemyDeadParticle = ResSvc.Instance.LoadPrefab("Prefab/Particles/EnemyDeadParticle");
+        PoolManager.Instance.InitPool(enemyDeadParticle, 3, battleMgr.transform);
+
+        //玩家死亡的粒子特效
+        deadParticle = ResSvc.Instance.LoadPrefab("Prefab/Particles/DeadParticle");
+        PoolManager.Instance.InitPool(deadParticle, 1, battleMgr.transform);
+
+        //子弹销毁的粒子特效
+        bulletDestoryParticle = ResSvc.Instance.LoadPrefab("Prefab/Particles/BulletDestoryParticle");
+        PoolManager.Instance.InitPool(bulletDestoryParticle, 5, battleMgr.transform);
     }
 
-    public void PlayHitWallParticle(Vector3 point) {
+    public void PlayHitWallParticle(ContactPoint contact) {
         GameObject go =  PoolManager.Instance.
             GetInstance<GameObject>(hitWallParticle);
+        Vector3 point = contact.point;
+        Vector3 normal = contact.normal;
         go.transform.position = point;
         go.transform.parent = battleMgr.transform;
+        // 旋转go使go的z轴和碰撞点point的法线平行
+        Quaternion rotation = Quaternion.LookRotation(normal);
+        go.GetComponentInChildren<ParticleSystem>().transform.rotation = rotation;
+        //go.transform.forward = point;
         go.GetComponentInChildren<ParticleSystem>().Play();
+    }
+
+    public void PlayEnemyDeadParticle(Vector3 point, Transform player) {
+        GameObject go = PoolManager.Instance.
+            GetInstance<GameObject>(enemyDeadParticle);
+        go.transform.position = point;
+        go.transform.parent = battleMgr.transform;
+        go.GetComponent<ParticleSystem>().Play();
+
+        ParticleSystem[] particleSystems = go.GetComponentsInChildren<ParticleSystem>();
+        ParticleSystem lastParticleSystem = particleSystems[particleSystems.Length - 1];
+        lastParticleSystem.gameObject.GetComponent<EnemyDeadCoin>().isPlaying = true;
+        // 在一秒后开始吸引最后一个子粒子系统的粒子到玩家的位置
+    }
+
+
+
+    public void PlayBulletDestoryParticle(ContactPoint contact) {
+        GameObject go = PoolManager.Instance.
+    GetInstance<GameObject>(bulletDestoryParticle);
+        Vector3 point = contact.point;
+        Vector3 normal = contact.normal;
+        go.transform.position = point;
+        go.transform.parent = battleMgr.transform;
+        // 旋转go使go的z轴和碰撞点point的法线平行
+        Quaternion rotation = Quaternion.LookRotation(normal);
+        go.GetComponentInChildren<ParticleSystem>().transform.rotation = rotation;
+        //go.transform.forward = point;
+        go.GetComponentInChildren<ParticleSystem>().Play();
+    }
+
+    public void PlayDeadParticle(Vector3 point) {
+        GameObject go = PoolManager.Instance.
+    GetInstance<GameObject>(deadParticle);
+        go.transform.position = point;
+        go.transform.parent = battleMgr.transform;
+        go.GetComponent<ParticleSystem>().Play();
     }
 }

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4885121589367461629}
   - component: {fileID: 3194121738304789801}
   - component: {fileID: 3803420140553149215}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: qiu_4_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -111,7 +111,7 @@ GameObject:
   - component: {fileID: 8620623261559075057}
   - component: {fileID: 8620623261559075062}
   - component: {fileID: 7470753878689703354}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -228,9 +228,9 @@ GameObject:
   - component: {fileID: -5464344790139487472}
   - component: {fileID: 4947058566286803290}
   - component: {fileID: 254925752838652804}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: qiu_2
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -271,6 +271,8 @@ MonoBehaviour:
   battleMgr: {fileID: 0}
   effectAudioPlayer: {fileID: 0}
   destructible: 0
+  shakeAmount: 0.5
+  shakeDuration: 0.2
 --- !u!135 &-5464344790139487472
 SphereCollider:
   m_ObjectHideFlags: 0

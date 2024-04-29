@@ -30,7 +30,7 @@ public class PlayerData {
     public List<int> skin;
     public List<int> trail;
     public int energy;
-    public int current_wave;
+    public int max_unLock_wave;
     public int cur_skin;
     public int cur_trail;
 }

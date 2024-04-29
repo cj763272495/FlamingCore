@@ -54,8 +54,10 @@ public class BattleMgr : MonoBehaviour {
                     levelData.PlayerStartPosition.X,
                     levelData.PlayerStartPosition.Y,
                     levelData.PlayerStartPosition.Z));
-                SetCameraPositionAndRotation(levelData); 
-                battleWnd.ShowHp();
+                SetCameraPositionAndRotation(levelData);
+                foreach(var item in FindObjectsOfType<NormalTurret>()) {
+                    item.OnPlayerLoaded();
+                }
                 if (cb != null) {
                     cb();
                 }
@@ -67,7 +69,7 @@ public class BattleMgr : MonoBehaviour {
         if (!StartBattle) {
             return;
         }
-        if (eliminate_enemy_num == levelData.EnemyNum) {// 根据当前消灭得敌人数量来判断游戏是否胜利
+        if (eliminate_enemy_num == 3/* levelData.EnemyNum*/) {// 根据当前消灭得敌人数量来判断游戏是否胜利
             m_player.GetComponent<PlayerController>().destructible = false;
             EndBattle(true);
         }
@@ -145,8 +147,9 @@ public class BattleMgr : MonoBehaviour {
         if (isWin) {
             StartCoroutine(SmoothTransitionToFov());
             Time.timeScale = 0.01f;
-            Invoke(nameof(GameWin), 2f);
+            Invoke(nameof(GameWin), 10f);
         } else {
+            WaitForSeconds wait = new WaitForSeconds(0.5f);
             if (m_hp > 0) {//剩余生命值大于0才能复活继续
                 dead_pos = m_player.transform.position;
                 BattleSys.Instance.battleWnd.dead_panel.ShowAndStartCountDown();
@@ -163,7 +166,7 @@ public class BattleMgr : MonoBehaviour {
     private void GameWin() {
         StartBattle = false;
         battleWnd.ShowHp(false);
-        BattleSys.Instance.battleWnd.win_panel.OpenWinPanel(m_coin);
+        battleWnd.win_panel.OpenWinPanel(m_coin);
         PauseBattle();
         LevelSettlement();
     }

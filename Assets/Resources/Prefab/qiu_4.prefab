@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 5345411292329775752}
   - component: {fileID: -7315439062913741828}
   - component: {fileID: 191883140346524608}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: qiu_4
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -55,6 +55,8 @@ MonoBehaviour:
   battleMgr: {fileID: 0}
   effectAudioPlayer: {fileID: 0}
   destructible: 0
+  shakeAmount: 0.5
+  shakeDuration: 0.2
 --- !u!135 &5345411292329775752
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -193,7 +195,7 @@ GameObject:
   - component: {fileID: 2822609673456384176}
   - component: {fileID: 3827848715049805869}
   - component: {fileID: 6364961621937970526}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: qiu_6_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -5,12 +5,14 @@ using UnityEngine;
 public class NormalBullet : MonoBehaviour
 {
 
-    private readonly float BulletSpeed = 15;
+    private readonly float BulletSpeed = 10;
     private readonly float remainTime = 3;
+    public Vector3 shootDir;
+    public Transform owner;
     private float timer = 0;
 
     void Update() {
-        transform.Translate(BulletSpeed * Time.deltaTime * transform.right);
+        transform.Translate(BulletSpeed * Time.deltaTime * shootDir);
         timer += Time.deltaTime;
         if (timer >= remainTime) {
             Destroy(gameObject);
@@ -19,6 +21,10 @@ public class NormalBullet : MonoBehaviour
     }
 
     private void OnCollisionEnter(Collision collision) {
-        Destroy(gameObject);
+        if(collision.transform != owner) {
+            ParticleMgr.Instance.PlayBulletDestoryParticle(collision.contacts[0]);
+            Destroy(gameObject);
+
+        }
     }
 }

@@ -160,7 +160,7 @@ public class ResSvc : MonoBehaviour {
                 skin = new List<int> { 0 },
                 trail = new List<int> { 0 },
                 energy = 5,
-                current_wave = 1,
+                max_unLock_wave = 1,
                 cur_skin = 0,
                 cur_trail = 0
             };

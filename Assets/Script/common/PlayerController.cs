@@ -39,6 +39,8 @@ public class PlayerController : MonoBehaviour {
     }
     public Transform camTrans;
     private Vector3 camOffset;
+    private Vector3 camOriginOffset;
+
     public BattleMgr battleMgr;
 
     private SoundPlayer soundPlayer;
@@ -47,6 +49,10 @@ public class PlayerController : MonoBehaviour {
     private float lastCollisionTime = 0f;
     private readonly float collisionThresholdTime = 0.01f; // 时间阈值，单位秒
     public bool destructible;
+
+    public float shakeAmount = 0.01f;
+    public float shakeDuration = 0.01f;
+    private Coroutine shakeCoroutine;
 
     public void Init() {
         laser = GameObject.FindGameObjectWithTag("GuideLine").GetComponent<Laser>();
@@ -60,7 +66,8 @@ public class PlayerController : MonoBehaviour {
         joystick.gameObject.SetActive(true);
         joystick.SetIsShow(GameRoot.Instance.gameSettings.showJoyStick);
         camTrans = Camera.main.transform;
-        camOffset = transform.position - camTrans.position;
+        camOriginOffset = transform.position - camTrans.position;
+        camOffset = camOriginOffset;
         destructible = true;
     }
 
@@ -100,21 +107,24 @@ public class PlayerController : MonoBehaviour {
         if (Time.time - lastCollisionTime < collisionThresholdTime) { 
             return;
         }
+
         lastCollisionTime = Time.time;
 
         if (destructible && collision.gameObject.layer == 7) {//bullet 
             battleMgr.EndBattle(false);
+            ParticleMgr.Instance.PlayDeadParticle(collision.contacts[0].point);
             effectAudioPlayer.clipSource = Resources.Load<AudioClip>(Constants.DeadClip);
             effectAudioPlayer.PlaySound();
             Destroy(gameObject);
         }else if (collision.gameObject.layer == 6) {//enemy
             battleMgr.EliminateEnemy();
         }else {
-            battleMgr.particleMgr.PlayHitWallParticle(collision.contacts[0].point);
+            battleMgr.particleMgr.PlayHitWallParticle(collision.contacts[0]);
             // 这里应该使用audiomanager
             soundPlayer.clipSource = Resources.Load<AudioClip>(Constants.HitWallClip);
             soundPlayer.PlaySound();
         }
+        //TriggerShakeCam();
         Vector3 inDirection = (transform.position - pos).normalized;
         Vector3 inNormal = collision.contacts[0].normal; 
         if (dir == Vector3.zero) {
@@ -127,6 +137,35 @@ public class PlayerController : MonoBehaviour {
             dir.y = 0;
         }
     }
+
+    #region 相机抖动
+    public void TriggerShakeCam() {
+        if(shakeCoroutine != null) { 
+            StopShake();
+        } 
+        shakeCoroutine = StartCoroutine(ShakeCamera());
+    }
+
+    IEnumerator ShakeCamera() {
+        float timer = 0.0f;
+        while(timer < shakeDuration) {
+            Vector3 randomShakeOffset = Random.insideUnitSphere * shakeAmount;
+            camOffset += randomShakeOffset * 0.5f;
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        shakeCoroutine = null;
+        camOffset = camOriginOffset;
+    }
+
+    void StopShake() {
+        if(shakeCoroutine != null) {
+            StopCoroutine(shakeCoroutine);
+            shakeCoroutine = null;
+        }
+    }
+    #endregion
+
     private void OnCollisionExit(Collision collision) {
         pos = transform.position;
     }
@@ -165,5 +204,9 @@ public class PlayerController : MonoBehaviour {
             direction = dir;
         }
         laser.SetDir(direction);
+    }
+
+    void OnDestroy() {
+        StopAllCoroutines();
     }
 }

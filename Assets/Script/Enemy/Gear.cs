@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Gear : Enemy
 {
-
     public Transform[] trans;
     public int cur_index=0;
     public float speed=2;

@@ -68,13 +68,17 @@ public class GameRoot : MonoBehaviour
             Debug.Log("能量不足");
             return;
         }
+        if(wave >PlayerData.max_unLock_wave) {
+            //关卡未解锁
+            return;
+        }
         homeWnd.gameObject.SetActive(false);
         BattleSys.Instance.StartBattle(wave);
     }
 
     public void LevelSettlement(int coin) {//关卡结算
         PlayerData.coin += coin;
-        PlayerData.current_wave = CurWaveIndex + 1;
+        PlayerData.max_unLock_wave = CurWaveIndex + 1;
         resSvc.SavePlayerData(playerID, PlayerData);
     }
 

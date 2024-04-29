@@ -19,7 +19,7 @@ public class LevelPanel : MonoBehaviour
     }
 
     public void ClickStartBtn() {
-        if (GameRoot.Instance.PlayerData.current_wave < scrollView.CurrentIndex) {
+        if (GameRoot.Instance.PlayerData.max_unLock_wave < scrollView.CurrentIndex) {
             return;
         }
         GameRoot.Instance.StartBattle(scrollView.CurrentIndex);
