@@ -29,8 +29,8 @@ public class Constants {
     public const string HitEnenmyClip = "AudioClip/hit2";
     public const string DeadClip = "AudioClip/Dead";
 
-    public const string BG1 = "AudioClip/Tiero - Action Dubstep";
-    public const string BG2 = "AudioClip/Tiero - Dubstep A";
+    public const string BGMainCity = "AudioClip/Tiero - Action Dubstep";
+    public const string BGGame = "AudioClip/Tiero - Dubstep A";
 
 
     public const string MapCfg = "Conf/map";

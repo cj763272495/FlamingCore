@@ -29,7 +29,7 @@ public class BattleWnd:MonoBehaviour {
         dead_panel.gameObject.SetActive(false);
         pause_panel.gameObject.SetActive(false);
         if(GameRoot.Instance.gameSettings.bgAudio) {
-            GameRoot.Instance.bgPlayer.clipSource = ResSvc.Instance.LoadAudio(Constants.BG2);
+            GameRoot.Instance.bgPlayer.clipSource = ResSvc.Instance.LoadAudio(Constants.BGGame);
             GameRoot.Instance.bgPlayer.PlaySound(true);
         }
         chestParticle.Stop();

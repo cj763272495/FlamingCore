@@ -96,15 +96,15 @@ public class BattleMgr : MonoBehaviour {
         trail.transform.parent = player.transform;
         trail.transform.localScale = Vector3.one;
         trail.transform.localPosition = Vector3.zero;
-        m_player = player;
         player.transform.position = pos;
         player.transform.localEulerAngles = Vector3.zero;
         player.transform.localScale = Vector3.one;
         PlayerController playerController = player.GetComponent<PlayerController>();
         playerController.Init();
         playerController.battleMgr = this;
-        playerController.effectAudioPlayer = GameRoot.Instance.effectAudioPlayer;
+
         cam = Camera.main;
+        m_player = player;
     }
 
     public void PauseBattle() {
@@ -113,7 +113,7 @@ public class BattleMgr : MonoBehaviour {
         battleWnd.ShowHp(false);
     }
 
-    public void ResumeBattle() {//取消暂停恢复游戏
+    public void ResumeBattle() {//取消暂停,恢复游戏
         battleWnd.StartCountDown3Seconds();
         battleWnd.ShowHp();
         StartCoroutine(EnterLeveL());
@@ -121,11 +121,9 @@ public class BattleMgr : MonoBehaviour {
 
     IEnumerator EnterLeveL() {
         yield return new WaitForSecondsRealtime(3f);
-        StartBattle = true; 
-        //Time.timeScale = 1;
+        StartBattle = true;
         GameObject.FindWithTag("JoyStick").GetComponent<FloatingJoystick>().IsDown = true;
     }
-
 
     public void ReviveAndContinueBattle() {//消耗生命继续游戏
         m_hp--;
@@ -141,9 +139,7 @@ public class BattleMgr : MonoBehaviour {
         Init(CurWaveIndex);
     }
 
-
-    public void EndBattle(bool isWin) {
-
+    public void EndBattle(bool isWin) { 
         if (isWin) {
             StartCoroutine(SmoothTransitionToFov());
             Time.timeScale = 0.01f;
@@ -180,13 +176,6 @@ public class BattleMgr : MonoBehaviour {
     IEnumerator SmoothTransitionToFov() {
         float transitionDuration = 3.0f;
         float targetFov = 20f;
-        //float startTime = Time.time;
-        //while (Time.time < startTime + transitionDuration) {
-        //    float t = (Time.time - startTime) / transitionDuration;
-        //    cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, targetFov, t);
-        //    yield return null; // 等待一帧
-        //}
-        //cam.fieldOfView = 30f; // 确保到达最终视场角
         float startTime = Time.time;
 
         while (Time.time < startTime + transitionDuration) {

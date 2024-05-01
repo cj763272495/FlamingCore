@@ -8,7 +8,5 @@ public class PickUpItem : MonoBehaviour
     public AudioSource audioSource; 
     void Update() {
         transform.Rotate(rotateSpeed * Time.deltaTime * Vector3.up);
-    }
-
-
+    } 
 }

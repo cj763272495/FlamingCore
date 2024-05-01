@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -48,17 +49,22 @@ public class ParticleMgr : MonoBehaviour
         go.GetComponentInChildren<ParticleSystem>().Play();
     }
 
-    public void PlayEnemyDeadParticle(Vector3 point, Transform player) {
-        GameObject go = PoolManager.Instance.
-            GetInstance<GameObject>(enemyDeadParticle);
-        go.transform.position = point;
+    public void PlayEnemyDeadParticle(ContactPoint contact, Transform player) {
+        GameObject go = PoolManager.Instance.GetInstance<GameObject>(enemyDeadParticle);
+        go.transform.position = contact.point;
         go.transform.parent = battleMgr.transform;
         go.GetComponent<ParticleSystem>().Play();
 
         ParticleSystem[] particleSystems = go.GetComponentsInChildren<ParticleSystem>();
         ParticleSystem lastParticleSystem = particleSystems[particleSystems.Length - 1];
-        lastParticleSystem.gameObject.GetComponent<EnemyDeadCoin>().isPlaying = true;
-        // 在一秒后开始吸引最后一个子粒子系统的粒子到玩家的位置
+
+        EnemyDeadCoin enemyDeadCoin = lastParticleSystem.gameObject.GetComponent<EnemyDeadCoin>();
+        enemyDeadCoin.isPlaying = true;
+        enemyDeadCoin.player = player.gameObject;
+        Enemy enemy = contact.otherCollider.GetComponent<Enemy>();
+        if(enemy) {
+            enemyDeadCoin.coinValue = enemy.destoryCoinValue;
+        }
     }
 
 

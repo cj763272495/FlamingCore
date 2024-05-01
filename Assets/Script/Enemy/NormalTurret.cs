@@ -26,7 +26,7 @@ public class NormalTurret : Enemy {
                 go.transform.localPosition = shootPoint.position;
                 go.transform.localScale = new Vector3(0.5f,0.5f,0.5f);
                 go.GetComponent<NormalBullet>().shootDir = shootPoint.forward;
-                go.GetComponent<NormalBullet>().owner = transform;
+                go.GetComponent<NormalBullet>().owner = transform;//防止子弹碰撞到自己
                 shootTimer = 0;
                 countDown.fillAmount = 0;
             }

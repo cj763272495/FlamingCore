@@ -10,7 +10,6 @@ public class GameRoot : MonoBehaviour
 
     public BattleMgr battleMgr;
     public SoundPlayer bgPlayer;
-    public SoundPlayer effectAudioPlayer;
 
     public GameSettings gameSettings;
     private ResSvc resSvc;
@@ -91,7 +90,7 @@ public class GameRoot : MonoBehaviour
 
     public void PlayBgAudio(bool isOn) {
         if (isOn) {
-            bgPlayer.clipSource = ResSvc.Instance.LoadAudio(Constants.BG1);
+            bgPlayer.clipSource = ResSvc.Instance.LoadAudio(Constants.BGMainCity);
             bgPlayer.PlaySound(true);
         } else {
             if (bgPlayer.audioSource.isPlaying) {

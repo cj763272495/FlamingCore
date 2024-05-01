@@ -13,9 +13,6 @@ public class Coin : PickUpItem {
 
     private void OnTriggerEnter(Collider other) {
         if (other.transform.CompareTag("Player")) {
-            other.gameObject.GetComponent<SoundPlayer>().clipSource
-                = Resources.Load<AudioClip>(Constants.EarnMoneyClip);
-            other.gameObject.GetComponent<SoundPlayer>().PlaySound();
             Destroy(gameObject);
         }
     }

@@ -14,7 +14,6 @@ public class SoundPlayer : MonoBehaviour {
         if (clipSource) {
             audioSource.clip = clipSource;
         }
-
     } 
     public void PlayClip(AudioClip audioClip, float pitchMin = 1, float pitchMax = 1) {
         audioSource.pitch = Random.Range(pitchMin, pitchMax);
@@ -37,14 +36,6 @@ public class SoundPlayer : MonoBehaviour {
                 audioSource.Stop();
                 audioSource.Play();
             }
-        }
-    }
-    public void PlayOneShot() {
-        if (clipSource) {
-            audioSource.clip = clipSource;
-        }
-        if (audioSource.clip != null) { 
-            audioSource.PlayOneShot(audioSource.clip); 
         }
     }
 }

@@ -24,7 +24,6 @@ public class NormalBullet : MonoBehaviour
         if(collision.transform != owner) {
             ParticleMgr.Instance.PlayBulletDestoryParticle(collision.contacts[0]);
             Destroy(gameObject);
-
         }
     }
 }
