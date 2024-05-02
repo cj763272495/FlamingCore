@@ -40,10 +40,11 @@ public class EnemyDeadCoin : MonoBehaviour
             float speed = 15f +500 * Time.deltaTime; 
             particles[i].velocity = direction.normalized * speed;
 
-            if(Vector3.Distance(particles[i].position, player.transform.position) < 1f) {
+            if(Vector3.Distance(particles[i].position, player.transform.position) < 0.4f) {
                 particles[i].remainingLifetime = 0;
                 AudioClip clip = ResSvc.Instance.LoadAudio(Constants.EarnMoneyClip,true);
                 AudioManager.Instance.PlaySound(clip);
+                ParticleMgr.Instance.PlayGetCoinParticle(particles[i].position);
                 //通知battleMgr增加金币
                 BattleSys.Instance.battleMgr.EarnCoin(coinValue);
             }

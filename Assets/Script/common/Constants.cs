@@ -11,7 +11,7 @@ public class Constants {
     //public const float BulletTimeVelocity = 0.5f;
 
     //正常速度
-    public const float PlayerNormalSpeed = 15;
+    public const float PlayerNormalSpeed = 10;
     public const float NormalRotateSpeed = 2000;
 
     //时空减速速度
@@ -27,7 +27,7 @@ public class Constants {
     public const string HitWallClip = "AudioClip/wall";
     public const string HitWallSlowlyClip = "AudioClip/hitwall01";
     public const string HitEnenmyClip = "AudioClip/hit2";
-    public const string DeadClip = "AudioClip/Dead";
+    public const string DeadClip = "AudioClip/Dead"; 
 
     public const string BGMainCity = "AudioClip/Tiero - Action Dubstep";
     public const string BGGame = "AudioClip/Tiero - Dubstep A";

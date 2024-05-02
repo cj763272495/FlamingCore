@@ -10,32 +10,31 @@ using DG.Tweening;
 /// </summary>
 public class SlideScrollView : MonoBehaviour,IBeginDragHandler,IEndDragHandler {
 
-    private RectTransform contentTrans;
-    private float beginMousePositionX;
-    private float endMousePositionX;
+    protected RectTransform contentTrans;
+    protected float beginMousePositionX;
+    protected float endMousePositionX;
     private ScrollRect scrollRect;
     public GameObject content;
 
     public int cellLength;
     public int spacing;
     public int leftOffset;
-    private float moveOneItemLength;
+    protected float moveOneItemLength;
 
-    private Vector3 currentContentLocalPos;//上一次的位置
-    private Vector3 contentInitPos;//Content初始位置
-    private Vector2 contentTransSize;//Content初始大小
+    protected Vector3 currentContentLocalPos;//上一次的位置
+    protected Vector3 contentInitPos;//Content初始位置
+    protected Vector2 contentTransSize;//Content初始大小
 
     public int totalItemNum;
-    public int CurrentIndex { private set; get; }
+    public int CurrentIndex { protected set; get; }
 
     public Text pageText;
 
     public bool needSendMessage;
-    public bool replaceImg;
-    public float maxScale;
-    public float minScale;
 
-    private ResSvc resSvc;
+    public bool changeScale; 
+    public float maxScale;
+    public float minScale; 
 
     private void Start()
     {
@@ -48,30 +47,27 @@ public class SlideScrollView : MonoBehaviour,IBeginDragHandler,IEndDragHandler {
         CurrentIndex = 1;
         if (pageText != null) {
             pageText.text = CurrentIndex.ToString() + "/" + totalItemNum;
-        }
-        resSvc = ResSvc.Instance;
-    }
-    private void Update() {
-        for (int i = 0; i <= totalItemNum-1; i++) {
-            Transform curTrans = content.transform.GetChild(i); 
-            Image img = curTrans.GetComponent<Image>();
-            if (i == CurrentIndex-1) {
-                curTrans.localScale = new Vector3(maxScale, maxScale, maxScale);
-                if (replaceImg && resSvc) {
-                    img.sprite = resSvc.LoadSprite("Sprite/bg_stage_selected");
-                }
-                ChangeImgAlpha(img, 1);
-            } else {
-                curTrans.localScale = new Vector3(minScale, minScale, minScale);
-                if (replaceImg && resSvc) {
-                    img.sprite = resSvc.LoadSprite("Sprite/bg_stage_passed");
-                }
-                ChangeImgAlpha(img, 0.5f);
-            }
-        }
+        } 
     }
 
-    private void ChangeImgAlpha(Image img, float a) {
+    protected virtual void Update() {
+        if(changeScale) {
+            for(int i = 0; i <= totalItemNum - 1; i++) {
+                Transform curTrans = content.transform.GetChild(i);
+                Image img = curTrans.GetComponent<Image>();
+                if(i == CurrentIndex - 1) {
+                    curTrans.localScale = new Vector3(maxScale,maxScale,maxScale);
+                    ChangeImgAlpha(img,1);
+                } else {
+                    curTrans.localScale = new Vector3(minScale,minScale,minScale);
+                    ChangeImgAlpha(img,0.5f);
+                }
+            }
+        }
+
+    }
+
+    protected void ChangeImgAlpha(Image img, float a) {
         Color co = img.color;
         co.a = a;
         img.color = co;
@@ -94,7 +90,7 @@ public class SlideScrollView : MonoBehaviour,IBeginDragHandler,IEndDragHandler {
     /// 通过拖拽与松开来达成翻页效果
     /// </summary>
     /// <param name="eventData"></param> 
-    public void OnEndDrag(PointerEventData eventData)
+    public virtual void OnEndDrag(PointerEventData eventData)
     {
         endMousePositionX = Input.mousePosition.x;
         float offSetX = 0;

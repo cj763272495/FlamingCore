@@ -8,7 +8,7 @@ public class Enemy : MonoBehaviour
     public GameObject player;
     public int destoryCoinValue = 5;
 
-    private void OnCollisionEnter(Collision collision) {
+    protected virtual void OnCollisionEnter(Collision collision) {
         if (collision.transform.CompareTag("Player")) {
             ParticleMgr.Instance.PlayEnemyDeadParticle(collision.contacts[0], collision.transform);
             AudioManager.Instance.PlaySound(ResSvc.Instance.LoadAudio(Constants.HitEnenmyClip));

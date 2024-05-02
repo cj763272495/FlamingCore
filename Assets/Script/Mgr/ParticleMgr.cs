@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Security.Cryptography;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -11,6 +12,8 @@ public class ParticleMgr : MonoBehaviour
     public GameObject enemyDeadParticle;
     public GameObject deadParticle;
     public GameObject bulletDestoryParticle;
+    public GameObject getCoinParticle;
+
     public BattleMgr battleMgr;
 
     private void Awake() {
@@ -33,6 +36,11 @@ public class ParticleMgr : MonoBehaviour
         //子弹销毁的粒子特效
         bulletDestoryParticle = ResSvc.Instance.LoadPrefab("Prefab/Particles/BulletDestoryParticle");
         PoolManager.Instance.InitPool(bulletDestoryParticle, 5, battleMgr.transform);
+
+        //获取金币特效 
+        getCoinParticle = ResSvc.Instance.LoadPrefab("Prefab/Particles/GetCoinParticle");
+        PoolManager.Instance.InitPool(getCoinParticle, 5, battleMgr.transform);
+
     }
 
     public void PlayHitWallParticle(ContactPoint contact) {
@@ -67,21 +75,26 @@ public class ParticleMgr : MonoBehaviour
         }
     }
 
-
-
     public void PlayBulletDestoryParticle(ContactPoint contact) {
         GameObject go = PoolManager.Instance.
     GetInstance<GameObject>(bulletDestoryParticle);
         Vector3 point = contact.point;
         Vector3 normal = contact.normal;
         go.transform.position = point;
-        go.transform.parent = battleMgr.transform;
-        // 旋转go使go的z轴和碰撞点point的法线平行
+        go.transform.parent = battleMgr.transform; 
+
         Quaternion rotation = Quaternion.LookRotation(normal);
-        go.GetComponentInChildren<ParticleSystem>().transform.rotation = rotation;
-        //go.transform.forward = point;
+        go.GetComponentInChildren<ParticleSystem>().transform.rotation = rotation; 
         go.GetComponentInChildren<ParticleSystem>().Play();
     }
+
+    public void PlayGetCoinParticle(Vector3 point) {
+        GameObject go = PoolManager.Instance.GetInstance<GameObject>(getCoinParticle);
+        go.transform.position = point;
+        go.transform.parent = battleMgr.transform;
+        go.GetComponent<ParticleSystem>().Play();
+    }
+
 
     public void PlayDeadParticle(Vector3 point) {
         GameObject go = PoolManager.Instance.
