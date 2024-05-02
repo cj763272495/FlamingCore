@@ -13,6 +13,7 @@ public class Gear : Enemy
 
     private void Start() {
         transform.position = trans[0].position;
+        canDestroy = false;
     }
     private void Update() {
         transform.Rotate(GearRotateSpeed * Time.deltaTime * Vector3.up);

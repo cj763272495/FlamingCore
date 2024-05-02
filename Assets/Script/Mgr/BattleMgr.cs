@@ -58,6 +58,10 @@ public class BattleMgr : MonoBehaviour {
                 foreach(var item in FindObjectsOfType<NormalTurret>()) {
                     item.OnPlayerLoaded();
                 }
+                if(GameRoot.Instance.gameSettings.bgAudio) {
+                    GameRoot.Instance.bgPlayer.clipSource = ResSvc.Instance.LoadAudio(Constants.BGGame);
+                    GameRoot.Instance.bgPlayer.PlaySound(true);
+                }
                 if (cb != null) {
                     cb();
                 }
@@ -69,6 +73,7 @@ public class BattleMgr : MonoBehaviour {
         if (!StartBattle) {
             return;
         }
+        GameRoot.Instance.bgPlayer.audioSource.volume = StartBattle? 1:0.5f;
         if (eliminate_enemy_num == 3/* levelData.EnemyNum*/) {// 根据当前消灭得敌人数量来判断游戏是否胜利
             m_player.GetComponent<PlayerController>().destructible = false;
             EndBattle(true);

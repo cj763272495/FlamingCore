@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class LaserWall : Enemy
 {
-    override protected void OnCollisionEnter(Collision collision) {
-
+    private void Start() {
+        canDestroy = false; 
     }
+
 }
