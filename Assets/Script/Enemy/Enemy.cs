@@ -13,8 +13,14 @@ public class Enemy : MonoBehaviour
         if (collision.transform.CompareTag("Player") && canDestroy) {
             ParticleMgr.Instance.PlayEnemyDeadParticle(collision.contacts[0], collision.transform);
             AudioManager.Instance.PlaySound(ResSvc.Instance.LoadAudio(Constants.HitEnenmyClip));
-            Destroy(gameObject);
+
+            StartCoroutine(DestroyAfterSeconds(1));
+            gameObject.SetActive(false);
         }
     }
 
+    private IEnumerator DestroyAfterSeconds(float seconds) {
+        yield return new WaitForSeconds(seconds);
+        Destroy(gameObject);
+    }
 }

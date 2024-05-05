@@ -180,6 +180,7 @@ public class EditorWindow:UnityEditor.EditorWindow {
     private void InstateCombineCollider() {
         GameObject parent = new GameObject("CombinedObjects");
         parent.transform.position = selectedCells[combiningCells[0]].transform.position;
+        parent.layer = 10;
         completeGo.Add(parent);
         foreach(Vector2Int cell in combiningCells) {
             GameObject instance = selectedCells[cell];

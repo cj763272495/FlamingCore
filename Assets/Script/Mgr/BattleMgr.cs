@@ -150,6 +150,7 @@ public class BattleMgr : MonoBehaviour {
             Time.timeScale = 0.01f;
             Invoke(nameof(GameWin), 10f);
         } else {
+            Time.timeScale = 1;
             WaitForSeconds wait = new WaitForSeconds(0.5f);
             if (m_hp > 0) {//剩余生命值大于0才能复活继续
                 dead_pos = m_player.transform.position;

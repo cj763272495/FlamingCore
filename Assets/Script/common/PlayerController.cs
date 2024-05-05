@@ -62,7 +62,9 @@ public class PlayerController : MonoBehaviour {
             laser.gameObject.SetActive(true);
         } else {
             laser.gameObject.SetActive(false);
-            Time.timeScale = 1;
+            if(battleMgr.StartBattle) {
+                Time.timeScale = 1;
+            }
         }
 
         MakeGuideLine();
@@ -102,7 +104,7 @@ public class PlayerController : MonoBehaviour {
         //TriggerShakeCam();
         Vector3 inDirection = (transform.position - pos).normalized;
         Vector3 inNormal = contactPoint.normal;
-
+        inNormal.y = 0;
         Vector3 tempDir = Vector3.Reflect(inDirection,inNormal).normalized;
         if(tempDir!=Vector3.zero && tempDir.y==0) {
             dir = Vector3.Reflect(inDirection,inNormal).normalized;
