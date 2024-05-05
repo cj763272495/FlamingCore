@@ -8,48 +8,32 @@ public class PlayerController : MonoBehaviour {
 
 
     private float m_speed = 0;
-    public float Speed {
-        get { return m_speed; }
-        set { m_speed = value; }
-    }
-
     private float m_rotate_speed = 0;
-
     private bool m_is_move = false;
-    public bool IsMove {
-        get { return m_is_move; }
-        set { m_is_move = value; }
-    }
-
     Vector3 dir = Vector3.zero;
 
     public Vector3 Dir {
         get { return dir; }
-        set { dir = value; }
     }
 
     public Laser laser;
     public Rigidbody rb;
-
     private Vector3 pos;
-    public Vector3 Pos {
-        get { return pos; }
-         
-        set { pos = value; }
-    }
+
     public Transform camTrans;
     private Vector3 camOffset;
     private Vector3 camOriginOffset;
 
-    public BattleMgr battleMgr; 
-
-    private float lastCollisionTime = 0f;
-    private readonly float collisionThresholdTime = 0.01f; // 时间阈值，单位秒
-    public bool destructible;
+    public BattleMgr battleMgr;
+    public bool destructible=true;
 
     public float shakeAmount = 0.01f;
     public float shakeDuration = 0.01f;
     private Coroutine shakeCoroutine;
+
+    //private void Start() {
+    //    Init();
+    //}
 
     public void Init() {
         laser = GameObject.FindGameObjectWithTag("GuideLine").GetComponent<Laser>();
@@ -87,10 +71,10 @@ public class PlayerController : MonoBehaviour {
             SetRotate();
             SetCam();
         }
-        if (Input.GetMouseButtonUp(0)){
+        if (Input.GetMouseButtonUp(0) || Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended){
             if (joystick.UpDirection != Vector3.zero) {
                 Quaternion rotation = Quaternion.Euler(0, -45, 0);
-                dir = rotation * joystick.UpDirection;
+                dir = (rotation * joystick.UpDirection).normalized;
             }
             m_speed = Constants.PlayerNormalSpeed;
             m_rotate_speed = Constants.NormalRotateSpeed; 
@@ -100,37 +84,32 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void OnCollisionEnter(Collision collision) {
-        if (Time.time - lastCollisionTime < collisionThresholdTime) { 
-            return;
-        }
+        int collisionLayer = collision.gameObject.layer;
+        ContactPoint contactPoint = collision.contacts[0];
 
-        lastCollisionTime = Time.time;
-
-        if (destructible && collision.gameObject.layer == 7) {//bullet 
+        if(destructible && collisionLayer == 7) {//bullet 
             battleMgr.EndBattle(false);
-            ParticleMgr.Instance.PlayDeadParticle(collision.contacts[0].point);
+            ParticleMgr.Instance.PlayDeadParticle(contactPoint.point);
             AudioManager.Instance.PlaySound(ResSvc.Instance.LoadAudio(Constants.DeadClip));
             Destroy(gameObject);
-        }else if (collision.gameObject.layer == 6) {//enemy
+        } else if(collisionLayer == 6) {//enemy
             battleMgr.EliminateEnemy();
-        }else {
-            battleMgr.particleMgr.PlayHitWallParticle(collision.contacts[0]); 
+        } else {
+            battleMgr.particleMgr.PlayHitWallParticle(contactPoint);
             AudioClip clip = ResSvc.Instance.LoadAudio(Constants.HitWallClip,true);
-            AudioManager.Instance.PlaySound(clip); 
+            AudioManager.Instance.PlaySound(clip);
         }
         //TriggerShakeCam();
         Vector3 inDirection = (transform.position - pos).normalized;
-        Vector3 inNormal = collision.contacts[0].normal; 
-        if (dir == Vector3.zero) {
-            Debug.Log(collision.collider.tag);
-            dir = -dir;
-        } else {
-            dir = Vector3.Reflect(inDirection, inNormal);
+        Vector3 inNormal = contactPoint.normal;
+
+        Vector3 tempDir = Vector3.Reflect(inDirection,inNormal).normalized;
+        if(tempDir!=Vector3.zero && tempDir.y==0) {
+            dir = Vector3.Reflect(inDirection,inNormal).normalized;
         }
-        if (dir.y != 0) {
-            dir.y = 0;
-        }
+        pos = transform.position;
     }
+
 
     //#region 相机抖动
     //public void TriggerShakeCam() {
@@ -160,9 +139,9 @@ public class PlayerController : MonoBehaviour {
     //}
     //#endregion
 
-    private void OnCollisionExit(Collision collision) {
-        pos = transform.position;
-    }
+    //private void OnCollisionExit(Collision collision) {
+    //    pos = transform.position;
+    //}
 
     private void OnTriggerEnter(Collider other) {
         if (other.gameObject.layer == 9) { //pickupitem

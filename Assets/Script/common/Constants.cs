@@ -11,7 +11,7 @@ public class Constants {
     //public const float BulletTimeVelocity = 0.5f;
 
     //正常速度
-    public const float PlayerNormalSpeed = 10;
+    public const float PlayerNormalSpeed = 12;
     public const float NormalRotateSpeed = 2000;
 
     //时空减速速度
