@@ -30,6 +30,8 @@ public class PlayerController : MonoBehaviour {
     //public float shakeAmount = 0.01f;
     //public float shakeDuration = 0.01f;
     //private Coroutine shakeCoroutine;
+    private AudioClip hitWallClip;
+    private AudioClip deadClip;
 
     public void Init() {
         guideLine.gameObject.SetActive(false);
@@ -46,6 +48,9 @@ public class PlayerController : MonoBehaviour {
         camOriginOffset = transform.position - camTrans.position;
         camOffset = camOriginOffset;
         destructible = true;
+
+        hitWallClip = ResSvc.Instance.LoadAudio(Constants.HitWallClip,true);
+        deadClip = ResSvc.Instance.LoadAudio(Constants.DeadClip);
     }
 
     void Update() {
@@ -93,14 +98,13 @@ public class PlayerController : MonoBehaviour {
         if(destructible && collisionLayer == 7) {//bullet 
             battleMgr.EndBattle(false);
             ParticleMgr.Instance.PlayDeadParticle(contactPoint.point);
-            AudioManager.Instance.PlaySound(ResSvc.Instance.LoadAudio(Constants.DeadClip));
+            AudioManager.Instance.PlaySound(deadClip);
             Destroy(gameObject);
         } else if(collisionLayer == 6) {//enemy
             battleMgr.EliminateEnemy();
         } else {
             battleMgr.particleMgr.PlayHitWallParticle(contactPoint);
-            AudioClip clip = ResSvc.Instance.LoadAudio(Constants.HitWallClip,true);
-            AudioManager.Instance.PlaySound(clip);
+            AudioManager.Instance.PlaySound(hitWallClip);
         }
         //TriggerShakeCam();
         Vector3 inDirection = (transform.position - pos).normalized;
