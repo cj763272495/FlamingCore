@@ -62,6 +62,8 @@ public class DeadPanel : MonoBehaviour
         if (GameRoot.Instance.PlayerData.coin >= m_reviveCost) {
             GameRoot.Instance.PlayerData.coin -= m_reviveCost;
             BattleSys.Instance.ReviveAndContinueBattle();
+            gameObject.SetActive(false);
+            StopAllCoroutines();
         }
     }
 

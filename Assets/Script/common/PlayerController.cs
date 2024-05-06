@@ -1,22 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class PlayerController : MonoBehaviour {
     public FloatingJoystick joystick;
 
-
-    private float m_speed = 0;
-    private float m_rotate_speed = 0;
-    private bool m_is_move = false;
+    private float speed = 0;
+    private float rotateSpeed = 0;
+    private bool isMove = false;
     Vector3 dir = Vector3.zero;
 
     public Vector3 Dir {
         get { return dir; }
     }
 
-    public Laser laser;
+    public Laser guideLine;
     public Rigidbody rb;
     private Vector3 pos;
 
@@ -27,24 +27,21 @@ public class PlayerController : MonoBehaviour {
     public BattleMgr battleMgr;
     public bool destructible=true;
 
-    public float shakeAmount = 0.01f;
-    public float shakeDuration = 0.01f;
-    private Coroutine shakeCoroutine;
-
-    //private void Start() {
-    //    Init();
-    //}
+    //public float shakeAmount = 0.01f;
+    //public float shakeDuration = 0.01f;
+    //private Coroutine shakeCoroutine;
 
     public void Init() {
-        laser = GameObject.FindGameObjectWithTag("GuideLine").GetComponent<Laser>();
-        laser.gameObject.SetActive(false);
-        laser.player = gameObject;
-        rb = GetComponentInChildren<Rigidbody>();
-        rb.maxAngularVelocity = 30;
-        pos = transform.position; 
-        joystick = GameObject.FindGameObjectWithTag("JoyStick").GetComponent<FloatingJoystick>();
+        guideLine.gameObject.SetActive(false);
+        guideLine.player = gameObject;
         joystick.gameObject.SetActive(true);
         joystick.SetIsShow(GameRoot.Instance.gameSettings.showJoyStick);
+        joystick.OnPointerDownAction = OnPointerDown;
+        joystick.OnPointerUpAction = OnPointerUp;
+
+        rb = GetComponentInChildren<Rigidbody>();
+        rb.maxAngularVelocity = 30;
+        pos = transform.position;
         camTrans = Camera.main.transform;
         camOriginOffset = transform.position - camTrans.position;
         camOffset = camOriginOffset;
@@ -52,38 +49,42 @@ public class PlayerController : MonoBehaviour {
     }
 
     void Update() {
-        if (joystick.IsDown) {
-            if (!battleMgr.StartBattle) {
-                battleMgr.SetBattleStateStart();
-            }
-            Time.timeScale = 0.2f;
-            m_speed = Constants.PlayerNormalSpeed;
-            m_rotate_speed = Constants.NormalRotateSpeed;
-            laser.gameObject.SetActive(true);
-        } else {
-            laser.gameObject.SetActive(false);
-            if(battleMgr.StartBattle) {
-                Time.timeScale = 1;
-            }
-        }
-
         MakeGuideLine();
-        if (m_is_move && battleMgr.StartBattle) { 
+        if (isMove && battleMgr.StartBattle) { 
             SetMove();
             SetRotate();
             SetCam();
         }
-        if (Input.GetMouseButtonUp(0) || Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended){
-            if (joystick.UpDirection != Vector3.zero) {
-                Quaternion rotation = Quaternion.Euler(0, -45, 0);
-                dir = (rotation * joystick.UpDirection).normalized;
-            }
-            m_speed = Constants.PlayerNormalSpeed;
-            m_rotate_speed = Constants.NormalRotateSpeed; 
-            m_is_move = true;
-            pos = transform.position;
-        }
     }
+
+    public void OnPointerDown() {
+        if(!battleMgr.StartBattle) {
+            battleMgr.SetBattleStateStart();
+        }
+        Time.timeScale = 0.1f;
+        speed = Constants.PlayerNormalSpeed;
+        rotateSpeed = Constants.NormalRotateSpeed;
+        guideLine.gameObject.SetActive(true);
+    }
+
+    public void OnPointerUp() {
+        // 在这里处理鼠标或触摸输入
+        guideLine.gameObject.SetActive(false);
+        if(battleMgr.StartBattle) {
+            Time.timeScale = 1;
+        }
+
+        if(joystick.UpDirection != Vector3.zero) {
+            Quaternion rotation = Quaternion.Euler(0,-45,0);
+            dir = (rotation * joystick.UpDirection).normalized;
+        }
+        speed = Constants.PlayerNormalSpeed;
+        rotateSpeed = Constants.NormalRotateSpeed;
+        isMove = true;
+        pos = transform.position;
+    }
+
+
 
     private void OnCollisionEnter(Collision collision) {
         int collisionLayer = collision.gameObject.layer;
@@ -155,11 +156,11 @@ public class PlayerController : MonoBehaviour {
 
     private void SetMove() {
         transform.position = Vector3.MoveTowards(transform.position, 
-            transform.position + dir.normalized, m_speed * Time.deltaTime);
+            transform.position + dir.normalized, speed * Time.deltaTime);
     }
     private void SetRotate() {
         Vector3 rotationAxis = new Vector3(dir.z, 0f, -dir.x).normalized;
-        float rotationAmount = m_speed * m_rotate_speed;
+        float rotationAmount = speed * rotateSpeed;
         Vector3 angularVelocity = rotationAxis * rotationAmount;
         rb.angularVelocity = angularVelocity;
     }
@@ -178,10 +179,20 @@ public class PlayerController : MonoBehaviour {
         if (direction == Vector3.zero) {
             direction = dir;
         }
-        laser.SetDir(direction);
+        guideLine.SetDir(direction);
     }
 
     void OnDestroy() {
         StopAllCoroutines();
+    }
+
+    public void Revive() {
+        StartCoroutine(ReviveIncincibility());
+    }
+
+    IEnumerator ReviveIncincibility(){
+        gameObject.layer = LayerMask.NameToLayer("Player");
+        yield return new WaitForSeconds(3f);
+        gameObject.layer = LayerMask.NameToLayer("Default");
     }
 }

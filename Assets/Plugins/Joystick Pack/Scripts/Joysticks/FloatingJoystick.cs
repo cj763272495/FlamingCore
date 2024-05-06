@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -9,6 +10,9 @@ public class FloatingJoystick : Joystick
     public float UpH;
     public float UpV;
     private bool isShow = true;
+    public Action OnPointerDownAction;
+    public Action OnPointerUpAction;
+
     protected override void Start()
     {
         base.Start();
@@ -25,6 +29,7 @@ public class FloatingJoystick : Joystick
         if (isShow) {
             background.gameObject.SetActive(true); 
         }
+        OnPointerDownAction?.Invoke();
         base.OnPointerDown(eventData);
     }
 
@@ -36,6 +41,7 @@ public class FloatingJoystick : Joystick
         if (isShow) {
             background.gameObject.SetActive(false);
         }
+        OnPointerUpAction?.Invoke();
         base.OnPointerUp(eventData);
     }
 }

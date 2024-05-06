@@ -6,16 +6,19 @@ using Unity.UI;
 
 public class BattleMgr : MonoBehaviour {
     private ResSvc resSvc; 
-    private int m_coin;
+    private int coin;
     public Camera cam;
-    private GameObject m_player;
-    private Vector3 dead_pos;
+    private GameObject player;
+    private Vector3 deadPos;
     public BattleWnd battleWnd;
-    private int m_hp;
+    private int hp;
     private LevelData levelData;
-    private int eliminate_enemy_num;
+    private int eliminateEnemyNum;
     public bool StartBattle { private set; get; }
     public ParticleMgr particleMgr;
+
+    public FloatingJoystick joystick;
+    public Laser guideLine;
 
 
     public int CurWaveIndex { private set; get; }
@@ -25,25 +28,25 @@ public class BattleMgr : MonoBehaviour {
     }
 
     public void EarnCoin(int num) {
-        m_coin += num;
+        coin += num;
     }
 
     public int GetCoinNum() {
-        return m_coin;
+        return coin;
     }
 
     public void EliminateEnemy() {
-        eliminate_enemy_num ++;
+        eliminateEnemyNum ++;
     }
 
     public void Init(int mapid, Action cb = null) {
         CurWaveIndex = mapid;
         resSvc = ResSvc.Instance;
-        m_hp = 3; //3条命
-        m_coin = 0;
-        eliminate_enemy_num = 0;
+        hp = 3; //3条命
+        coin = 0;
+        eliminateEnemyNum = 0;
         string waveName = "Level" + mapid;
-        battleWnd.hp_txt.text = "x "+ m_hp;
+        battleWnd.hp_txt.text = "x "+ hp;
         particleMgr = gameObject.AddComponent<ParticleMgr>();
         particleMgr.battleMgr = this;
         particleMgr.Init();
@@ -74,8 +77,8 @@ public class BattleMgr : MonoBehaviour {
             return;
         }
         GameRoot.Instance.bgPlayer.audioSource.volume = StartBattle? 1:0.5f;
-        if (eliminate_enemy_num == 3/* levelData.EnemyNum*/) {// 根据当前消灭得敌人数量来判断游戏是否胜利
-            m_player.GetComponent<PlayerController>().destructible = false;
+        if (eliminateEnemyNum == 3/* levelData.EnemyNum*/) {// 根据当前消灭得敌人数量来判断游戏是否胜利
+            player.GetComponent<PlayerController>().destructible = false;
             EndBattle(true);
         }
     }
@@ -105,11 +108,17 @@ public class BattleMgr : MonoBehaviour {
         player.transform.localEulerAngles = Vector3.zero;
         player.transform.localScale = Vector3.one;
         PlayerController playerController = player.GetComponent<PlayerController>();
+
+        guideLine = guideLine==null? GameObject.FindGameObjectWithTag("GuideLine").GetComponent<Laser>():guideLine; 
+        playerController.guideLine = guideLine; 
+
+        joystick = joystick == null ? GameObject.FindGameObjectWithTag("JoyStick").GetComponent<FloatingJoystick>() : joystick;
+        playerController.joystick = joystick;
+
         playerController.Init();
         playerController.battleMgr = this;
-
         cam = Camera.main;
-        m_player = player;
+        this.player = player;
     }
 
     public void PauseBattle() {
@@ -131,9 +140,14 @@ public class BattleMgr : MonoBehaviour {
     }
 
     public void ReviveAndContinueBattle() {//消耗生命继续游戏
-        m_hp--;
-        battleWnd.hp_txt.text = "x " + m_hp;
-        LoadPlayer(dead_pos);
+        Time.timeScale = 0.1f;
+        hp--;
+        battleWnd.hp_txt.text = "x " + hp;
+        LoadPlayer(deadPos);
+        player.GetComponent<PlayerController>().Revive();
+        foreach(var item in FindObjectsOfType<NormalTurret>()) {
+            item.OnPlayerLoaded();
+        }
         ResumeBattle();
     }
     public void StratNextLevel() {
@@ -150,10 +164,11 @@ public class BattleMgr : MonoBehaviour {
             Time.timeScale = 0.01f;
             Invoke(nameof(GameWin), 10f);
         } else {
+            StartBattle = false;
             Time.timeScale = 1;
             WaitForSeconds wait = new WaitForSeconds(0.5f);
-            if (m_hp > 0) {//剩余生命值大于0才能复活继续
-                dead_pos = m_player.transform.position;
+            if (hp > 0) {//剩余生命值大于0才能复活继续
+                deadPos = player.transform.position;
                 BattleSys.Instance.battleWnd.dead_panel.ShowAndStartCountDown();
                 if (GameRoot.Instance.PlayerData.coin < 100) { 
                     BattleSys.Instance.battleWnd.dead_panel.CannotContinueByCoin();
@@ -168,13 +183,13 @@ public class BattleMgr : MonoBehaviour {
     private void GameWin() {
         StartBattle = false;
         battleWnd.ShowHp(false);
-        battleWnd.win_panel.OpenWinPanel(m_coin);
+        battleWnd.win_panel.OpenWinPanel(coin);
         PauseBattle();
         LevelSettlement();
     }
 
     private void LevelSettlement() {//关卡结算
-        GameRoot.Instance.LevelSettlement(m_coin);
+        GameRoot.Instance.LevelSettlement(coin);
     }
      
 
