@@ -15,7 +15,6 @@ public class BattleWnd:MonoBehaviour {
     public Text hp_txt;
     public Text countdownText;
 
-    public GameObject coinShow;
     public GameObject energyShow;
     public GameObject hpShow;
     public ParticleSystem chestParticle;
@@ -52,8 +51,7 @@ public class BattleWnd:MonoBehaviour {
 
     public void ShowHp(bool isShow = true) {
         hpShow.SetActive(isShow);
-        energyShow.SetActive(!isShow);
-        coinShow.SetActive(!isShow);
+        energyShow.SetActive(!isShow); 
     }
 
     //private IEnumerator FadeCoroutine(float targetAlpha, float duration) {

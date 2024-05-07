@@ -21,8 +21,7 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
         set { deadZone = Mathf.Abs(value); }
     }
 
-    public bool IsDown { get; set; }
-    public bool IsDrag { get; private set; }
+    public bool IsDown { get; set; } 
 
     public AxisOptions AxisOptions { get { return AxisOptions; } set { axisOptions = value; } }
     public bool SnapX { get { return snapX; } set { snapX = value; } }
@@ -66,8 +65,7 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
         OnDrag(eventData); 
     }
 
-    public void OnDrag(PointerEventData eventData) {
-        IsDrag = true;
+    public void OnDrag(PointerEventData eventData) { 
         cam = null;
         if (canvas.renderMode == RenderMode.ScreenSpaceCamera)
             cam = canvas.worldCamera;
@@ -133,8 +131,7 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
         return 0;
     }
 
-    public virtual void OnPointerUp(PointerEventData eventData) { 
-        IsDrag = false;
+    public virtual void OnPointerUp(PointerEventData eventData) {  
         IsDown = false;
         input = Vector2.zero;
         handle.anchoredPosition = Vector2.zero;

@@ -11,7 +11,7 @@ public class FloatingJoystick : Joystick
     public float UpV;
     private bool isShow = true;
     public Action OnPointerDownAction;
-    public Action OnPointerUpAction;
+    public Action OnPointerUpAction; 
 
     protected override void Start()
     {

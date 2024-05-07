@@ -8,7 +8,7 @@ public class Laser : MonoBehaviour
     private float m_len;
 
     public LayerMask collisionLayer; // 用于射线检测的层
-    public GameObject player;
+    public PlayerController player;
     private int index = 1;
 
     void Awake()
@@ -19,17 +19,16 @@ public class Laser : MonoBehaviour
     }
 
     public void SetDir(Vector3 dir) {
+        if(!player) {
+            return;
+        }
         index = 1;
         lineRenderer.positionCount = 2;
         if (gameObject.activeSelf) {
-            lineRenderer.SetPosition(0, player.transform.position); // 设置起点
-
-            Vector3 start = player.transform.position; // 射线起点为当前位置
-
             // 递归函数，用于处理多次反射
             void BounceRay(Vector3 origin, Vector3 direction, float currentLength) {
                 if (dir == Vector3.zero) {
-                    dir = player.GetComponent<PlayerController>().Dir;
+                    dir = player.Dir;
                 } 
                 if (Physics.Raycast(origin, direction, out RaycastHit hit, currentLength, collisionLayer)) {
                     // 如果射线遇到碰撞，计算反射向量
@@ -51,15 +50,13 @@ public class Laser : MonoBehaviour
                             origin + direction * currentLength);
                     }
                 } else {
-                    // 如果没有碰撞，更新LineRenderer的顶点位置到最大长度
-                    //Debug.Log(index+ ","+lineRenderer.positionCount+"," + direction.magnitude);
-                    //lineRenderer.positionCount++;
                     lineRenderer.SetPosition(index, origin + direction * currentLength);
                 }
             }
 
-            // 从起点发射射线
-            BounceRay(start, dir, m_len);
+            // 从起点发射射线 
+            lineRenderer.SetPosition(0,player.transform.position);
+            BounceRay(player.transform.position, dir, m_len);
         }
     }
 }

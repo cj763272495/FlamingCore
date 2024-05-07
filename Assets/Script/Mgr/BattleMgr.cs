@@ -1,14 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
+using System.Collections; 
 using UnityEngine;
-using System;
-using Unity.UI;
+using System;  
 
 public class BattleMgr : MonoBehaviour {
     private ResSvc resSvc; 
     private int coin;
+
     public Camera cam;
-    private GameObject player;
+    public Vector3 camOriginOffset;
+
+    private PlayerController player;
     private Vector3 deadPos;
     public BattleWnd battleWnd;
     private int hp;
@@ -23,7 +24,8 @@ public class BattleMgr : MonoBehaviour {
                 startBattle = value;
                 OnStartBattleChanged?.Invoke(startBattle);
             }
-        } }
+        } 
+    }
 
     public event Action<bool> OnStartBattleChanged;
     public ParticleMgr particleMgr;
@@ -33,6 +35,11 @@ public class BattleMgr : MonoBehaviour {
 
     public int CurWaveIndex { private set; get; }
 
+    private AudioClip hitWallClip;
+    private AudioClip deadClip;
+
+    private Coroutine makeGuideLineCoroutine;
+     
     public void EarnCoin(int num) {
         coin += num;
     }
@@ -45,10 +52,17 @@ public class BattleMgr : MonoBehaviour {
         eliminateEnemyNum ++;
     }
 
+    private void HandleStartBattleChanged(bool startBattle) {
+        GameRoot.Instance.bgPlayer.audioSource.volume = StartBattle ? 1 : 0.5f;
+        if(player) {
+            player.gameObject.SetActive(startBattle);
+        }
+    }
+
     public void Init(int mapid, Action cb = null) {
         CurWaveIndex = mapid;
         resSvc = ResSvc.Instance;
-        hp = 3; //3条命
+        hp = 3;
         coin = 0;
         eliminateEnemyNum = 0;
         string waveName = "Level" + mapid;
@@ -57,6 +71,10 @@ public class BattleMgr : MonoBehaviour {
         particleMgr.battleMgr = this;
         particleMgr.Init();
         levelData = resSvc.GetMapCfgData(mapid.ToString());
+
+        hitWallClip = ResSvc.Instance.LoadAudio(Constants.HitWallClip,true);
+        deadClip = ResSvc.Instance.LoadAudio(Constants.DeadClip);
+
         if (levelData!=null) {
             resSvc.AsyncLoadScene(waveName, () => {
                 LoadPlayer(new Vector3(
@@ -64,6 +82,8 @@ public class BattleMgr : MonoBehaviour {
                     levelData.PlayerStartPosition.Y,
                     levelData.PlayerStartPosition.Z));
                 SetCameraPositionAndRotation(levelData);
+                camOriginOffset = player.transform.position - cam.transform.position;
+
                 foreach(var item in FindObjectsOfType<NormalTurret>()) {
                     item.OnPlayerLoaded();
                 }
@@ -71,6 +91,17 @@ public class BattleMgr : MonoBehaviour {
                     GameRoot.Instance.bgPlayer.clipSource = ResSvc.Instance.LoadAudio(Constants.BGGame);
                     GameRoot.Instance.bgPlayer.PlaySound(true);
                 }
+
+                guideLine = guideLine == null ? GameObject.FindGameObjectWithTag("GuideLine").GetComponent<Laser>() : guideLine;
+                guideLine.gameObject.SetActive(false);
+                guideLine.player = player;
+
+                joystick = joystick == null ? GameObject.FindGameObjectWithTag("JoyStick").GetComponent<FloatingJoystick>() : joystick;
+                joystick.gameObject.SetActive(true);
+                joystick.SetIsShow(GameRoot.Instance.gameSettings.showJoyStick);
+                joystick.OnPointerDownAction = OnPointerDown;
+                joystick.OnPointerUpAction = OnPointerUp;
+                OnStartBattleChanged += HandleStartBattleChanged;
                 StartBattle = true;
                 if (cb != null) {
                     cb();
@@ -78,16 +109,64 @@ public class BattleMgr : MonoBehaviour {
             });
         }
     }
+    public void OnPointerDown() {
+        if(!StartBattle) {
+            return;
+        }
+        Time.timeScale = 0.1f;
+        guideLine.gameObject.SetActive(true);
+        makeGuideLineCoroutine = StartCoroutine(MakeGuideLineCoroutine()); 
+    }
+    private IEnumerator MakeGuideLineCoroutine() {
+        while(true) {
+            MakeGuideLine();
+            yield return null;
+        }
+    }
+
+    public void OnPointerUp() {
+        if(!StartBattle) {
+            return;
+        }
+        // 在这里处理鼠标或触摸输入
+        guideLine.gameObject.SetActive(false);
+        Time.timeScale = 1;
+        if(joystick.UpDirection != Vector3.zero) {
+            Quaternion rotation = Quaternion.Euler(0,-45,0);
+            player.SetDir((rotation * joystick.UpDirection).normalized);
+        }
+        player.isMove = true;
+        player.lastPos = player.transform.position;
+    }
+
+    public void PlayHitWallClip() {
+        AudioManager.Instance.PlaySound(hitWallClip);
+    }
 
     private void Update() {
         if (!StartBattle) {
             return;
         }
-        GameRoot.Instance.bgPlayer.audioSource.volume = StartBattle? 1:0.5f;
         if (eliminateEnemyNum == 1/* levelData.EnemyNum*/) {// 根据当前消灭得敌人数量来判断游戏是否胜利
-            player.GetComponent<PlayerController>().destructible = false;
+            player.destructible = false;
             EndBattle(true);
         }
+    }
+
+    private void MakeGuideLine() {
+        Vector3 direction = (Vector3.forward * joystick.Vertical + Vector3.right * joystick.Horizontal).normalized;
+        if(direction == Vector3.zero) {
+            direction = player.Dir;
+        }
+        // 考虑相机的旋转
+        direction = Quaternion.Euler(0,-45,0) * direction;
+        // 计算旋转角度
+        float angle = Vector3.Angle(Vector3.forward,direction);
+        // 计算旋转轴
+        Vector3 axis = Vector3.Cross(Vector3.forward,direction);
+        // 创建四元数
+        Quaternion rotation = Quaternion.AngleAxis(angle,axis);
+        guideLine.SetDir(rotation * Vector3.forward);
     }
     void SetCameraPositionAndRotation(LevelData levelData) {
         cam.transform.position = new Vector3(
@@ -106,30 +185,20 @@ public class BattleMgr : MonoBehaviour {
     private void LoadPlayer(Vector3 pos) {
         string skinId = GameRoot.Instance.PlayerData.cur_skin.ToString();
         string trailId = GameRoot.Instance.PlayerData.cur_trail.ToString();
-        GameObject player = resSvc.LoadPrefab("Prefab/qiu_" + skinId);
+        player = resSvc.LoadPrefab("Prefab/qiu_" + skinId).GetComponent<PlayerController>();
         GameObject trail = resSvc.LoadPrefab("Prefab/Trails/" + trailId);
         trail.transform.parent = player.transform;
         trail.transform.localScale = Vector3.one;
         trail.transform.localPosition = Vector3.zero;
         player.transform.position = pos;
         player.transform.localEulerAngles = Vector3.zero;
-        player.transform.localScale = Vector3.one;
-        PlayerController playerController = player.GetComponent<PlayerController>();
-
-        guideLine = guideLine==null? GameObject.FindGameObjectWithTag("GuideLine").GetComponent<Laser>():guideLine; 
-        playerController.guideLine = guideLine; 
-
-        joystick = joystick == null ? GameObject.FindGameObjectWithTag("JoyStick").GetComponent<FloatingJoystick>() : joystick;
-        playerController.joystick = joystick;
-
-        playerController.Init();
-        playerController.battleMgr = this;
+        player.transform.localScale = Vector3.one; 
+        player.Init();
+        player.battleMgr = this;
         cam = Camera.main;
-        this.player = player;
     }
 
     public void PauseBattle() {
-        //Time.timeScale = 0f;
         StartBattle = false;
         battleWnd.ShowHp(false);
     }
@@ -143,7 +212,7 @@ public class BattleMgr : MonoBehaviour {
     IEnumerator EnterLeveL() {
         yield return new WaitForSecondsRealtime(3f);
         StartBattle = true;
-        GameObject.FindWithTag("JoyStick").GetComponent<FloatingJoystick>().IsDown = true;
+        joystick.IsDown = true;
     }
 
     public void ReviveAndContinueBattle() {//消耗生命继续游戏
@@ -165,11 +234,13 @@ public class BattleMgr : MonoBehaviour {
         Init(CurWaveIndex);
     }
 
-    public void EndBattle(bool isWin) { 
+    public void EndBattle(bool isWin, Vector3 contactPoint=new Vector3()) { 
         if (isWin) {
             StartCoroutine(SmoothTransitionToFov());
             Invoke(nameof(GameWin), 1f);
         } else {
+            ParticleMgr.Instance.PlayDeadParticle(contactPoint);
+            AudioManager.Instance.PlaySound(deadClip);
             StartBattle = false;
             Time.timeScale = 1;
             WaitForSeconds wait = new WaitForSeconds(0.5f);
