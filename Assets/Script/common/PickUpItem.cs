@@ -6,7 +6,7 @@ public class PickUpItem : MonoBehaviour
 {
     private readonly float rotateSpeed=400;
     public AudioSource audioSource; 
-    void Update() {
+    protected virtual void Update() {
         transform.Rotate(rotateSpeed * Time.deltaTime * Vector3.up);
     } 
 }

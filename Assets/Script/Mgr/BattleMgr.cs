@@ -14,18 +14,24 @@ public class BattleMgr : MonoBehaviour {
     private int hp;
     private LevelData levelData;
     private int eliminateEnemyNum;
-    public bool StartBattle { private set; get; }
+
+    private bool startBattle;
+    public bool StartBattle {
+        get { return startBattle; }
+        private set {
+            if(startBattle != value) {
+                startBattle = value;
+                OnStartBattleChanged?.Invoke(startBattle);
+            }
+        } }
+
+    public event Action<bool> OnStartBattleChanged;
     public ParticleMgr particleMgr;
 
     public FloatingJoystick joystick;
     public Laser guideLine;
 
-
     public int CurWaveIndex { private set; get; }
-
-    public void SetBattleStateStart() {
-        StartBattle = true;
-    }
 
     public void EarnCoin(int num) {
         coin += num;
@@ -65,6 +71,7 @@ public class BattleMgr : MonoBehaviour {
                     GameRoot.Instance.bgPlayer.clipSource = ResSvc.Instance.LoadAudio(Constants.BGGame);
                     GameRoot.Instance.bgPlayer.PlaySound(true);
                 }
+                StartBattle = true;
                 if (cb != null) {
                     cb();
                 }
@@ -77,7 +84,7 @@ public class BattleMgr : MonoBehaviour {
             return;
         }
         GameRoot.Instance.bgPlayer.audioSource.volume = StartBattle? 1:0.5f;
-        if (eliminateEnemyNum == 3/* levelData.EnemyNum*/) {// 根据当前消灭得敌人数量来判断游戏是否胜利
+        if (eliminateEnemyNum == 1/* levelData.EnemyNum*/) {// 根据当前消灭得敌人数量来判断游戏是否胜利
             player.GetComponent<PlayerController>().destructible = false;
             EndBattle(true);
         }
@@ -122,7 +129,7 @@ public class BattleMgr : MonoBehaviour {
     }
 
     public void PauseBattle() {
-        Time.timeScale = 0f;
+        //Time.timeScale = 0f;
         StartBattle = false;
         battleWnd.ShowHp(false);
     }
@@ -161,8 +168,7 @@ public class BattleMgr : MonoBehaviour {
     public void EndBattle(bool isWin) { 
         if (isWin) {
             StartCoroutine(SmoothTransitionToFov());
-            Time.timeScale = 0.01f;
-            Invoke(nameof(GameWin), 10f);
+            Invoke(nameof(GameWin), 1f);
         } else {
             StartBattle = false;
             Time.timeScale = 1;
@@ -195,7 +201,7 @@ public class BattleMgr : MonoBehaviour {
 
     //拉近镜头
     IEnumerator SmoothTransitionToFov() {
-        float transitionDuration = 3.0f;
+        float transitionDuration = 1.0f;
         float targetFov = 20f;
         float startTime = Time.time;
 

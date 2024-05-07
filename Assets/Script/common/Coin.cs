@@ -10,7 +10,8 @@ public class Coin:PickUpItem {
         CoinValue = 5;
     }
 
-    private void Update() {
+    protected override void Update() {
+        base.Update();
         if(playerTransform != null) {
             transform.position = Vector3.MoveTowards(transform.position,playerTransform.position,40f*Time.deltaTime);
             if(Vector3.Distance(transform.position,playerTransform.position) < 0.1f) {

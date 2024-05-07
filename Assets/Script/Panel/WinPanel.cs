@@ -27,20 +27,9 @@ public class WinPanel : MonoBehaviour
         coinTxt.text = "+ " + coinNum.ToString();
         gameObject.SetActive(true);
         chestParticle.Play();
-        StartCoroutine(CycleTextMeshProSize());
         InvokeRepeating(nameof(Breathe), 0f, breathRate);
     }
-    private IEnumerator CycleTextMeshProSize() {
-        while (true) {
-            float currentTime = 0f;
-            while (currentTime < cycleDuration) {
-                coinTxt.fontSize = Mathf.FloorToInt(Mathf.Lerp(minSize, maxSize, currentTime / cycleDuration));
-                currentTime += Time.deltaTime;
-                yield return null;
-            }
-            coinTxt.fontSize = maxSize; // 确保文本大小达到最大值 
-        }
-    }
+
     void Breathe() {
         float t = Mathf.PingPong(Time.time, breathRate) / breathRate;
         float alpha = Mathf.SmoothStep(0, 1, t); // 平滑过渡

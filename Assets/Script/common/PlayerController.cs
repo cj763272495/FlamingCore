@@ -7,8 +7,8 @@ using UnityEngine.EventSystems;
 public class PlayerController : MonoBehaviour {
     public FloatingJoystick joystick;
 
-    private float speed = 0;
-    private float rotateSpeed = 0;
+    private float speed;
+    private float rotateSpeed;
     private bool isMove = false;
     Vector3 dir = Vector3.zero;
 
@@ -51,40 +51,42 @@ public class PlayerController : MonoBehaviour {
 
         hitWallClip = ResSvc.Instance.LoadAudio(Constants.HitWallClip,true);
         deadClip = ResSvc.Instance.LoadAudio(Constants.DeadClip);
+        speed = Constants.PlayerSpeed;
+        rotateSpeed = Constants.RotateSpeed;
     }
 
     void Update() {
-        MakeGuideLine();
-        if (isMove && battleMgr.StartBattle) { 
-            SetMove();
-            SetRotate();
-            SetCam();
+        if(battleMgr.StartBattle) {
+            MakeGuideLine();
+            if(isMove) {
+                SetMove();
+                SetRotate();
+                SetCam();
+            }
         }
     }
 
     public void OnPointerDown() {
         if(!battleMgr.StartBattle) {
-            battleMgr.SetBattleStateStart();
+            return;
         }
         Time.timeScale = 0.1f;
-        speed = Constants.PlayerNormalSpeed;
-        rotateSpeed = Constants.NormalRotateSpeed;
         guideLine.gameObject.SetActive(true);
     }
 
     public void OnPointerUp() {
-        // 在这里处理鼠标或触摸输入
-        guideLine.gameObject.SetActive(false);
-        if(battleMgr.StartBattle) {
-            Time.timeScale = 1;
+        if(!battleMgr.StartBattle) {
+            return;
         }
-
+        // 在这里处理鼠标或触摸输入
+        guideLine.gameObject.SetActive(false); 
+        Time.timeScale = 1;  
         if(joystick.UpDirection != Vector3.zero) {
             Quaternion rotation = Quaternion.Euler(0,-45,0);
             dir = (rotation * joystick.UpDirection).normalized;
         }
-        speed = Constants.PlayerNormalSpeed;
-        rotateSpeed = Constants.NormalRotateSpeed;
+        
+        
         isMove = true;
         pos = transform.position;
     }
@@ -92,6 +94,9 @@ public class PlayerController : MonoBehaviour {
 
 
     private void OnCollisionEnter(Collision collision) {
+        if(!battleMgr.StartBattle) {
+            return;
+        }
         int collisionLayer = collision.gameObject.layer;
         ContactPoint contactPoint = collision.contacts[0];
 
@@ -101,7 +106,7 @@ public class PlayerController : MonoBehaviour {
             AudioManager.Instance.PlaySound(deadClip);
             Destroy(gameObject);
         } else if(collisionLayer == 6) {//enemy
-            battleMgr.EliminateEnemy();
+            battleMgr.EliminateEnemy(); 
         } else {
             battleMgr.particleMgr.PlayHitWallParticle(contactPoint);
             AudioManager.Instance.PlaySound(hitWallClip);
@@ -151,6 +156,9 @@ public class PlayerController : MonoBehaviour {
     //}
 
     private void OnTriggerEnter(Collider other) {
+        if(!battleMgr.StartBattle) {
+            return;
+        }
         if (other.gameObject.layer == 9) { //pickupitem
             if (other.transform.CompareTag("coin")) {
                 battleMgr.EarnCoin(other.gameObject.GetComponent<Coin>().CoinValue);
@@ -177,14 +185,20 @@ public class PlayerController : MonoBehaviour {
 
     private void MakeGuideLine() {
         Vector3 direction = (Vector3.forward * joystick.Vertical + Vector3.right * joystick.Horizontal).normalized;
-        Quaternion rotation = Quaternion.Euler(0, -45, 0);
-        // 旋转向量
-        direction = rotation * direction;
-        if (direction == Vector3.zero) {
+        if(direction == Vector3.zero) {
             direction = dir;
         }
-        guideLine.SetDir(direction);
+        // 考虑相机的旋转
+        direction = Quaternion.Euler(0,-45,0) * direction;
+        // 计算旋转角度
+        float angle = Vector3.Angle(Vector3.forward,direction);
+        // 计算旋转轴
+        Vector3 axis = Vector3.Cross(Vector3.forward,direction);
+        // 创建四元数
+        Quaternion rotation = Quaternion.AngleAxis(angle,axis);
+        guideLine.SetDir(rotation * Vector3.forward);
     }
+
 
     void OnDestroy() {
         StopAllCoroutines();

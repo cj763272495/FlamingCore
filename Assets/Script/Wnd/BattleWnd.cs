@@ -12,7 +12,6 @@ public class BattleWnd:MonoBehaviour {
     public WinPanel win_panel;
     public DeadPanel dead_panel;
     public FailPanel fail_panel; 
-    public Text coin_txt;
     public Text hp_txt;
     public Text countdownText;
 
@@ -29,10 +28,11 @@ public class BattleWnd:MonoBehaviour {
         dead_panel.gameObject.SetActive(false);
         pause_panel.gameObject.SetActive(false);
         chestParticle.Stop();
+        battleMgr.OnStartBattleChanged += HandleStartBattleChanged;
     }
-
-    private void Update() {
-        btn_pause.gameObject.SetActive(battleMgr.StartBattle);
+ 
+    private void HandleStartBattleChanged(bool startBattle) {
+        btn_pause.gameObject.SetActive(startBattle);
     }
 
     public void ClickPauseBtn() {
@@ -48,9 +48,6 @@ public class BattleWnd:MonoBehaviour {
         }
         countdownText.gameObject.SetActive(false);
 
-    }
-    public void EarnMoney() {
-        coin_txt.text = battleMgr.GetCoinNum().ToString();
     }
 
     public void ShowHp(bool isShow = true) {
