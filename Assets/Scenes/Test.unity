@@ -551,7 +551,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!65 &441767175
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -623,8 +623,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 441767174}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 10, y: 1, z: 10}
+  m_LocalPosition: {x: 0, y: 0, z: -4.29}
+  m_LocalScale: {x: 20, y: 1, z: 20}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1938,17 +1938,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 944541535}
   m_Mesh: {fileID: -7827004148016798099, guid: 39767e2c6cd3ed440b0cc85e1a7f5da0, type: 3}
---- !u!114 &954720180 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8170153791668043265, guid: 0d230cc8be529a542a08cb878ab14b18, type: 3}
-  m_PrefabInstance: {fileID: 1201564085}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a47f546fc70ec8428172694e78e4288, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1017242297
 GameObject:
   m_ObjectHideFlags: 0
@@ -2177,17 +2166,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e91c46fdd6e7d684d8c10cae70141c53, type: 3}
---- !u!114 &1075152677 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 944967820279900942, guid: e91c46fdd6e7d684d8c10cae70141c53, type: 3}
-  m_PrefabInstance: {fileID: 1075152676}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61593194154d0964698f8446f708edc2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1161602342
 GameObject:
   m_ObjectHideFlags: 0
@@ -2899,15 +2877,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e04a8d8890120742ac7e37b15c14d34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  joystick: {fileID: 954720180}
-  laser: {fileID: 1075152677}
+  isMove: 0
   rb: {fileID: 1389103297}
+  lastPos: {x: 0, y: 0, z: 0}
   camTrans: {fileID: 1925332120}
   battleMgr: {fileID: 1389103299}
   destructible: 0
-  shakeAmount: 0.01
-  shakeDuration: 0.01
-  test: 1
 --- !u!114 &1389103299
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2921,8 +2896,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 1925332119}
+  camOriginOffset: {x: 0, y: 0, z: 0}
   battleWnd: {fileID: 0}
   particleMgr: {fileID: 0}
+  joystick: {fileID: 0}
+  guideLine: {fileID: 0}
 --- !u!1 &1392488235
 GameObject:
   m_ObjectHideFlags: 0

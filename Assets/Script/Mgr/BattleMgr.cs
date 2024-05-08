@@ -44,10 +44,6 @@ public class BattleMgr : MonoBehaviour {
         coin += num;
     }
 
-    public int GetCoinNum() {
-        return coin;
-    }
-
     public void EliminateEnemy() {
         eliminateEnemyNum ++;
     }

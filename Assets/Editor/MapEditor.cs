@@ -12,7 +12,7 @@ public class EditorWindow:UnityEditor.EditorWindow {
     private string[] prefabNames;
     private int selectedPrefabIndex = 0; // 选中的预制体索引
 
-    private Dictionary<Vector2Int,GameObject> selectedCells = new Dictionary<Vector2Int,GameObject>();
+    private Dictionary<Vector2Int,GameObject> addedCells = new Dictionary<Vector2Int,GameObject>();
     private List<Vector2Int> combiningCells = new List<Vector2Int>(); // 添加这行代码来存储被组合的网格 
     private List<Vector2Int> completedCells = new List<Vector2Int>();
     private List<GameObject> completeGo = new List<GameObject>();
@@ -53,10 +53,10 @@ public class EditorWindow:UnityEditor.EditorWindow {
         Color oldColor = GUI.skin.button.normal.textColor;
         GUI.skin.button.normal.textColor = Color.red;
         if(GUILayout.Button("ClearAll",GUILayout.Width(80))) {
-            foreach(GameObject instance in selectedCells.Values) {
+            foreach(GameObject instance in addedCells.Values) {
                 DestroyImmediate(instance);
             }
-            selectedCells.Clear();
+            addedCells.Clear();
             completedCells.Clear();
             combiningCells.Clear();
             foreach(var item in completeGo) {
@@ -107,27 +107,24 @@ public class EditorWindow:UnityEditor.EditorWindow {
                     return;
                 }
                 if(isCombining) {
-                    if(selectedCells.ContainsKey(currentCell) && !combiningCells.Contains(currentCell)) {
+                    if(addedCells.ContainsKey(currentCell) && !combiningCells.Contains(currentCell)) {
                         combiningCells.Add(currentCell);
                     }
                 } else {
-                    if(!selectedCells.ContainsKey(currentCell)) {
+                    if(!addedCells.ContainsKey(currentCell)) {
                         Vector3 worldPos = new Vector3(currentCell.x,0,-currentCell.y);
                         GameObject instance = InstantiateSelectedPrefab(path_front + prefabNames[selectedPrefabIndex],worldPos);
-                        selectedCells.Add(currentCell,instance);
+                        addedCells.Add(currentCell,instance);
                     }
                 }
             } else if(Event.current.type == EventType.MouseDown || (Event.current.type == EventType.MouseDrag && Event.current.button == 1)) {
-                if(selectedCells.ContainsKey(currentCell)) {
-                    DestroyImmediate(selectedCells[currentCell]);
-                    selectedCells.Remove(currentCell);
+                if(addedCells.ContainsKey(currentCell)) {
+                    DestroyImmediate(addedCells[currentCell]);
+                    addedCells.Remove(currentCell);
                 }
             }
             Repaint();
-        }
-
-
-
+        } 
     }
     void DrawGrid() {
         float cellWidth = position.width / gridWidth; // Change this to change the cell width
@@ -137,7 +134,7 @@ public class EditorWindow:UnityEditor.EditorWindow {
         for(int i = 0; i < gridWidth; i++) {
             for(int j = 0; j < gridHeight; j++) {
                 Vector2Int currentCell = new Vector2Int(i,j);
-                if(selectedCells.ContainsKey(currentCell)) {
+                if(addedCells.ContainsKey(currentCell)) {
                     // 如果当前的网格在 combinedCells 列表中，就将其颜色设置为红色
                     // 如果当前的网格在 completedCells 列表中，就将其颜色设置为黑色
                     if(completedCells.Contains(currentCell)) {
@@ -156,7 +153,7 @@ public class EditorWindow:UnityEditor.EditorWindow {
 
         //画xy轴
         Handles.color = Color.red;
-        Handles.DrawLine(new Vector3(0,position.height - 1,0),new Vector3(position.width,position.height - 1,0));
+        Handles.DrawLine(new Vector3(0,0,0),new Vector3(position.width,0,0));
         Handles.DrawLine(new Vector3(0,0,0),new Vector3(0,position.height,0));
     }
 
@@ -179,22 +176,54 @@ public class EditorWindow:UnityEditor.EditorWindow {
     // 添加这个方法来实例化组合的碰撞体
     private void InstateCombineCollider() {
         GameObject parent = new GameObject("CombinedObjects");
-        parent.transform.position = selectedCells[combiningCells[0]].transform.position;
+        parent.transform.position = addedCells[combiningCells[0]].transform.position;
         parent.layer = 10;
         completeGo.Add(parent);
         foreach(Vector2Int cell in combiningCells) {
-            GameObject instance = selectedCells[cell];
+            GameObject instance = addedCells[cell];
             instance.transform.SetParent(parent.transform);
         }
-        Bounds bounds = new Bounds(parent.transform.position,Vector3.zero);
-        foreach(MeshRenderer renderer in parent.GetComponentsInChildren<MeshRenderer>()) {
-            bounds.Encapsulate(renderer.bounds);
-        }
-        BoxCollider boxCollider = parent.AddComponent<BoxCollider>();
-        boxCollider.center = bounds.center - parent.transform.position;
-        boxCollider.size = bounds.size;
+        CombineMesh(parent);
         completedCells.AddRange(combiningCells);
         combiningCells.Clear();
     }
+    private void CombineMesh(GameObject parent) {
+        // 获取所有的MeshFilter
+        MeshFilter[] meshFilters = parent.GetComponentsInChildren<MeshFilter>();
+
+        // 创建CombineInstance数组
+        CombineInstance[] combine = new CombineInstance[meshFilters.Length];
+
+        for(int i = 0; i < meshFilters.Length; i++) {
+            combine[i].mesh = meshFilters[i].sharedMesh;
+            combine[i].transform = meshFilters[i].transform.localToWorldMatrix;
+        }
+
+        // 创建新的Mesh
+        Mesh newMesh = new Mesh();
+        newMesh.CombineMeshes(combine);  
+        Material material = Resources.Load<Material>("ResPack/Mesh/Materials/CubeEdge2");
+
+        // 获取或添加MeshRenderer组件
+        MeshRenderer meshRenderer = parent.GetComponent<MeshRenderer>();
+        if(meshRenderer == null) {
+            meshRenderer = parent.AddComponent<MeshRenderer>();
+        }
+
+        // 设置材质
+        meshRenderer.material = material;
+        MeshFilter meshFilter = parent.AddComponent<MeshFilter>();
+        
+        meshFilter.sharedMesh = newMesh; 
+        MeshCollider meshCollider = parent.AddComponent<MeshCollider>(); 
+        meshCollider.sharedMesh = parent.GetComponent<MeshFilter>().sharedMesh;
+ 
+        int childCount = parent.transform.childCount;
+        for(int i = childCount - 1; i >= 0; i--) { 
+            Transform child = parent.transform.GetChild(i); 
+            DestroyImmediate(child.gameObject);
+        } 
+    }
+
 }
 

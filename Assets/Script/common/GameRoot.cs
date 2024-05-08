@@ -19,7 +19,7 @@ public class GameRoot : MonoBehaviour
 
     public static GameRoot Instance { get; private set; }
 
-    public string playerID = "12";//测试用玩家数据
+    public string playerID = "11";//测试用玩家数据
 
     private void Awake() {
         if (Instance == null) {
