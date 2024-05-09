@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 112000000, guid: 0dbc334ad81428a4eae19af0c0789a68, type: 2}
+  m_LightingDataAsset: {fileID: 0}
   m_LightingSettings: {fileID: 4890085278179872738, guid: 1c285ae53085b8d4e851788450888e02, type: 2}
 --- !u!196 &4
 NavMeshSettings:
@@ -133,6 +133,10 @@ PrefabInstance:
     - target: {fileID: 7040626454332595840, guid: f72620ef97ea49944bf512f5cce82b21, type: 3}
       propertyPath: m_Name
       value: DynamicFogPlane
+      objectReference: {fileID: 0}
+    - target: {fileID: 7040626454332595840, guid: f72620ef97ea49944bf512f5cce82b21, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 7040626454332595840, guid: f72620ef97ea49944bf512f5cce82b21, type: 3}
       propertyPath: m_IsActive
@@ -265,12 +269,20 @@ PrefabInstance:
       value: 90
       objectReference: {fileID: 0}
     - target: {fileID: -1872131913562552039, guid: 676ed401262b70243b79b2af23fe2645, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: -1872131913562552039, guid: 676ed401262b70243b79b2af23fe2645, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 676ed401262b70243b79b2af23fe2645, type: 3}
       propertyPath: m_Name
       value: m_building_01_mod (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 676ed401262b70243b79b2af23fe2645, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 676ed401262b70243b79b2af23fe2645, type: 3}
       propertyPath: m_IsActive
@@ -310,7 +322,7 @@ GameObject:
   - component: {fileID: 297356922}
   - component: {fileID: 297356924}
   - component: {fileID: 297356923}
-  m_Layer: 5
+  m_Layer: 12
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -360,7 +372,7 @@ MonoBehaviour:
   m_text: CYBERCITY
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 91654dd60a583dc4abb5c217a470233c, type: 2}
-  m_sharedMaterial: {fileID: -3767263222349981157, guid: 91654dd60a583dc4abb5c217a470233c, type: 2}
+  m_sharedMaterial: {fileID: -4517898116887643679, guid: 91654dd60a583dc4abb5c217a470233c, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -498,12 +510,20 @@ PrefabInstance:
       value: 90
       objectReference: {fileID: 0}
     - target: {fileID: -1872131913562552039, guid: 676ed401262b70243b79b2af23fe2645, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: -1872131913562552039, guid: 676ed401262b70243b79b2af23fe2645, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 676ed401262b70243b79b2af23fe2645, type: 3}
       propertyPath: m_Name
       value: m_building_01_mod (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 676ed401262b70243b79b2af23fe2645, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 676ed401262b70243b79b2af23fe2645, type: 3}
       propertyPath: m_IsActive
@@ -544,7 +564,7 @@ GameObject:
   - component: {fileID: 363078296}
   - component: {fileID: 363078295}
   - component: {fileID: 363078294}
-  m_Layer: 5
+  m_Layer: 12
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -644,7 +664,7 @@ GameObject:
   - component: {fileID: 377990975}
   - component: {fileID: 377990977}
   - component: {fileID: 377990976}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: CubesLow_0 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -716,6 +736,121 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 377990974}
   m_Mesh: {fileID: -6957060976547528936, guid: 10e423f9a63d36848b68b7e6d7e42dad, type: 3}
+--- !u!1 &394683608
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 394683611}
+  - component: {fileID: 394683610}
+  - component: {fileID: 394683609}
+  m_Layer: 0
+  m_Name: EnvDirLight
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &394683609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 394683608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 1
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+--- !u!108 &394683610
+Light:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 394683608}
+  m_Enabled: 1
+  serializedVersion: 10
+  m_Type: 1
+  m_Shape: 0
+  m_Color: {r: 0.5313279, g: 0.53367895, b: 0.5660378, a: 1}
+  m_Intensity: 1
+  m_Range: 10
+  m_SpotAngle: 30
+  m_InnerSpotAngle: 21.80208
+  m_CookieSize: 10
+  m_Shadows:
+    m_Type: 0
+    m_Resolution: -1
+    m_CustomResolution: -1
+    m_Strength: 1
+    m_Bias: 0.05
+    m_NormalBias: 0.4
+    m_NearPlane: 0.2
+    m_CullingMatrixOverride:
+      e00: 1
+      e01: 0
+      e02: 0
+      e03: 0
+      e10: 0
+      e11: 1
+      e12: 0
+      e13: 0
+      e20: 0
+      e21: 0
+      e22: 1
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
+    m_UseCullingMatrixOverride: 0
+  m_Cookie: {fileID: 0}
+  m_DrawHalo: 0
+  m_Flare: {fileID: 0}
+  m_RenderMode: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 5119
+  m_RenderingLayerMask: 1
+  m_Lightmapping: 4
+  m_LightShadowCasterMode: 0
+  m_AreaSize: {x: 1, y: 1}
+  m_BounceIntensity: 1
+  m_ColorTemperature: 6570
+  m_UseColorTemperature: 0
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_UseBoundingSphereOverride: 0
+  m_UseViewFrustumForShadowCasterCull: 1
+  m_ShadowRadius: 0
+  m_ShadowAngle: 0
+--- !u!4 &394683611
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 394683608}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 1036.4457, y: 355.89084, z: -550.1219}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!43 &410262810
 Mesh:
   m_ObjectHideFlags: 0
@@ -1064,7 +1199,7 @@ GameObject:
   - component: {fileID: 637137995}
   - component: {fileID: 637137997}
   - component: {fileID: 637137996}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: CubesLow_0 (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1148,7 +1283,7 @@ GameObject:
   - component: {fileID: 751795310}
   - component: {fileID: 751795309}
   - component: {fileID: 751795308}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: cube_floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1244,7 +1379,7 @@ GameObject:
   - component: {fileID: 876069845}
   - component: {fileID: 876069847}
   - component: {fileID: 876069846}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: CubesLow_0 (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1380,12 +1515,20 @@ PrefabInstance:
       value: 90
       objectReference: {fileID: 0}
     - target: {fileID: -1872131913562552039, guid: 676ed401262b70243b79b2af23fe2645, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: -1872131913562552039, guid: 676ed401262b70243b79b2af23fe2645, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 676ed401262b70243b79b2af23fe2645, type: 3}
       propertyPath: m_Name
       value: m_building_01_mod
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 676ed401262b70243b79b2af23fe2645, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 676ed401262b70243b79b2af23fe2645, type: 3}
       propertyPath: m_IsActive
@@ -1527,7 +1670,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1111614095}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: MainCityBG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1568,7 +1711,7 @@ GameObject:
   - component: {fileID: 1200433236}
   - component: {fileID: 1200433238}
   - component: {fileID: 1200433237}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: CubesLow_0 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1652,7 +1795,7 @@ GameObject:
   - component: {fileID: 1425720942}
   - component: {fileID: 1425720941}
   - component: {fileID: 1425720940}
-  m_Layer: 10
+  m_Layer: 12
   m_Name: CombinedObjects
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1707,14 +1850,14 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 256
+  m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: c537d6b52f87c974c8dd4ded6e3f319a, type: 2}
@@ -1751,6 +1894,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1111614095}
     m_Modifications:
+    - target: {fileID: 6356102624173787162, guid: f72b4dd7c8e9cfc49979bd45b440e336, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 6356102624173787162, guid: f72b4dd7c8e9cfc49979bd45b440e336, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
@@ -1844,6 +1991,10 @@ PrefabInstance:
       value: CubesLow
       objectReference: {fileID: 0}
     - target: {fileID: 8904005712973955643, guid: f72b4dd7c8e9cfc49979bd45b440e336, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 8904005712973955643, guid: f72b4dd7c8e9cfc49979bd45b440e336, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
@@ -1869,7 +2020,7 @@ GameObject:
   - component: {fileID: 1663735706}
   - component: {fileID: 1663735708}
   - component: {fileID: 1663735707}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: CubesLow_0 (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2021,7 +2172,7 @@ GameObject:
   - component: {fileID: 1959568131}
   - component: {fileID: 1959568130}
   m_Layer: 11
-  m_Name: Directional Light
+  m_Name: WallDirLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2093,7 +2244,7 @@ Light:
   m_Cookie: {fileID: 0}
   m_DrawHalo: 0
   m_Flare: {fileID: 0}
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 1024
@@ -2188,12 +2339,20 @@ PrefabInstance:
       value: 90
       objectReference: {fileID: 0}
     - target: {fileID: -1872131913562552039, guid: 676ed401262b70243b79b2af23fe2645, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: -1872131913562552039, guid: 676ed401262b70243b79b2af23fe2645, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 676ed401262b70243b79b2af23fe2645, type: 3}
       propertyPath: m_Name
       value: m_building_01_mod (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 676ed401262b70243b79b2af23fe2645, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 676ed401262b70243b79b2af23fe2645, type: 3}
       propertyPath: m_IsActive
@@ -2233,7 +2392,7 @@ GameObject:
   - component: {fileID: 1993097376}
   - component: {fileID: 1993097378}
   - component: {fileID: 1993097377}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: CubesLow_0 (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2334,7 +2493,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 543450652657045186}
-  m_Layer: 10
+  m_Layer: 12
   m_Name: Main
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2375,7 +2534,7 @@ GameObject:
   - component: {fileID: 7979414999767707521}
   - component: {fileID: 6474011605976158348}
   - component: {fileID: 7815239449470792445}
-  m_Layer: 10
+  m_Layer: 12
   m_Name: pb_Mesh-9992_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2457,7 +2616,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5660136357546387588}
   - component: {fileID: 9092983906320531899}
-  m_Layer: 10
+  m_Layer: 12
   m_Name: CamPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2597,7 +2756,7 @@ GameObject:
   - component: {fileID: 1601390899129837834}
   - component: {fileID: 1111756961151079704}
   - component: {fileID: 8114515119881354617}
-  m_Layer: 10
+  m_Layer: 12
   m_Name: pb_Mesh-9992_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2628,7 +2787,7 @@ GameObject:
   - component: {fileID: 4366584973294770074}
   - component: {fileID: 2910426881866949857}
   - component: {fileID: 4723729403147854782}
-  m_Layer: 10
+  m_Layer: 12
   m_Name: pb_Mesh-9992_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}

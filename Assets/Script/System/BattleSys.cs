@@ -27,7 +27,7 @@ public class BattleSys : MonoBehaviour
         battleWnd.battleMgr = battleMgr;
         battleWnd.Init();
 
-        gameRoot.PlayerData.energy--;
+        PlayersDataSystem.Instance.PlayerData.energy--;
 
     }
 

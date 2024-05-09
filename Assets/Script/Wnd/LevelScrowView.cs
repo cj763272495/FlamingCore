@@ -13,7 +13,7 @@ public class LevelScrowView : SlideScrollView{
                 Transform curTrans = content.transform.GetChild(i);
                 Image img = curTrans.GetComponent<Image>();
 
-                if(i <= GameRoot.Instance.PlayerData.max_unLock_wave - 1) {
+                if(i <= PlayersDataSystem.Instance.PlayerData.max_unLock_wave - 1) {
                     if(i == CurrentIndex - 1) {
                         curTrans.localScale = new Vector3(maxScale,maxScale,maxScale);
                         img.sprite = ResSvc.Instance.LoadSprite("Sprite/bg_stage_selected");
@@ -45,7 +45,7 @@ public class LevelScrowView : SlideScrollView{
                 UpdatePanel(true);
             }
 
-            if(GameRoot.Instance.PlayerData.max_unLock_wave > CurrentIndex) {
+            if(PlayersDataSystem.Instance.PlayerData.max_unLock_wave > CurrentIndex) {
                 moveDistance = -moveOneItemLength;
                 CurrentIndex++;
             }

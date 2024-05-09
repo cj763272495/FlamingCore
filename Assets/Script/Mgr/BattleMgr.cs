@@ -4,6 +4,9 @@ using System;
 
 public class BattleMgr : MonoBehaviour {
     private ResSvc resSvc; 
+    private GameRoot gameRoot;
+    private PlayersDataSystem _pds;
+    private BattleSys battleSys;
     private int coin;
 
     public Camera cam;
@@ -49,15 +52,19 @@ public class BattleMgr : MonoBehaviour {
     }
 
     private void HandleStartBattleChanged(bool startBattle) {
-        GameRoot.Instance.bgPlayer.audioSource.volume = StartBattle ? 1 : 0.5f;
+        gameRoot.bgPlayer.audioSource.volume = StartBattle ? 1 : 0.5f;
         if(player) {
             player.gameObject.SetActive(startBattle);
         }
     }
 
     public void Init(int mapid, Action cb = null) {
-        CurWaveIndex = mapid;
+        gameRoot = GameRoot.Instance;
+        _pds = PlayersDataSystem.Instance;
+        battleSys = BattleSys.Instance;
         resSvc = ResSvc.Instance;
+
+        CurWaveIndex = mapid;
         hp = 3;
         coin = 0;
         eliminateEnemyNum = 0;
@@ -68,8 +75,8 @@ public class BattleMgr : MonoBehaviour {
         particleMgr.Init();
         levelData = resSvc.GetMapCfgData(mapid.ToString());
 
-        hitWallClip = ResSvc.Instance.LoadAudio(Constants.HitWallClip,true);
-        deadClip = ResSvc.Instance.LoadAudio(Constants.DeadClip);
+        hitWallClip = resSvc.LoadAudio(Constants.HitWallClip,true);
+        deadClip = resSvc.LoadAudio(Constants.DeadClip);
 
         if (levelData!=null) {
             resSvc.AsyncLoadScene(waveName, () => {
@@ -83,9 +90,9 @@ public class BattleMgr : MonoBehaviour {
                 foreach(var item in FindObjectsOfType<NormalTurret>()) {
                     item.OnPlayerLoaded();
                 }
-                if(GameRoot.Instance.gameSettings.bgAudio) {
-                    GameRoot.Instance.bgPlayer.clipSource = ResSvc.Instance.LoadAudio(Constants.BGGame);
-                    GameRoot.Instance.bgPlayer.PlaySound(true);
+                if(gameRoot.gameSettings.bgAudio) {
+                    gameRoot.bgPlayer.clipSource = resSvc.LoadAudio(Constants.BGGame);
+                    gameRoot.bgPlayer.PlaySound(true);
                 }
 
                 guideLine = guideLine == null ? GameObject.FindGameObjectWithTag("GuideLine").GetComponent<Laser>() : guideLine;
@@ -94,7 +101,7 @@ public class BattleMgr : MonoBehaviour {
 
                 joystick = joystick == null ? GameObject.FindGameObjectWithTag("JoyStick").GetComponent<FloatingJoystick>() : joystick;
                 joystick.gameObject.SetActive(true);
-                joystick.SetIsShow(GameRoot.Instance.gameSettings.showJoyStick);
+                joystick.SetIsShow(gameRoot.gameSettings.showJoyStick);
                 joystick.OnPointerDownAction = OnPointerDown;
                 joystick.OnPointerUpAction = OnPointerUp;
                 OnStartBattleChanged += HandleStartBattleChanged;
@@ -179,8 +186,8 @@ public class BattleMgr : MonoBehaviour {
     }
 
     private void LoadPlayer(Vector3 pos) {
-        string skinId = GameRoot.Instance.PlayerData.cur_skin.ToString();
-        string trailId = GameRoot.Instance.PlayerData.cur_trail.ToString();
+        string skinId = _pds.PlayerData.cur_skin.ToString();
+        string trailId = _pds.PlayerData.cur_trail.ToString();
         player = resSvc.LoadPrefab("Prefab/qiu_" + skinId).GetComponent<PlayerController>();
         GameObject trail = resSvc.LoadPrefab("Prefab/Trails/" + trailId);
         trail.transform.parent = player.transform;
@@ -242,12 +249,12 @@ public class BattleMgr : MonoBehaviour {
             WaitForSeconds wait = new WaitForSeconds(0.5f);
             if (hp > 0) {//剩余生命值大于0才能复活继续
                 deadPos = player.transform.position;
-                BattleSys.Instance.battleWnd.dead_panel.ShowAndStartCountDown();
-                if (GameRoot.Instance.PlayerData.coin < 100) { 
-                    BattleSys.Instance.battleWnd.dead_panel.CannotContinueByCoin();
+                battleSys.battleWnd.dead_panel.ShowAndStartCountDown();
+                if (_pds.PlayerData.coin < 100) { 
+                    battleSys.battleWnd.dead_panel.CannotContinueByCoin();
                 }
             } else {
-                BattleSys.Instance.battleWnd.fail_panel.gameObject.SetActive(true);
+                battleSys.battleWnd.fail_panel.gameObject.SetActive(true);
                 LevelSettlement();
             }
         }

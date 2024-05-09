@@ -1,25 +1,23 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GameRoot : MonoBehaviour
 {
-    public bool gameStart = false;
-    public HomeWnd homeWnd;
-    public LoadingWnd loadingWnd;
-
-    public BattleMgr battleMgr;
-    public SoundPlayer bgPlayer;
-
-    public GameSettings gameSettings;
-    private ResSvc resSvc;
-    public int CurWaveIndex { private set;  get; }
-     
-    public PlayerData PlayerData { private set; get; }
-
     public static GameRoot Instance { get; private set; }
 
-    public string playerID = "11";//测试用玩家数据
+    private ResSvc resSvc;
+    private UIManager uIManager;
+    public BattleMgr _battleMgr; 
+    public SoundPlayer bgPlayer;
+
+    public bool gameStart = false;
+    public GameSettings gameSettings;
+
+    public int CurWaveIndex { private set;  get; }
+
+    private PlayersDataSystem _pds;
 
     private void Awake() {
         if (Instance == null) {
@@ -31,13 +29,13 @@ public class GameRoot : MonoBehaviour
     }
 
     //仅测试用
-    private void Start() {
-        ClearUIRoot();
-        Init();
-        GameStart();
-    }
+    //private void Start() {
+    //    ClearUIRoot();
+    //    Init();
+    //    GameStart();
+    //}
 
-    private void ClearUIRoot() {
+    public void ClearUIRoot() {
         Transform canvas = transform.Find("Canvas");
         for (int i = 0; i < canvas.childCount; i++) {
             canvas.GetChild(i).gameObject.SetActive(false);
@@ -47,44 +45,45 @@ public class GameRoot : MonoBehaviour
     private void Init() {
         resSvc = GetComponent<ResSvc>();
         resSvc.InitSvc();
+        _pds = GetComponent<PlayersDataSystem>();
+        _pds.InitSys();
 
-        BattleSys battle = GetComponent<BattleSys>();
-        battle.InitSys();
-        gameSettings = resSvc.LoadConf();
-        PlayerData = resSvc.GetPlayerData(playerID);
+        uIManager = UIManager.Instance;
+        BattleSys battleSys = GetComponent<BattleSys>();
+        battleSys.InitSys();
+        gameSettings = resSvc.LoadConf(); 
         UIManager.Instance.SetBgAuidoOn(gameSettings.bgAudio);
-        UIManager.Instance.ShowJoyStick(gameSettings.showJoyStick);
-        EnterMainCity();
+        UIManager.Instance.ShowJoyStick(gameSettings.showJoyStick); 
     }
 
     public void GameStart() {
-        homeWnd.Init();
+        ClearUIRoot();
+        Init();
         PlayBgAudio(UIManager.Instance.setPanel.GetBgAudioOn());
     }
 
     public void StartBattle(int wave) {
-        if (PlayerData.energy<0) {
+        if (_pds.PlayerData.energy<0) {
             Debug.Log("能量不足");
             return;
         }
-        if(wave >PlayerData.max_unLock_wave) {
+        if(wave >_pds.PlayerData.max_unLock_wave) {
             //关卡未解锁
             return;
         }
-        homeWnd.gameObject.SetActive(false);
+        uIManager.homeWnd.gameObject.SetActive(false);
         BattleSys.Instance.StartBattle(wave);
     }
 
     public void LevelSettlement(int coin) {//关卡结算
-        PlayerData.coin += coin;
-        PlayerData.max_unLock_wave = CurWaveIndex + 1;
-        resSvc.SavePlayerData(playerID, PlayerData);
+        _pds.PlayerData.coin += coin;
+        _pds.PlayerData.max_unLock_wave = CurWaveIndex + 1;
+        _pds.SavePlayerData(); 
     }
 
     public void EnterMainCity() {
-        resSvc.AsyncLoadScene("MainScene", () => {
-            homeWnd.UpdateHomeWndCoinAndEnergy();
-            homeWnd.gameObject.SetActive(true);
+        resSvc.AsyncLoadScene("MainCity", () => {
+            uIManager.homeWnd.Init();
         });
     }
 

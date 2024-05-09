@@ -5,10 +5,8 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 
 public class HomeWnd : MonoBehaviour
-{
-    //private BattleMgr battleMgr;
-    public BattleWnd battleWnd;
-    //public FloatingJoystick joystick;
+{ 
+    public BattleWnd battleWnd; 
     [SerializeField] private ToggleGroup toggleGroup;
     [SerializeField] private GameObject levelPanel;   // 主页UI面板
     [SerializeField] private GameObject storePanel;  // 商店UI面板
@@ -20,12 +18,14 @@ public class HomeWnd : MonoBehaviour
     public Text coinTxt;
     public Text energyTxt;
     public GameObject mainShow;
+    private PlayersDataSystem pds;
 
 
     public class PageChangedEvent : UnityEvent<PageType> {
     }
 
     public void Init() {
+        pds = PlayersDataSystem.Instance;
         gameObject.SetActive(true);
         ActivatePanel(levelPanel);
         tgLevel.isOn = true;
@@ -33,8 +33,8 @@ public class HomeWnd : MonoBehaviour
     }
 
     public void UpdateHomeWndCoinAndEnergy() { 
-        coinTxt.text = GameRoot.Instance.PlayerData.coin.ToString();
-        energyTxt.text = GameRoot.Instance.PlayerData.energy.ToString();
+        coinTxt.text = pds.PlayerData.coin.ToString();
+        energyTxt.text = pds.PlayerData.energy.ToString();
     }
 
     public void ActivatePanel(GameObject panel) {

@@ -35,5 +35,5 @@ public class PlayerData {
     public int cur_trail;
 }
 
-public class PlayerDataBase: Dictionary<string, PlayerData> { 
+public class PlayerDataDic: Dictionary<string, PlayerData> { 
 }

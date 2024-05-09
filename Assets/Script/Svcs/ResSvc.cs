@@ -5,6 +5,7 @@ using System;
 using System.IO;
 using UnityEngine.SceneManagement;
 using Newtonsoft.Json;
+using Unity.VisualScripting;
 
 public class ResSvc : MonoBehaviour {
     public static ResSvc Instance = null;
@@ -12,17 +13,17 @@ public class ResSvc : MonoBehaviour {
 
     public void InitSvc() {
         Instance = this;
-        LoadMap();
-        LoadPlayerData();
+        LoadMap(); 
     }
 
     private Action prgCB = null;
     public void AsyncLoadScene(string sceneName, Action loaded) {
-        GameRoot.Instance.loadingWnd.SetWndState(); 
+        UIManager uIManager = UIManager.Instance;
+        uIManager.loadingWnd.SetWndState(); 
         AsyncOperation sceneAsync = SceneManager.LoadSceneAsync(sceneName);
         prgCB = () => {
             float val = sceneAsync.progress;
-            GameRoot.Instance.loadingWnd.SetProgress(val);
+            uIManager.loadingWnd.SetProgress(val);
             if (val == 1) {
                 //LoginSys.Instance.OpenLoginWnd();
                 if (loaded != null) {
@@ -30,7 +31,7 @@ public class ResSvc : MonoBehaviour {
                 }
                 prgCB = null;
                 sceneAsync = null;
-                GameRoot.Instance.loadingWnd.SetWndState(false);
+                uIManager.loadingWnd.SetWndState(false);
             }
         };
 
@@ -148,42 +149,38 @@ public class ResSvc : MonoBehaviour {
 
 
     #region PlayerData
-    PlayerDataBase playerDataDic = new();
-    public void  LoadPlayerData() {
+    public void LoadPlayerData( out PlayerDataDic playerDataDic) {
         string filePath = Constants.PlayerDataPath;
-        if (File.Exists(filePath)) {
+        if(File.Exists(filePath)) {
             string json = File.ReadAllText(filePath);
-            playerDataDic = JsonConvert.DeserializeObject<PlayerDataBase>(json);
+            playerDataDic = JsonConvert.DeserializeObject<PlayerDataDic>(json);
         } else {
-            PlayerData pd = new() { 
-                coin = 0,
-                skin = new List<int> { 0 },
-                trail = new List<int> { 0 },
-                energy = 5,
-                max_unLock_wave = 1,
-                cur_skin = 0,
-                cur_trail = 0
-            };
-            SavePlayerData("11", pd);
-        }
+            playerDataDic = null;
+        }// else {
+        //    PlayerData pd = new() { 
+        //        coin = 0,
+        //        skin = new List<int> { 0 },
+        //        trail = new List<int> { 0 },
+        //        energy = 5,
+        //        max_unLock_wave = 1,
+        //        cur_skin = 0,
+        //        cur_trail = 0
+        //    };
+        //    SavePlayerData("11", pd);
+        //}
+        //return playerDataDic.Count==0;
     }
-    public PlayerData GetPlayerData(string Playerid) { 
-        if (playerDataDic.TryGetValue(Playerid, out PlayerData data)) {
-            return data;
-        } else {
-            Debug.Log("未获取到玩家数据");
-            return null;
-        }
-    }
+    
 
-    public void SavePlayerData(string playerID, PlayerData pd) {
-        if (playerDataDic.ContainsKey(playerID)) {
-            playerDataDic[playerID] = pd;
-        } else {
-            playerDataDic.Add(playerID, pd);
+public bool SavePlayerData(PlayerDataDic playerDataDic) {
+        try {
+            string json = JsonConvert.SerializeObject(playerDataDic,Formatting.Indented);
+            WriteJsonToFile(json,Constants.PlayerDataPath);
+            return true;
+        } catch(Exception ex) {
+            Debug.LogError("An error occurred while saving player data: " + ex.Message);
+            return false;
         }
-        string json = JsonConvert.SerializeObject(playerDataDic, Formatting.Indented);
-        WriteJsonToFile(json, Constants.PlayerDataPath);
     }
     #endregion
 

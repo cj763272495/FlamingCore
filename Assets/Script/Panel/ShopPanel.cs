@@ -21,6 +21,7 @@ public class ShopPanel:MonoBehaviour {
     public Toggle trailtg;
 
     private GameRoot gameRoot;
+    private PlayersDataSystem pds;
 
     private bool hasBuy;
 
@@ -28,9 +29,11 @@ public class ShopPanel:MonoBehaviour {
         skinView.gameObject.SetActive(true);
         trailView.gameObject.SetActive(false);
         gameRoot = GameRoot.Instance;
+        pds = PlayersDataSystem.Instance;
+
         selectBuySkin = true;
-        UpdateScrowViewLockInfo(skinView,gameRoot.PlayerData.skin);
-        UpdateScrowViewLockInfo(trailView,gameRoot.PlayerData.trail);
+        UpdateScrowViewLockInfo(skinView,pds.PlayerData.skin);
+        UpdateScrowViewLockInfo(trailView,pds.PlayerData.trail);
     }
 
     private void Update() {
@@ -40,8 +43,8 @@ public class ShopPanel:MonoBehaviour {
     // 定义一个方法用于设置购买按钮和装备文本的状态
     void SetPurchaseBtnInfo() {
         int currentViewIndex = selectBuySkin ? skinView.CurrentIndex : trailView.CurrentIndex;
-        int currentPlayerDataIndex = selectBuySkin ? gameRoot.PlayerData.cur_skin : gameRoot.PlayerData.cur_trail;
-        bool hasBuy = selectBuySkin ? gameRoot.PlayerData.skin.Contains(skinView.CurrentIndex - 1) : gameRoot.PlayerData.trail.Contains(trailView.CurrentIndex - 1);
+        int currentPlayerDataIndex = selectBuySkin ? pds.PlayerData.cur_skin : pds.PlayerData.cur_trail;
+        bool hasBuy = selectBuySkin ? pds.PlayerData.skin.Contains(skinView.CurrentIndex - 1) : pds.PlayerData.trail.Contains(trailView.CurrentIndex - 1);
         int price = selectBuySkin ? Constants.skinPrice[currentViewIndex - 1] : Constants.trailPrice[currentViewIndex - 1];
         priceTxt.text = price.ToString();
         if(selectBuySkin) {
@@ -51,7 +54,7 @@ public class ShopPanel:MonoBehaviour {
         }
 
         bool isEquipped = currentViewIndex - 1 == currentPlayerDataIndex;
-        bool canBuy = GameRoot.Instance.PlayerData.coin > int.Parse(priceTxt.text);
+        bool canBuy = pds.PlayerData.coin > int.Parse(priceTxt.text);
         equiptTxt.gameObject.SetActive(hasBuy);
         equiptTxt.text = isEquipped ? "已装备" : "装备";
 
@@ -88,23 +91,24 @@ public class ShopPanel:MonoBehaviour {
 
     public void ClickBuy() {
         if(!hasBuy) {
-            if(gameRoot.PlayerData.coin < int.Parse(priceTxt.text)) {
+            if(pds.PlayerData.coin < int.Parse(priceTxt.text)) {
                 Debug.Log("余额不足");
                 return;
             }
-            gameRoot.PlayerData.coin -= int.Parse(priceTxt.text);
+            pds.PlayerData.coin -= int.Parse(priceTxt.text);
             if(selectBuySkin) {
-                gameRoot.PlayerData.skin.Add(skinView.CurrentIndex - 1);
-                UpdateScrowViewLockInfo(skinView,gameRoot.PlayerData.skin);
+                pds.PlayerData.skin.Add(skinView.CurrentIndex - 1);
+                UpdateScrowViewLockInfo(skinView,pds.PlayerData.skin);
             } else {
-                gameRoot.PlayerData.trail.Add(trailView.CurrentIndex - 1);
-                UpdateScrowViewLockInfo(trailView,gameRoot.PlayerData.trail);
+                pds.PlayerData.trail.Add(trailView.CurrentIndex - 1);
+                UpdateScrowViewLockInfo(trailView,pds.PlayerData.trail);
             }
+            PlayersDataSystem.Instance.SavePlayerData();
         } else {
             if(selectBuySkin) {//已经购买直接装备上
-                gameRoot.PlayerData.cur_skin = skinView.CurrentIndex - 1;
+                pds.PlayerData.cur_skin = skinView.CurrentIndex - 1;
             } else {
-                gameRoot.PlayerData.cur_trail = trailView.CurrentIndex - 1;
+                pds.PlayerData.cur_trail = trailView.CurrentIndex - 1;
             }
         }
     }
