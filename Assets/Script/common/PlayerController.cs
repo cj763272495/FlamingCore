@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour {
 
     public Vector3 Dir {
         get { return _dir; }
+        set { _dir = value; }
     }
      
     public Rigidbody rb;
@@ -117,5 +118,16 @@ public class PlayerController : MonoBehaviour {
         gameObject.layer = LayerMask.NameToLayer("Player");
         yield return new WaitForSeconds(3f);
         gameObject.layer = LayerMask.NameToLayer("Default");
+    }
+
+    public void EnterOverloadMode() {
+        _speed = Constants.OverloadSpeed;
+        destructible = false;
+        Invoke("ExitOverloadMode", 2);//2秒后退出过载模式
+    }
+
+    public void ExitOverloadMode() {
+        _speed = Constants.PlayerSpeed;
+        destructible = true;
     }
 }

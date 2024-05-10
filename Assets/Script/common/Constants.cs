@@ -12,6 +12,9 @@ public class Constants {
     public const float PlayerSpeed = 12;
     public const float RotateSpeed = 2000;
 
+    //获得加速时的速度
+    public const float OverloadSpeed = 20;
+
     //最大guideline长度
     public const float MaxGuideLineLen = 7;
 
