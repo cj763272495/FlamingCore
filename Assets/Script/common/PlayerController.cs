@@ -12,7 +12,6 @@ public class PlayerController : MonoBehaviour {
 
     public Vector3 Dir {
         get { return _dir; }
-        set { _dir = value; }
     }
      
     public Rigidbody rb;
@@ -129,5 +128,13 @@ public class PlayerController : MonoBehaviour {
     public void ExitOverloadMode() {
         _speed = Constants.PlayerSpeed;
         destructible = true;
+    }
+    public void EnterIdleState() {
+        gameObject.SetActive(false);
+           isMove = false;
+    }
+    public void ExitIdleState() {
+        isMove = true;
+        gameObject.SetActive(true);
     }
 }

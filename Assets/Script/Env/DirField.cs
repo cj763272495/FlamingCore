@@ -6,8 +6,8 @@ public class DirField:MonoBehaviour {
     private float _largeSpeed = 14f;
     private float _reduceSpeed = 6f;
 
-    private float targetScale = 3f;
-    private float originalScale=2;
+    private float targetScale = 2f;
+    private float originalScale=1;
     public Transform modelTrans;
 
     private void OnTriggerEnter(Collider other) {
@@ -15,7 +15,7 @@ public class DirField:MonoBehaviour {
             StartCoroutine(ScaleObjectCoroutine(modelTrans));
             PlayerController playerController = other.GetComponent<PlayerController>();
             playerController.transform.position = new Vector3(modelTrans.position.x,playerController.transform.position.y,modelTrans.position.z);
-            playerController.Dir = transform.forward;
+            playerController.SetDir(transform.forward);
             playerController.EnterOverloadMode();
         }
     }
@@ -26,13 +26,13 @@ public class DirField:MonoBehaviour {
 
         while(newScale < targetScale) {
             newScale = Mathf.Min(newScale + (_largeSpeed * Time.deltaTime),targetScale);
-            transform.localScale = new Vector3(newScale,newScale,transform.localScale.z);
+            transform.localScale = new Vector3(newScale,transform.localScale.y,newScale);
             yield return null;
         }
 
         while(newScale > originalScale) {
             newScale = Mathf.Max(newScale - (_reduceSpeed * Time.deltaTime),originalScale);
-            transform.localScale = new Vector3(newScale,newScale,transform.localScale.z);
+            transform.localScale = new Vector3(newScale,transform.localScale.y,newScale);
             yield return null;
         }
     }

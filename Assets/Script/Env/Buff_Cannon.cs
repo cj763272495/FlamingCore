@@ -1,18 +1,53 @@
-using System.Collections;
-using System.Collections.Generic;
+using System.Collections; 
 using UnityEngine;
 
 public class Buff_Cannon : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+    public Animator animator;
+    private PlayerController playerController;
+    public Collider _collider;
+    private bool rotateTrt;
+    
+    private void OnTriggerEnter(Collider other) {
+        if(other.gameObject.tag == "Player") {
+            _collider.enabled = false;
+            ToolClass.SetGameObjectPosXZ(other.gameObject, transform);
+            animator.SetBool("Show",true);
+            playerController = other.gameObject.GetComponent<PlayerController>();
+            playerController.EnterIdleState();
+            BattleSys.Instance.battleMgr.joystick.OnPointerUpAction += OnPointerUp;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+
+    public void OnPointerDown() {
+        rotateTrt = true;
+        StartCoroutine(RotateTrt());
+    }
+
+    private IEnumerator RotateTrt() {
+        while(rotateTrt) { 
+            transform.rotation = Quaternion.LookRotation(BattleSys.Instance.battleMgr.joyStickDir);
+            yield return null;
+        }
+    }
+
+    public void OnPointerUp() {
+        animator.SetBool("Attack",true);
+        rotateTrt = false;
+    }
+
+
+    public void Attack() {
+        playerController.ExitIdleState();
+        playerController.EnterOverloadMode();
+        BattleSys.Instance.battleMgr.joystick.OnPointerUpAction -= OnPointerUp; 
+    }
+
+
+    public void EndHideAnimation() {  
+        _collider.enabled = true;
+        animator.SetBool("Show",false);
+        animator.SetBool("Attack",false);
     }
 }
