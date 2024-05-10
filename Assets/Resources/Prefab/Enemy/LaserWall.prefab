@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a4e50f254676b6240b7a516d39acf737, type: 2}
+  - {fileID: 2100000, guid: 10fe85f557ba00e4abfa54cf0dc11585, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -128,7 +128,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  rb: {fileID: 5789005286412307543}
+  destoryCoinValue: 5
+  canAttack: 0
 --- !u!1 &6619905295742280801
 GameObject:
   m_ObjectHideFlags: 0
@@ -258,4 +259,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  rb: {fileID: 6619905295742280804}
+  destoryCoinValue: 5
+  canAttack: 0

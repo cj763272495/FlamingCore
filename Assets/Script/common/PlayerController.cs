@@ -5,13 +5,13 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class PlayerController : MonoBehaviour {  
-    private float speed;
-    private float rotateSpeed;
+    protected float _speed;
+    private float _rotateSpeed;
     public bool isMove;
-    Vector3 dir;
+    protected Vector3 _dir;
 
     public Vector3 Dir {
-        get { return dir; }
+        get { return _dir; }
     }
      
     public Rigidbody rb;
@@ -22,18 +22,17 @@ public class PlayerController : MonoBehaviour {
     public BattleMgr battleMgr;
     public bool destructible=true;
 
-    public void Init() {
-        rb = GetComponentInChildren<Rigidbody>();
+    public virtual void Init() { 
         rb.maxAngularVelocity = 30;
         lastPos = transform.position;
         camTrans = Camera.main.transform;
         destructible = true;
-        speed = Constants.PlayerSpeed;
-        rotateSpeed = Constants.RotateSpeed;
+        _speed = Constants.PlayerSpeed;
+        _rotateSpeed = Constants.RotateSpeed;
         isMove = true;
     }
 
-    void Update() {
+    protected virtual void Update() {
         if(battleMgr.StartBattle && isMove) { 
             SetMove();
             SetRotate();
@@ -42,10 +41,18 @@ public class PlayerController : MonoBehaviour {
     }
     
     public void SetDir(Vector3 direnction) {
-        dir = direnction;
+        _dir = direnction;
     }
 
-    private void OnCollisionEnter(Collision collision) {
+    public virtual void OnPointerDown() {
+        
+    }
+
+    public virtual void OnPointerUp() {
+
+    }
+
+    protected virtual void OnCollisionEnter(Collision collision) {
         int collisionLayer = collision.gameObject.layer;
         ContactPoint contactPoint = collision.contacts[0];
 
@@ -65,7 +72,7 @@ public class PlayerController : MonoBehaviour {
         inNormal.y = 0;
         Vector3 tempDir = Vector3.Reflect(inDirection,inNormal).normalized;
         if(tempDir!=Vector3.zero && tempDir.y==0) {
-            dir = Vector3.Reflect(inDirection,inNormal).normalized;
+            _dir = Vector3.Reflect(inDirection,inNormal).normalized;
         }
         lastPos = transform.position;//更新上一次位置，用于计算反射方向
     }
@@ -81,13 +88,13 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    private void SetMove() {
+    protected virtual void SetMove() {
         transform.position = Vector3.MoveTowards(transform.position, 
-            transform.position + dir.normalized, speed * Time.deltaTime);
+            transform.position + _dir.normalized, _speed * Time.deltaTime);
     }
     private void SetRotate() {
-        Vector3 rotationAxis = new Vector3(dir.z, 0f, -dir.x).normalized;
-        float rotationAmount = speed * rotateSpeed;
+        Vector3 rotationAxis = new Vector3(_dir.z, 0f, -_dir.x).normalized;
+        float rotationAmount = _speed * _rotateSpeed;
         Vector3 angularVelocity = rotationAxis * rotationAmount;
         rb.angularVelocity = angularVelocity;
     }

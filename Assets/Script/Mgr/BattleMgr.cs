@@ -1,9 +1,9 @@
-using System.Collections; 
+using System.Collections;
 using UnityEngine;
-using System;  
+using System;
 
-public class BattleMgr : MonoBehaviour {
-    private ResSvc resSvc; 
+public class BattleMgr:MonoBehaviour {
+    private ResSvc resSvc;
     private GameRoot gameRoot;
     private PlayersDataSystem _pds;
     private BattleSys battleSys;
@@ -27,8 +27,10 @@ public class BattleMgr : MonoBehaviour {
                 startBattle = value;
                 OnStartBattleChanged?.Invoke(startBattle);
             }
-        } 
+        }
     }
+
+    public Vector3 joyStickDir;
 
     public event Action<bool> OnStartBattleChanged;
     public ParticleMgr particleMgr;
@@ -42,13 +44,13 @@ public class BattleMgr : MonoBehaviour {
     private AudioClip deadClip;
 
     private Coroutine makeGuideLineCoroutine;
-     
+
     public void EarnCoin(int num) {
         coin += num;
     }
 
     public void EliminateEnemy() {
-        eliminateEnemyNum ++;
+        eliminateEnemyNum++;
     }
 
     private void HandleStartBattleChanged(bool startBattle) {
@@ -58,7 +60,7 @@ public class BattleMgr : MonoBehaviour {
         }
     }
 
-    public void Init(int mapid, Action cb = null) {
+    public void Init(int mapid,Action cb = null) {
         gameRoot = GameRoot.Instance;
         _pds = PlayersDataSystem.Instance;
         battleSys = BattleSys.Instance;
@@ -68,8 +70,8 @@ public class BattleMgr : MonoBehaviour {
         hp = 3;
         coin = 0;
         eliminateEnemyNum = 0;
-        string waveName = "Level" + mapid;
-        battleWnd.hp_txt.text = "x "+ hp;
+        string waveName = $"Level{mapid}";
+        battleWnd.hp_txt.text = $"x {hp}";
         particleMgr = gameObject.AddComponent<ParticleMgr>();
         particleMgr.battleMgr = this;
         particleMgr.Init();
@@ -78,8 +80,20 @@ public class BattleMgr : MonoBehaviour {
         hitWallClip = resSvc.LoadAudio(Constants.HitWallClip,true);
         deadClip = resSvc.LoadAudio(Constants.DeadClip);
 
-        if (levelData!=null) {
-            resSvc.AsyncLoadScene(waveName, () => {
+        if(levelData != null) {
+            resSvc.AsyncLoadScene(waveName,() => {
+                if(!guideLine) {
+                    guideLine = GameObject.FindGameObjectWithTag("GuideLine").GetComponent<Laser>();
+                }
+                guideLine.gameObject.SetActive(false);
+                if(!joystick) {
+                    joystick = GameObject.FindGameObjectWithTag("JoyStick").GetComponent<FloatingJoystick>();
+                }
+                joystick.gameObject.SetActive(true);
+                joystick.SetIsShow(gameRoot.gameSettings.showJoyStick);
+                joystick.OnPointerDownAction = OnPointerDown;
+                joystick.OnPointerUpAction = OnPointerUp;
+
                 LoadPlayer(new Vector3(
                     levelData.PlayerStartPosition.X,
                     levelData.PlayerStartPosition.Y,
@@ -87,38 +101,36 @@ public class BattleMgr : MonoBehaviour {
                 SetCameraPositionAndRotation(levelData);
                 camOriginOffset = player.transform.position - cam.transform.position;
 
-                foreach(var item in FindObjectsOfType<NormalTurret>()) {
+                guideLine.player = player;
+                var normalTurrets = FindObjectsOfType<NormalTurret>();
+                foreach(var item in normalTurrets) {
                     item.OnPlayerLoaded();
                 }
+
                 if(gameRoot.gameSettings.bgAudio) {
                     gameRoot.bgPlayer.clipSource = resSvc.LoadAudio(Constants.BGGame);
                     gameRoot.bgPlayer.PlaySound(true);
                 }
 
-                guideLine = guideLine == null ? GameObject.FindGameObjectWithTag("GuideLine").GetComponent<Laser>() : guideLine;
-                guideLine.gameObject.SetActive(false);
-                guideLine.player = player;
 
-                joystick = joystick == null ? GameObject.FindGameObjectWithTag("JoyStick").GetComponent<FloatingJoystick>() : joystick;
-                joystick.gameObject.SetActive(true);
-                joystick.SetIsShow(gameRoot.gameSettings.showJoyStick);
-                joystick.OnPointerDownAction = OnPointerDown;
-                joystick.OnPointerUpAction = OnPointerUp;
                 OnStartBattleChanged += HandleStartBattleChanged;
                 StartBattle = true;
-                if (cb != null) {
-                    cb();
-                }
+                cb?.Invoke();
             });
         }
     }
+
+    private void LevelInit() {
+
+    }
+
     public void OnPointerDown() {
         if(!StartBattle) {
             return;
         }
         Time.timeScale = 0.1f;
         guideLine.gameObject.SetActive(true);
-        makeGuideLineCoroutine = StartCoroutine(MakeGuideLineCoroutine()); 
+        makeGuideLineCoroutine = StartCoroutine(MakeGuideLineCoroutine());
     }
     private IEnumerator MakeGuideLineCoroutine() {
         while(true) {
@@ -147,10 +159,10 @@ public class BattleMgr : MonoBehaviour {
     }
 
     private void Update() {
-        if (!StartBattle) {
+        if(!StartBattle) {
             return;
         }
-        if (eliminateEnemyNum == 1/* levelData.EnemyNum*/) {// 根据当前消灭得敌人数量来判断游戏是否胜利
+        if(eliminateEnemyNum == 1/* levelData.EnemyNum*/) {// 根据当前消灭得敌人数量来判断游戏是否胜利
             player.destructible = false;
             EndBattle(true);
         }
@@ -169,9 +181,10 @@ public class BattleMgr : MonoBehaviour {
         Vector3 axis = Vector3.Cross(Vector3.forward,direction);
         // 创建四元数
         Quaternion rotation = Quaternion.AngleAxis(angle,axis);
+        joyStickDir = rotation * Vector3.forward;
         guideLine.SetDir(rotation * Vector3.forward);
     }
-    void SetCameraPositionAndRotation(LevelData levelData) {
+    private void SetCameraPositionAndRotation(LevelData levelData) {
         cam.transform.position = new Vector3(
             levelData.CameraOffset.X,
             levelData.CameraOffset.Y,
@@ -195,9 +208,11 @@ public class BattleMgr : MonoBehaviour {
         trail.transform.localPosition = Vector3.zero;
         player.transform.position = pos;
         player.transform.localEulerAngles = Vector3.zero;
-        player.transform.localScale = Vector3.one; 
+        player.transform.localScale = Vector3.one;
         player.Init();
         player.battleMgr = this;
+        joystick.OnPointerDownAction += player.OnPointerDown;
+        joystick.OnPointerUpAction += player.OnPointerUp;
         cam = Camera.main;
     }
 
@@ -223,6 +238,7 @@ public class BattleMgr : MonoBehaviour {
         hp--;
         battleWnd.hp_txt.text = "x " + hp;
         LoadPlayer(deadPos);
+        guideLine.player = player;
         player.GetComponent<PlayerController>().Revive();
         foreach(var item in FindObjectsOfType<NormalTurret>()) {
             item.OnPlayerLoaded();
@@ -237,20 +253,20 @@ public class BattleMgr : MonoBehaviour {
         Init(CurWaveIndex);
     }
 
-    public void EndBattle(bool isWin, Vector3 contactPoint=new Vector3()) { 
-        if (isWin) {
+    public void EndBattle(bool isWin,Vector3 contactPoint = new Vector3()) {
+        if(isWin) {
             StartCoroutine(SmoothTransitionToFov());
-            Invoke(nameof(GameWin), 1f);
+            Invoke(nameof(GameWin),1f);
         } else {
             ParticleMgr.Instance.PlayDeadParticle(contactPoint);
             AudioManager.Instance.PlaySound(deadClip);
             StartBattle = false;
             Time.timeScale = 1;
             WaitForSeconds wait = new WaitForSeconds(0.5f);
-            if (hp > 0) {//剩余生命值大于0才能复活继续
+            if(hp > 0) {//剩余生命值大于0才能复活继续
                 deadPos = player.transform.position;
                 battleSys.battleWnd.dead_panel.ShowAndStartCountDown();
-                if (_pds.PlayerData.coin < 100) { 
+                if(_pds.PlayerData.coin < 100) {
                     battleSys.battleWnd.dead_panel.CannotContinueByCoin();
                 }
             } else {
@@ -271,26 +287,27 @@ public class BattleMgr : MonoBehaviour {
     private void LevelSettlement() {//关卡结算
         GameRoot.Instance.LevelSettlement(coin);
     }
-     
+
 
     //拉近镜头
     IEnumerator SmoothTransitionToFov() {
-        float transitionDuration = 1.0f;
-        float targetFov = 20f;
-        float startTime = Time.time;
+        if(cam) {
+            float transitionDuration = 1.0f;
+            float targetFov = 20f;
+            float startTime = Time.time;
 
-        while (Time.time < startTime + transitionDuration) {
-            float t = (Time.time - startTime) / transitionDuration;
-            // 使用EaseIn函数来实现先快后慢的效果
-            t *= t;// 根据需要调整这个方程来改变过渡曲线
-            if (cam) {
-                cam.fieldOfView = Mathf.SmoothStep(cam.fieldOfView, targetFov, t);
+            while(Time.time < startTime + transitionDuration) {
+                float t = (Time.time - startTime) / transitionDuration;
+                // 使用EaseIn函数来实现先快后慢的效果
+                t *= t;// 根据需要调整这个方程来改变过渡曲线
+
+                cam.fieldOfView = Mathf.SmoothStep(cam.fieldOfView,targetFov,t);
+                yield return null; // 等待下一帧
             }
-            yield return null; // 等待下一帧
-        }
 
-        // 确保最终的FOV是targetFov
-        cam.fieldOfView = targetFov;
+            // 确保最终的FOV是targetFov
+            cam.fieldOfView = targetFov;
+        }
     }
 
     public void DestoryBattle() {

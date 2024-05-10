@@ -110,7 +110,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6137123489044143428}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: 0.902, z: 0}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -143,14 +143,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e04a8d8890120742ac7e37b15c14d34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  joystick: {fileID: 0}
-  laser: {fileID: 0}
-  rb: {fileID: 0}
+  isMove: 0
+  rb: {fileID: 3634230634053788631}
+  lastPos: {x: 0, y: 0, z: 0}
   camTrans: {fileID: 0}
   battleMgr: {fileID: 0}
   destructible: 0
-  shakeAmount: 0.01
-  shakeDuration: 0.01
 --- !u!54 &3634230634053788631
 Rigidbody:
   m_ObjectHideFlags: 0

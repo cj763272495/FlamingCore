@@ -5799,6 +5799,7 @@ MonoBehaviour:
   equiptTxt: {fileID: 623952461}
   skintg: {fileID: 1461753804}
   trailtg: {fileID: 95008737}
+  descript: {fileID: 1496603962}
 --- !u!114 &905627559
 MonoBehaviour:
   m_ObjectHideFlags: 0

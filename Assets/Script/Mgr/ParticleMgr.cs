@@ -1,8 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Security.Cryptography;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class ParticleMgr : MonoBehaviour
@@ -13,6 +8,7 @@ public class ParticleMgr : MonoBehaviour
     public GameObject deadParticle;
     public GameObject bulletDestoryParticle;
     public GameObject getCoinParticle;
+    public GameObject dashParticle;
 
     public BattleMgr battleMgr;
 
@@ -40,7 +36,17 @@ public class ParticleMgr : MonoBehaviour
         //获取金币特效 
         getCoinParticle = ResSvc.Instance.LoadPrefab("Prefab/Particles/GetCoinParticle");
         PoolManager.Instance.InitPool(getCoinParticle, 5, battleMgr.transform);
+    }
 
+    public void AddCustomParticle(GameObject particle, int num=3) {
+        PoolManager.Instance.InitPool(particle, num, battleMgr.transform);
+    }
+
+    public void PlayCustomParticle(GameObject particle, Vector3 position) {
+        GameObject go = PoolManager.Instance.GetInstance<GameObject>(particle);
+        go.transform.position =position;
+        go.transform.parent = battleMgr.transform;
+        go.GetComponentInChildren<ParticleSystem>().Play();
     }
 
     public void PlayHitWallParticle(ContactPoint contact) {
@@ -94,7 +100,6 @@ public class ParticleMgr : MonoBehaviour
         go.transform.parent = battleMgr.transform;
         go.GetComponent<ParticleSystem>().Play();
     }
-
 
     public void PlayDeadParticle(Vector3 point) {
         GameObject go = PoolManager.Instance.

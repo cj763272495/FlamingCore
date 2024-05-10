@@ -17,20 +17,6 @@ public class UIManager : MonoBehaviour
     private void Awake() {
         Instance = this;
     }
-     
-    public void OpenPasueWnd(bool open = true) {
-        pausePanel.gameObject.SetActive(open);
-    }
-
-    public void GameOver() {
-        deadPanel.gameObject.SetActive(true);
-    }
-    public void GamePause() {
-        pausePanel.gameObject.SetActive(true);
-    }
-    public void GameWin() {
-        winPanel.gameObject.SetActive(true);
-    }
 
     public void SetBgAuidoOn(bool isOn) {
         setPanel.SetBgAudio(isOn);

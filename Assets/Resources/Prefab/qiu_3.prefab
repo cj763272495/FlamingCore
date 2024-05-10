@@ -130,14 +130,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e04a8d8890120742ac7e37b15c14d34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  joystick: {fileID: 0}
-  laser: {fileID: 0}
-  rb: {fileID: 0}
+  isMove: 0
+  rb: {fileID: 4149939227055025034}
+  lastPos: {x: 0, y: 0, z: 0}
   camTrans: {fileID: 0}
   battleMgr: {fileID: 0}
   destructible: 0
-  shakeAmount: 0.5
-  shakeDuration: 0.2
 --- !u!135 &5664605554525088876
 SphereCollider:
   m_ObjectHideFlags: 0

@@ -93,10 +93,10 @@ GameObject:
   m_Component:
   - component: {fileID: 5610667576237703866}
   - component: {fileID: 5610667576237703812}
-  - component: {fileID: 5610667576237703813}
   - component: {fileID: 2040093928280756694}
+  - component: {fileID: -84302143201431472}
   m_Layer: 6
-  m_Name: NormalTrt
+  m_Name: TripleTrt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -136,23 +136,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
---- !u!114 &5610667576237703813
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5610667576237703867}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a4305c60ae61bc478cf5ead7087dcfe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  destoryCoinValue: 5
-  canAttack: 0
-  shootPoint: {fileID: 5610667577144074538}
-  countDown: {fileID: 5610667577246653361}
 --- !u!65 &2040093928280756694
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -166,6 +149,23 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.25, y: 0.245, z: 0.25}
   m_Center: {x: 0, y: 0.1, z: 0}
+--- !u!114 &-84302143201431472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5610667576237703867}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a28c546881e1d4b459be41413f03c93d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  destoryCoinValue: 5
+  canAttack: 0
+  shootPoint: {fileID: 5610667577144074538}
+  countDown: {fileID: 5610667577246653361}
 --- !u!1 &5610667577246653367
 GameObject:
   m_ObjectHideFlags: 0
