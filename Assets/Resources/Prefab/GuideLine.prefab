@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 944967820279900941}
   - component: {fileID: 944967820279900940}
   - component: {fileID: 944967820279900942}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GuideLine
   m_TagString: GuideLine
   m_Icon: {fileID: 0}
@@ -153,5 +153,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collisionLayer:
     serializedVersion: 2
-    m_Bits: 1088
+    m_Bits: 5184
   player: {fileID: 0}

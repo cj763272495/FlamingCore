@@ -18,8 +18,10 @@ public class NormalTurret : Enemy {
 
     private void Update() {
         if(player) {
+            Vector3 dir = player.transform.position - transform.position;
+            dir.y = 0;
             transform.rotation = Quaternion.Lerp(transform.rotation,
-                Quaternion.LookRotation(player.transform.position - transform.position),
+                Quaternion.LookRotation(dir),
                 rotateSpeed * Time.deltaTime);
             if(!canAttack) {
                 return;

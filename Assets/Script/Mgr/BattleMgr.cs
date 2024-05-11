@@ -36,7 +36,7 @@ public class BattleMgr:MonoBehaviour {
     public ParticleMgr particleMgr;
 
     public FloatingJoystick joystick;
-    public Laser guideLine;
+    public GuideLine guideLine;
 
     public int CurWaveIndex { private set; get; }
 
@@ -83,7 +83,7 @@ public class BattleMgr:MonoBehaviour {
         if(levelData != null) {
             resSvc.AsyncLoadScene(waveName,() => {
                 if(!guideLine) {
-                    guideLine = GameObject.FindGameObjectWithTag("GuideLine").GetComponent<Laser>();
+                    guideLine = GameObject.FindGameObjectWithTag("GuideLine").GetComponent<GuideLine>();
                 }
                 guideLine.gameObject.SetActive(false);
                 if(!joystick) {
@@ -169,6 +169,9 @@ public class BattleMgr:MonoBehaviour {
     }
 
     private void MakeGuideLine() {
+        if(!player) {
+            return;
+        }
         Vector3 direction = (Vector3.forward * joystick.Vertical + Vector3.right * joystick.Horizontal).normalized;
         if(direction == Vector3.zero) {
             direction = player.Dir;
@@ -182,7 +185,7 @@ public class BattleMgr:MonoBehaviour {
         // 创建四元数
         Quaternion rotation = Quaternion.AngleAxis(angle,axis);
         joyStickDir = rotation * Vector3.forward;
-        guideLine.SetDir(rotation * Vector3.forward);
+        guideLine.SetDir(player.transform, rotation * Vector3.forward);
     }
     private void SetCameraPositionAndRotation(LevelData levelData) {
         cam.transform.position = new Vector3(

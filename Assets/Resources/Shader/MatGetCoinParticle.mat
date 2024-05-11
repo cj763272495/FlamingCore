@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Shader Graphs_New Shader Graph
+  m_Name: MatGetCoinParticle
   m_Shader: {fileID: -6465566751694194690, guid: 36287f8ec8f53a34687ece3ac64076d8, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []

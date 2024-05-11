@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class ToolClass
 {
-     public static void SetGameObjectPosXZ(GameObject player, Transform targetTrans) {
-        player.transform.position = new Vector3(targetTrans.position.x, player.transform.position.y, targetTrans.position.z);
+     public static void SetGameObjectPosXZ(GameObject player, Vector3 pos) {
+        player.transform.position = new Vector3(pos.x, player.transform.position.y,pos.z);
     }
 }
