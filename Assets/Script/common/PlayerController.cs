@@ -49,7 +49,7 @@ public class PlayerController : MonoBehaviour {
     }
 
     public virtual void OnPointerUp() {
-
+        ExitOverloadMode();
     }
 
     protected virtual void OnCollisionEnter(Collision collision) {

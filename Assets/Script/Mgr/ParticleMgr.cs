@@ -1,4 +1,7 @@
 using UnityEngine;
+using static UnityEngine.ParticleSystem;
+using UnityEngine.UIElements;
+using System.Collections;
 
 public class ParticleMgr : MonoBehaviour
 {
@@ -9,6 +12,7 @@ public class ParticleMgr : MonoBehaviour
     public GameObject bulletDestoryParticle;
     public GameObject getCoinParticle;
     public GameObject dashParticle;
+    public GameObject overLoadParticle;
 
     public BattleMgr battleMgr;
 
@@ -36,7 +40,10 @@ public class ParticleMgr : MonoBehaviour
         //获取金币特效 
         getCoinParticle = ResSvc.Instance.LoadPrefab("Prefab/Particles/GetCoinParticle");
         PoolManager.Instance.InitPool(getCoinParticle, 5, battleMgr.transform);
-    }
+         
+        overLoadParticle = ResSvc.Instance.LoadPrefab("Prefab/Particles/OverLoadParticle");
+        PoolManager.Instance.InitPool(overLoadParticle, 2, battleMgr.transform);
+}
 
     public void AddCustomParticle(GameObject particle, int num=3) {
         PoolManager.Instance.InitPool(particle, num, battleMgr.transform);
@@ -102,10 +109,35 @@ public class ParticleMgr : MonoBehaviour
     }
 
     public void PlayDeadParticle(Vector3 point) {
-        GameObject go = PoolManager.Instance.
-    GetInstance<GameObject>(deadParticle);
+        GameObject go = PoolManager.Instance.GetInstance<GameObject>(deadParticle);
         go.transform.position = point;
         go.transform.parent = battleMgr.transform;
         go.GetComponent<ParticleSystem>().Play();
+    }
+    public void PlayOverLoadParticle( PlayerController player) {
+        GameObject go = PoolManager.Instance.GetInstance<GameObject>(overLoadParticle);
+        go.transform.position = player.transform.position;
+        go.transform.parent = battleMgr.transform;
+        go.transform.forward = player.Dir;
+        go.GetComponentInChildren<ParticleSystem>().Play();
+        // 使用协程实现粒子特效跟随玩家，播放完成后停止协程
+        StartCoroutine(OverLoadParticleFollowPlayer(go, player));
+    }
+    private IEnumerator OverLoadParticleFollowPlayer(GameObject particle, PlayerController player) {
+        while(particle != null && particle.GetComponentInChildren<ParticleSystem>().isPlaying) {
+            particle.transform.position = player.transform.position; 
+            particle.transform.forward = player.Dir;
+            yield return null;
+        }
+        if(player.destructible) {
+            particle.GetComponentInChildren<ParticleSystem>().Stop(); 
+        }
+    }
+
+    private void PlayParticle(GameObject particle, Vector3 position) {
+        GameObject go = PoolManager.Instance.GetInstance<GameObject>(particle);
+        go.transform.position = position;
+        go.transform.parent = battleMgr.transform;
+        go.GetComponentInChildren<ParticleSystem>().Play();
     }
 }

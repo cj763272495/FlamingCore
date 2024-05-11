@@ -17,6 +17,7 @@ public class DirField:MonoBehaviour {
             playerController.transform.position = new Vector3(modelTrans.position.x,playerController.transform.position.y,modelTrans.position.z);
             playerController.SetDir(transform.forward);
             playerController.EnterOverloadMode();
+            ParticleMgr.Instance.PlayOverLoadParticle(playerController);
         }
     }
 

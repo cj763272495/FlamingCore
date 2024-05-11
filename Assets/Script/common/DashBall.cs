@@ -28,6 +28,7 @@ public class DashBall:PlayerController {
 
     public override void OnPointerDown() { 
         //显示闪现落地的位置
+        base.OnPointerDown();
         _showTargetPos = true; 
         _targetPosImg.transform.position = transform.position;
         _targetPosImg.gameObject.SetActive(true);
@@ -52,7 +53,9 @@ public class DashBall:PlayerController {
             _targetPosImg.transform.position = transform.position + direction * _flashDistance * magnitude;
         }
     }
+
     public override void OnPointerUp() {
+        base.OnPointerUp();
         ParticleMgr.Instance.PlayCustomParticle(dashParticle,transform.position);
         //闪现到落地的位置
         transform.position = new Vector3(_targetPosImg.transform.position.x,transform.position.y,_targetPosImg.transform.position.z);

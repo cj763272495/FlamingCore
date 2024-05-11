@@ -204,7 +204,7 @@ public class BattleMgr:MonoBehaviour {
     private void LoadPlayer(Vector3 pos) {
         string skinId = _pds.PlayerData.cur_skin.ToString();
         string trailId = _pds.PlayerData.cur_trail.ToString();
-        player = resSvc.LoadPrefab("Prefab/qiu_" + skinId).GetComponent<PlayerController>();
+        player = resSvc.LoadPrefab("Prefab/Cores/qiu_" + skinId).GetComponent<PlayerController>();
         GameObject trail = resSvc.LoadPrefab("Prefab/Trails/" + trailId);
         trail.transform.parent = player.transform;
         trail.transform.localScale = Vector3.one;
