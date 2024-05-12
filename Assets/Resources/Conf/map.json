@@ -1,18 +1,18 @@
 {
   "level1": {
     "playerStartPosition": {
-      "x": 11.5,
-      "y": 1,
-      "z": 26.5
+      "x": 27.3,
+      "y": 0.8,
+      "z": 21.2
     },
     "cameraOffset": {
-      "x": 40,
-      "y": 38,
-      "z": -2.7
+      "x": 27.4,
+      "y": 27.9,
+      "z": -4.5
     },
     "cameraRotation": {
       "x": 45.0,
-      "y": -45.0,
+      "y": 0.0,
       "z": 0
     },
     "enemyNum": 7

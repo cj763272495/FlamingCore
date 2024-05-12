@@ -1,51 +1,66 @@
 using System.Collections; 
 using UnityEngine;
 
-public class Buff_Cannon : MonoBehaviour
-{
+public class Buff_Cannon:MonoBehaviour {
     public Animator animator;
     private PlayerController playerController;
     public Collider _collider;
-    private bool rotateTrt;
-    
+    private bool rotateTrt=false;
+
+    public const float OnBuffCannonGuideLineLen = 10;
+    private FloatingJoystick joystick;
+
     private void OnTriggerEnter(Collider other) {
         if(other.gameObject.tag == "Player") {
             _collider.enabled = false;
-            ToolClass.SetGameObjectPosXZ(other.gameObject, transform.position);
+            ToolClass.SetGameObjectPosXZ(other.gameObject,transform.position);
+            transform.rotation = Quaternion.LookRotation(BattleSys.Instance.battleMgr.joyStickDir);
+
             animator.SetBool("Show",true);
             playerController = other.gameObject.GetComponent<PlayerController>();
             playerController.EnterIdleState();
-            BattleSys.Instance.battleMgr.joystick.OnPointerDownAction += OnPointerDown;
-            BattleSys.Instance.battleMgr.joystick.OnPointerUpAction += OnPointerUp;
+            joystick = BattleSys.Instance.battleMgr.joystick;
+            joystick.OnPointerDownAction += OnPointerDown;
+            joystick.OnPointerUpAction += OnPointerUp;
+            joystick.enabled = false;
+            rotateTrt = true;
         }
     }
 
+    public void EnablePlayerCtr() {
+        joystick.enabled = true;
+    }
 
-    public void OnPointerDown() {
-        rotateTrt = true;
-        StartCoroutine(RotateTrt());
+    public void OnPointerDown() { 
+        if(rotateTrt) {
+            rotateTrt = true;
+            StartCoroutine(RotateTrt());
+            BattleSys.Instance.battleMgr.guideLine.SetLen(OnBuffCannonGuideLineLen);
+        }
     }
 
     private IEnumerator RotateTrt() {  
         while(rotateTrt) { 
-            transform.rotation = Quaternion.LookRotation(-BattleSys.Instance.battleMgr.joyStickDir);
+            transform.rotation = Quaternion.LookRotation(BattleSys.Instance.battleMgr.joyStickDir);
             yield return null;
         }
     }
 
     public void OnPointerUp() {
         animator.SetBool("Attack",true);
-        rotateTrt = false;
     }
 
 
     public void Attack() {
         playerController.ExitIdleState();
         playerController.EnterOverloadMode();
-        BattleSys.Instance.battleMgr.joystick.OnPointerUpAction -= OnPointerUp;
-        BattleSys.Instance.battleMgr.joystick.OnPointerUpAction -= OnPointerDown;
+        ParticleMgr.Instance.PlayOverLoadParticle(playerController);
+        joystick.OnPointerUpAction -= OnPointerUp;
+        joystick.OnPointerUpAction -= OnPointerDown;
+        BattleSys.Instance.battleMgr.guideLine.SetLen(Constants.MaxGuideLineLen); 
+        rotateTrt = false;
+        StopAllCoroutines(); 
     }
-
 
     public void EndHideAnimation() {  
         _collider.enabled = true;

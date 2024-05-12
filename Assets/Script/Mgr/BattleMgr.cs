@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using System;
+using Unity.VisualScripting;
 
 public class BattleMgr:MonoBehaviour {
     private ResSvc resSvc;
@@ -10,7 +11,7 @@ public class BattleMgr:MonoBehaviour {
     private int coin;
 
     public Camera cam;
-    public Vector3 camOriginOffset;
+    public Vector3 defaultCamOffset;
 
     private PlayerController player;
     private Vector3 deadPos;
@@ -99,7 +100,7 @@ public class BattleMgr:MonoBehaviour {
                     levelData.PlayerStartPosition.Y,
                     levelData.PlayerStartPosition.Z));
                 SetCameraPositionAndRotation(levelData);
-                camOriginOffset = player.transform.position - cam.transform.position;
+                defaultCamOffset = Constants.DefaultCamOffset;
 
                 guideLine.player = player;
                 var normalTurrets = FindObjectsOfType<NormalTurret>();
@@ -111,7 +112,6 @@ public class BattleMgr:MonoBehaviour {
                     gameRoot.bgPlayer.clipSource = resSvc.LoadAudio(Constants.BGGame);
                     gameRoot.bgPlayer.PlaySound(true);
                 }
-
 
                 OnStartBattleChanged += HandleStartBattleChanged;
                 StartBattle = true;
@@ -146,9 +146,8 @@ public class BattleMgr:MonoBehaviour {
         // 在这里处理鼠标或触摸输入
         guideLine.gameObject.SetActive(false);
         Time.timeScale = 1;
-        if(joystick.UpDirection != Vector3.zero) {
-            Quaternion rotation = Quaternion.Euler(0,-45,0);
-            player.SetDir((rotation * joystick.UpDirection).normalized);
+        if(joystick.UpDirection != Vector3.zero) { 
+            player.SetDir(joystick.UpDirection.normalized);
         }
         player.isMove = true;
         player.lastPos = player.transform.position;
@@ -176,16 +175,8 @@ public class BattleMgr:MonoBehaviour {
         if(direction == Vector3.zero) {
             direction = player.Dir;
         }
-        // 考虑相机的旋转
-        direction = Quaternion.Euler(0,-45,0) * direction;
-        // 计算旋转角度
-        float angle = Vector3.Angle(Vector3.forward,direction);
-        // 计算旋转轴
-        Vector3 axis = Vector3.Cross(Vector3.forward,direction);
-        // 创建四元数
-        Quaternion rotation = Quaternion.AngleAxis(angle,axis);
-        joyStickDir = rotation * Vector3.forward;
-        guideLine.SetDir(player.transform, rotation * Vector3.forward);
+        joyStickDir = direction;
+        guideLine.SetDir(player.transform, direction);
     }
     private void SetCameraPositionAndRotation(LevelData levelData) {
         cam.transform.position = new Vector3(

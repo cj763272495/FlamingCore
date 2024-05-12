@@ -10,10 +10,12 @@ using System.Collections.Generic;
 public class Constants {
     //小球速度
     public const float PlayerSpeed = 12;
-    public const float RotateSpeed = 2000;
+    public const float RotateSpeed = 100;
 
     //获得加速时的速度
     public const float OverloadSpeed = 20;
+    public const float overloadDuration = 2.0f;
+    public static readonly Vector3 DefaultCamOffset = new Vector3(0,27,-26);
 
     //最大guideline长度
     public const float MaxGuideLineLen = 7;
