@@ -9,6 +9,8 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: VFXTrail1
   m_Shader: {fileID: 4800000, guid: a4fb5c948d9384247b0fba909a27f9f7, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 2
@@ -17,6 +19,7 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -57,7 +60,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Mask:
-        m_Texture: {fileID: 2800000, guid: 78ac0ca26009ee3418d5893732391128, type: 3}
+        m_Texture: {fileID: 2800000, guid: e0ba3ea0a50d6d74f85f165d136db06b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -88,7 +91,7 @@ Material:
     - _DistortionMaskIntensity: 1
     - _Distortion_Amount: 0
     - _DstBlend: 0
-    - _EmissiveIntensity: 0.1
+    - _EmissiveIntensity: 1
     - _Erosion_Intensity: 1
     - _Erosion_Intensity1: 1
     - _Erosion_Multiply: 0
@@ -100,7 +103,7 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _Mask_Multiply: 4
+    - _Mask_Multiply: 1
     - _Mask_Power: 2
     - _Metallic: 0
     - _Mode: 0
@@ -111,7 +114,7 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
-    - _WindSpeed: -15
+    - _WindSpeed: -7
     - _ZWrite: 1
     - __dirty: 0
     m_Colors:
@@ -128,3 +131,4 @@ Material:
     - _Mask_Scale: {r: 0.5, g: 1, b: 0, a: 0}
     - _Mask_Speed: {r: 0.5, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
+  m_AllowLocking: 1
