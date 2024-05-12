@@ -22,8 +22,7 @@ public class PlayerController : MonoBehaviour {
     public BattleMgr battleMgr;
     public bool destructible=true;
 
-    public virtual void Init() { 
-        _rb.maxAngularVelocity = 30;
+    public virtual void Init() {
         lastPos = transform.position;
         camTrans = Camera.main.transform;
         destructible = true;

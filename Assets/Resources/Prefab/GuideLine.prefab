@@ -164,5 +164,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collisionLayer:
     serializedVersion: 2
-    m_Bits: 5184
+    m_Bits: 13376
   player: {fileID: 0}
