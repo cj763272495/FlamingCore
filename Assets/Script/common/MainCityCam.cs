@@ -1,14 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class MainCityCam : MonoBehaviour
-{
-    public Transform target; // 旋转点
-    public float speed = 2.0f; // 旋转速度
-     
-    void Update()
-    { 
-        transform.RotateAround(target.position, Vector3.up, speed * Time.deltaTime);
+public class MainCityCam:MonoBehaviour {
+    public Transform target;
+    public float speed = 2.0f;
+    public float maxAngle = 30.0f;
+
+    private float totalRotation = 0.0f;
+    private float initialRotation;
+
+    void Start() {
+        initialRotation = transform.eulerAngles.y;
+    }
+    void Update() {
+        float rotation = speed * Time.deltaTime;
+        totalRotation += rotation;
+        float clampedRotation = Mathf.PingPong(totalRotation,maxAngle); 
+
+        // 计算本帧实际旋转的角度
+        float actualRotation = clampedRotation - (transform.eulerAngles.y-initialRotation)-maxAngle/2;
+        transform.RotateAround(target.position,Vector3.up,actualRotation);
     }
 }

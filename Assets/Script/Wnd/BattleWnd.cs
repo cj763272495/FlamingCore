@@ -17,7 +17,6 @@ public class BattleWnd:MonoBehaviour {
 
     public GameObject energyShow;
     public GameObject hpShow;
-    public ParticleSystem chestParticle;
 
     public BattleMgr battleMgr;
 
@@ -25,8 +24,7 @@ public class BattleWnd:MonoBehaviour {
         gameObject.SetActive(true);
         win_panel.gameObject.SetActive(false);
         dead_panel.gameObject.SetActive(false);
-        pause_panel.gameObject.SetActive(false);
-        chestParticle.Stop();
+        pause_panel.gameObject.SetActive(false); 
         battleMgr.OnStartBattleChanged += HandleStartBattleChanged;
     }
  

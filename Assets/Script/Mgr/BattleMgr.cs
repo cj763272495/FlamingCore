@@ -249,14 +249,13 @@ public class BattleMgr:MonoBehaviour {
 
     public void EndBattle(bool isWin,Vector3 contactPoint = new Vector3()) {
         if(isWin) {
-            StartCoroutine(SmoothTransitionToFov());
-            Invoke(nameof(GameWin),1f);
+            StartCoroutine(SmoothTransitionToFov()); 
         } else {
             ParticleMgr.Instance.PlayDeadParticle(contactPoint);
             AudioManager.Instance.PlaySound(deadClip);
             StartBattle = false;
             Time.timeScale = 1;
-            WaitForSeconds wait = new WaitForSeconds(0.5f);
+            new WaitForSeconds(0.5f);
             if(hp > 0) {//剩余生命值大于0才能复活继续
                 deadPos = player.transform.position;
                 battleSys.battleWnd.dead_panel.ShowAndStartCountDown();
@@ -301,6 +300,7 @@ public class BattleMgr:MonoBehaviour {
 
             // 确保最终的FOV是targetFov
             cam.fieldOfView = targetFov;
+            GameWin();
         }
     }
 
