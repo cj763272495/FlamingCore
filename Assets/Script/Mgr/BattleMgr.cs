@@ -13,7 +13,7 @@ public class BattleMgr:MonoBehaviour {
     public Camera cam;
     public Vector3 defaultCamOffset;
 
-    private PlayerController player;
+    public PlayerController player;
     private Vector3 deadPos;
     public BattleWnd battleWnd;
     private int hp;
@@ -59,6 +59,9 @@ public class BattleMgr:MonoBehaviour {
         if(player) {
             player.gameObject.SetActive(startBattle);
         }
+        if(joystick) {
+            joystick.gameObject.SetActive(startBattle);
+        }
     }
 
     public void Init(int mapid,Action cb = null) {
@@ -82,46 +85,37 @@ public class BattleMgr:MonoBehaviour {
         deadClip = resSvc.LoadAudio(Constants.DeadClip);
 
         if(levelData != null) {
-            resSvc.AsyncLoadScene(waveName,() => {
-                if(!guideLine) {
-                    guideLine = GameObject.FindGameObjectWithTag("GuideLine").GetComponent<GuideLine>();
-                }
-                guideLine.gameObject.SetActive(false);
-                if(!joystick) {
-                    joystick = GameObject.FindGameObjectWithTag("JoyStick").GetComponent<FloatingJoystick>();
-                }
-                joystick.gameObject.SetActive(true);
-                joystick.SetIsShow(gameRoot.gameSettings.showJoyStick);
-                joystick.OnPointerDownAction = OnPointerDown;
-                joystick.OnPointerUpAction = OnPointerUp;
-
-                LoadPlayer(new Vector3(
-                    levelData.PlayerStartPosition.X,
-                    levelData.PlayerStartPosition.Y,
-                    levelData.PlayerStartPosition.Z));
-                SetCameraPositionAndRotation(levelData);
-                defaultCamOffset = Constants.DefaultCamOffset;
-
-                guideLine.player = player;
-                var normalTurrets = FindObjectsOfType<NormalTurret>();
-                foreach(var item in normalTurrets) {
-                    item.OnPlayerLoaded();
-                }
-
-                if(gameRoot.gameSettings.bgAudio) {
-                    gameRoot.bgPlayer.clipSource = resSvc.LoadAudio(Constants.BGGame);
-                    gameRoot.bgPlayer.PlaySound(true);
-                }
-
-                OnStartBattleChanged += HandleStartBattleChanged;
-                StartBattle = true;
-                cb?.Invoke();
-            });
+            resSvc.AsyncLoadScene(waveName, ()=>OnSceneLoaded(cb));
         }
     }
+    private void OnSceneLoaded(Action cb) {
+        if(!guideLine) {
+            guideLine = resSvc.LoadPrefab("Prefab/GuideLine").GetComponent<GuideLine>();
+        }
+        guideLine.gameObject.SetActive(false);
+        if(!joystick) {
+            joystick = resSvc.LoadPrefab("Prefab/FloatingJoystick").GetComponent<FloatingJoystick>();
+            joystick.transform.SetParent(GameRoot.Instance.canvasTrans);
+        }
+        joystick.gameObject.SetActive(true);
+        joystick.SetIsShow(gameRoot.gameSettings.showJoyStick);
+        joystick.OnPointerDownAction = OnPointerDown;
+        joystick.OnPointerUpAction = OnPointerUp;
 
-    private void LevelInit() {
+        LoadPlayer(new Vector3(
+            levelData.PlayerStartPosition.X,
+            levelData.PlayerStartPosition.Y,
+            levelData.PlayerStartPosition.Z));
+        SetCameraPositionAndRotation(levelData);
+        defaultCamOffset = Constants.DefaultCamOffset;
+        if(gameRoot.gameSettings.bgAudio) {
+            gameRoot.bgPlayer.clipSource = resSvc.LoadAudio(Constants.BGGame);
+            gameRoot.bgPlayer.PlaySound(true);
+        }
 
+        OnStartBattleChanged += HandleStartBattleChanged;
+        StartBattle = true;
+        cb?.Invoke();
     }
 
     public void OnPointerDown() {
@@ -234,9 +228,6 @@ public class BattleMgr:MonoBehaviour {
         LoadPlayer(deadPos);
         guideLine.player = player;
         player.GetComponent<PlayerController>().Revive();
-        foreach(var item in FindObjectsOfType<NormalTurret>()) {
-            item.OnPlayerLoaded();
-        }
         ResumeBattle();
     }
     public void StratNextLevel() {
@@ -305,7 +296,9 @@ public class BattleMgr:MonoBehaviour {
     }
 
     public void DestoryBattle() {
+        if(joystick) {
+            Destroy(joystick);
+        } 
         Destroy(gameObject);
     }
-
 }

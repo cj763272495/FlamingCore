@@ -10,6 +10,12 @@ public class Enemy : MonoBehaviour
     public int destoryCoinValue = 5;
     protected bool canAttack = true;
 
+    public virtual void Update() {
+        if (player == null) {
+            player = BattleSys.Instance.battleMgr.player.gameObject;
+        }
+    }
+
     protected virtual void OnCollisionEnter(Collision collision) {
         if (collision.gameObject.layer == 8 && canDestroy) {
             ParticleMgr.Instance.PlayEnemyDeadParticle(collision.contacts[0], collision.transform);

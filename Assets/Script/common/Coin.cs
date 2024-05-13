@@ -5,9 +5,11 @@ using UnityEngine;
 public class Coin:PickUpItem {
     public int CoinValue { get; private set; }
     private Transform playerTransform;
+    private AudioClip earnMoneyClip;
 
     private void Start() {
         CoinValue = 5;
+        earnMoneyClip = ResSvc.Instance.LoadAudio(Constants.EarnMoneyClip);
     }
 
     protected override void Update() {
@@ -15,7 +17,7 @@ public class Coin:PickUpItem {
         if(playerTransform != null) {
             transform.position = Vector3.MoveTowards(transform.position,playerTransform.position,40f*Time.deltaTime);
             if(Vector3.Distance(transform.position,playerTransform.position) < 0.1f) {
-                AudioManager.Instance.PlaySound(ResSvc.Instance.LoadAudio(Constants.EarnMoneyClip));
+                AudioManager.Instance.PlaySound(earnMoneyClip);
                 ParticleMgr.Instance.PlayGetCoinParticle(transform.position);
                 Destroy(gameObject);
             }

@@ -24,16 +24,13 @@ public class PoolManager : MonoBehaviour {
         Queue<Object> queue = new();
         for (int i = 0; i < size; i++) {
             Object go = Instantiate(prefab);
-            CreateGameObjectAndSetActive(go, false);
-            if (parent != null) {
-                go.GameObject().transform.parent = parent;
-            }
+            CreateGameObjectAndSetActive(go, false, parent); 
             queue.Enqueue(go);
         }
         poolsDict[prefab] = queue;
     }
 
-    private void CreateGameObjectAndSetActive(Object obj, bool active) {
+    private void CreateGameObjectAndSetActive(Object obj, bool active,Transform parent = null) {
         GameObject itemGo;
         if (obj is Component) {
             Component component = obj as Component;
@@ -41,7 +38,7 @@ public class PoolManager : MonoBehaviour {
         } else {
             itemGo = obj as GameObject;
         }
-        itemGo.transform.SetParent(transform);
+        itemGo.transform.SetParent(parent?? transform); 
         itemGo.SetActive(active);
     }
 

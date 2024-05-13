@@ -12,9 +12,7 @@ public class NormalTurret : Enemy {
     private void Start() {
         rotateSpeed = 4;
     }
-    public void OnPlayerLoaded() {
-        player = GameObject.FindGameObjectWithTag("Player");
-    }
+
 
     private void Update() {
         if(player) {

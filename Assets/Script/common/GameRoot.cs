@@ -8,12 +8,12 @@ public class GameRoot : MonoBehaviour
     public static GameRoot Instance { get; private set; }
 
     private ResSvc resSvc;
-    private UIManager uIManager;
-    public BattleMgr _battleMgr; 
+    private UIManager uIManager; 
     public SoundPlayer bgPlayer;
 
     public bool gameStart = false;
     public GameSettings gameSettings;
+    public Transform canvasTrans;
 
     public int CurWaveIndex { private set;  get; }
 

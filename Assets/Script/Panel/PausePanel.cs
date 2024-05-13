@@ -17,7 +17,7 @@ public class PausePanel : MonoBehaviour
     public void LeaveScene() { //离开关卡场景
         BattleSys.Instance.battleMgr.DestoryBattle();
         gameObject.SetActive(false);
-        //           }}
+        GameRoot.Instance.EnterMainCity(); 
     }
     
     public void ClickBack() {//继续游戏
