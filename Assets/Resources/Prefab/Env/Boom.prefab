@@ -317,12 +317,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   guideLine: {fileID: 5448597606798024779}
-  attackRange: 2
+  attackRange: 8
   rangeShow: {fileID: 7802149244241552841}
   rb: {fileID: 7763544562212265856}
   _speed: 10
-  _rotateSpeed: 10
-  exploreTrigger: {fileID: 7516598109200944235}
+  exploreParticle: {fileID: 2083535687788671250, guid: 01039710148c5bc4fbcc1ca84226e937, type: 3}
+  DangerRangeShowMat: {fileID: 2100000, guid: 6e7ba25cb8d547146b325a2b5fb4bef1, type: 2}
+  ModelOrgMat: {fileID: 2100000, guid: db4a41dfadc35bc46b7ea5d296748209, type: 2}
 --- !u!54 &7763544562212265856
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -339,10 +340,10 @@ Rigidbody:
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 1345
+    m_Bits: 17665
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 15039
+    m_Bits: 15103
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
@@ -384,7 +385,6 @@ GameObject:
   - component: {fileID: 7802149244241552840}
   - component: {fileID: 7802149244241552853}
   - component: {fileID: 7802149244241552854}
-  - component: {fileID: 7516598109200944235}
   m_Layer: 13
   m_Name: AttackRange
   m_TagString: Untagged
@@ -401,7 +401,7 @@ Transform:
   m_GameObject: {fileID: 7802149244241552841}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.49999994, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -459,26 +459,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &7516598109200944235
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7802149244241552841}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 5
-  m_Height: 2.220446e-16
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}

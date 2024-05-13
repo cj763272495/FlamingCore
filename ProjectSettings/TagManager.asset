@@ -16,7 +16,7 @@ TagManager:
   - Joystick
   - Water
   - UI
-  - Enemy
+  - UnDestructibleEnemies
   - Bullet
   - Player
   - PickUpItem
@@ -24,7 +24,7 @@ TagManager:
   - Chest
   - Env
   - TriggerItem
-  - 
+  - DestructibleEnemies
   - 
   - 
   - 

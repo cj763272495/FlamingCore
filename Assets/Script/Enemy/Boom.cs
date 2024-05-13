@@ -1,26 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Boom : MonoBehaviour
-{
-    //private bool _showGuideLine;
+{ 
     private bool _isCrashed=false;//判断是否已经被玩家碰撞
     private Vector3 _dir;
 
     public GuideLine guideLine;
-    public float attackRange=3;
+    private float attackRange = 3.5f;
     public GameObject rangeShow;
-    public Rigidbody rb;
-    //滚动速度
-    public float _speed = 5; 
+    public Rigidbody rb; 
+    private float _speed = 5;
+    public ParticleSystem exploreParticle;
 
-
-    public CapsuleCollider exploreTrigger;
+    public Material DangerRangeShowMat;
+    public Material ModelOrgMat;
 
     private void Start() { 
         guideLine.gameObject.SetActive(false);
-        exploreTrigger.enabled = false;
+        ParticleMgr.Instance.AddCustomParticle(exploreParticle.gameObject);
     } 
 
     public void ShowGudieLine(Vector3 dir ) {
@@ -33,42 +33,57 @@ public class Boom : MonoBehaviour
         int layer = collision.gameObject.layer; 
         if(layer == 8) {
             _isCrashed = true;
-            rangeShow.SetActive(false);
+            rangeShow.GetComponent<Renderer>().material = DangerRangeShowMat;
             _dir = new Vector3(collision.contacts[0].normal.x,transform.position.y,collision.contacts[0].normal.z);
             transform.LookAt(_dir);
+            //炸弹开始闪光
+            StartCoroutine(Flashing());
             StartCoroutine(StartMove());
         }
-        if(_isCrashed && (layer==6 || layer==10)) {//碰到敌人或者墙体发生爆炸
-            //Boom particle 
-            exploreTrigger.enabled = true;
+        if(_isCrashed && (layer==6 || layer==14 || layer==10)) {//碰到敌人或者墙体发生爆炸
+            StopAllCoroutines();
+            rangeShow.SetActive(false);
+            ParticleMgr.Instance.PlayCustomParticle(exploreParticle.gameObject, transform.position);
             _isCrashed = false;
-            //等待爆炸结束销毁自身
-            Destroy(gameObject,0.5f);
-        }
-    }
-
-    private IEnumerator StartMove() {
-        while(_isCrashed) {
-            rb.MovePosition(transform.position + _dir * 5 * Time.deltaTime);
-            //model.transform.Rotate(Vector3.right,Time.deltaTime * 2000);
-            //rb.MoveRotation(Quaternion.Euler(transform.rotation.eulerAngles + Vector3.right * Time.deltaTime * 2000));
-            //transform.Rotate(transform.right * Time.deltaTime * 900,Space.World);
-            // 计算旋转轴和旋转角度
-            Vector3 rotationAxis = Vector3.Cross(_dir,Vector3.up);
-            float rotationAmount = _speed * 100 * Time.deltaTime; 
-            // 旋转物体
-            transform.Rotate(rotationAxis,-rotationAmount,Space.World);
-
-            yield return null;
-        }
-    }
-
-    private void OnTriggerEnter(Collider other) {//爆炸范围检测到东西就销毁
-        if(other.gameObject.layer == 6) {
-            //销毁碰撞的物体
-            Destroy(other.gameObject);
+            DestroyObjectsInRadius();
             Destroy(gameObject);
         }
     }
 
+    IEnumerator Flashing() {
+        Material mat = Instantiate(ModelOrgMat);
+        ModelOrgMat = mat;
+        float baseIntensity = 1.0f; // 基础发光强度
+        float flashFrequency = 2.0f; // 闪烁频率
+        float flashAmplitude = 0.5f; // 闪烁振幅
+
+        while(true) {
+            float emissionIntensity = baseIntensity + Mathf.Sin(Time.time * flashFrequency) * flashAmplitude;
+            mat.SetColor("_EmissionColor", Color.yellow * emissionIntensity);
+            yield return null;
+        }
+    }
+
+
+    void DestroyObjectsInRadius() {
+        var objects = Physics.OverlapSphere(transform.position,attackRange).Select(collider => collider.gameObject);
+        foreach(var obj in objects) {
+            if(obj.layer == 14) {//摧毁可被摧毁的敌人
+                Destroy(obj);
+            }
+        }
+    }
+
+    private IEnumerator StartMove() {
+        float initialY = rangeShow.transform.position.y;
+        while(_isCrashed) {
+            rb.MovePosition(transform.position + _dir * 5 * Time.deltaTime);
+            Vector3 rotationAxis = Vector3.Cross(_dir,Vector3.up);
+            float rotationAmount = _speed * 100 * Time.deltaTime;
+            transform.Rotate(rotationAxis,-rotationAmount,Space.World);
+            rangeShow.transform.rotation = Quaternion.identity;
+            rangeShow.transform.position = new Vector3(rangeShow.transform.position.x,initialY,rangeShow.transform.position.z);
+            yield return null;
+        }
+    }
 }

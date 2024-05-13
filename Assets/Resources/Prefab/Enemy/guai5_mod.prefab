@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 133870182577108674}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: guai5_m_base_02_jj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23,6 +23,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 468669525782868965}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.0062926253, y: 4.12833e-17, z: 1.9557776e-11}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -38,7 +39,6 @@ Transform:
   - {fileID: 262495256043602934}
   - {fileID: 6874816102111957868}
   m_Father: {fileID: 9052416633590297710}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &508256176945104813
 GameObject:
@@ -49,7 +49,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1845115729033342967}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: guai5_r_legBack_01_jj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -63,6 +63,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 508256176945104813}
+  serializedVersion: 2
   m_LocalRotation: {x: -0.0811233, y: 0.920306, z: 0.38121697, w: 0.033607293}
   m_LocalPosition: {x: 0.0014276374, y: 0.0012784307, z: 0.0012784313}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -70,7 +71,6 @@ Transform:
   m_Children:
   - {fileID: 511121281076535749}
   m_Father: {fileID: 133870182577108674}
-  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &561979803218143828
 GameObject:
@@ -82,7 +82,7 @@ GameObject:
   m_Component:
   - component: {fileID: 902792555751715054}
   - component: {fileID: 796543907420690179}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: guai5_mod
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -96,6 +96,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 561979803218143828}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -103,11 +104,10 @@ Transform:
   m_Children:
   - {fileID: 179419555597581077}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &796543907420690179
 Animator:
-  serializedVersion: 5
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -121,6 +121,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
@@ -135,7 +136,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3337531968567383340}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: guai5_l_legFront_01_jj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -149,6 +150,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 683839831494216427}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.033605274, y: -0.38120508, z: 0.9203104, w: 0.08113033}
   m_LocalPosition: {x: 0.0014276267, y: -0.0012784317, z: -0.0012784314}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -156,7 +158,6 @@ Transform:
   m_Children:
   - {fileID: 3714660684629437762}
   m_Father: {fileID: 133870182577108674}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &821996855143925659
 GameObject:
@@ -167,7 +168,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 526816166749301563}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Aimer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -181,6 +182,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 821996855143925659}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.70710695, y: 0.00000009415694, z: 0.7071066, w: -0.00000009415699}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -189,7 +191,6 @@ Transform:
   - {fileID: 9145069839210556907}
   - {fileID: 8095396691790071006}
   m_Father: {fileID: 8528414282200338605}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1226021345823211391
 GameObject:
@@ -200,7 +201,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6956587460678113032}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: guai5_r_legFront_03_jj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -214,6 +215,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1226021345823211391}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.00000000692895, y: 0.000000053480328, z: 0.9844346, w: 0.17575118}
   m_LocalPosition: {x: 0.0037177515, y: -0.0000000046888644, z: -2.686857e-10}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -221,7 +223,6 @@ Transform:
   m_Children:
   - {fileID: 3438621890655034322}
   m_Father: {fileID: 2989601437789397881}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1436744831801282807
 GameObject:
@@ -232,7 +233,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2453936470017806458}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: guai5_mod
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -246,6 +247,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1436744831801282807}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: -4.3297806e-17, z: 0.7071068, w: 4.3297806e-17}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -254,7 +256,6 @@ Transform:
   - {fileID: 4927475364977534795}
   - {fileID: 9052416633590297710}
   m_Father: {fileID: 1384559530673973666}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1848037201752477365
 GameObject:
@@ -265,7 +266,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 944521127840181982}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: guai5_l_legBack_03_jj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -279,6 +280,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1848037201752477365}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.000000008078318, y: 0.000000044026535, z: 0.9844346, w: 0.17575118}
   m_LocalPosition: {x: 0.0037177515, y: -0.0000000046888644, z: -2.686858e-10}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -286,7 +288,6 @@ Transform:
   m_Children:
   - {fileID: 3973706406546761571}
   m_Father: {fileID: 321210815392776461}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2016020142596228776
 GameObject:
@@ -297,7 +298,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2989601437789397881}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: guai5_r_legFront_02_jj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -311,6 +312,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2016020142596228776}
+  serializedVersion: 2
   m_LocalRotation: {x: -0.0000000019484734, y: 0.00000010149712, z: 0.96519804, w: -0.26152027}
   m_LocalPosition: {x: 0.004087104, y: -4.533052e-10, z: -4.7415124e-11}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -318,7 +320,6 @@ Transform:
   m_Children:
   - {fileID: 6956587460678113032}
   m_Father: {fileID: 262495256043602934}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2284423675596282074
 GameObject:
@@ -329,7 +330,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8999848723087844049}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: guai5_l_legBack_01_jj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -343,6 +344,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2284423675596282074}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.9203104, y: 0.08113042, z: -0.033605155, w: 0.3812051}
   m_LocalPosition: {x: 0.0014276374, y: 0.0012784307, z: -0.0012784314}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -350,7 +352,6 @@ Transform:
   m_Children:
   - {fileID: 321210815392776461}
   m_Father: {fileID: 133870182577108674}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2939501839046674215
 GameObject:
@@ -361,7 +362,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3438621890655034322}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: guai5_r_legFront_04_je
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -375,13 +376,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2939501839046674215}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.004329, y: -1.3322676e-17, z: -9.468323e-11}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6956587460678113032}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2989530558506661435
 GameObject:
@@ -392,7 +393,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7565526578587330446}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Enemys
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -406,6 +407,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2989530558506661435}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -413,7 +415,6 @@ Transform:
   m_Children:
   - {fileID: 1384559530673973666}
   m_Father: {fileID: 179419555597581077}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3409323747601259608
 GameObject:
@@ -424,7 +425,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1384559530673973666}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: D_EnemyShieldMove
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -438,6 +439,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3409323747601259608}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.12, y: -0.114999995, z: 0}
   m_LocalScale: {x: 1.25, y: 1.25, z: 1.25}
@@ -445,7 +447,6 @@ Transform:
   m_Children:
   - {fileID: 2453936470017806458}
   m_Father: {fileID: 7565526578587330446}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3975966532418243880
 GameObject:
@@ -456,7 +457,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3886479762916897184}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: guai5_l_legFrontCon_01_jj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -470,13 +471,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3975966532418243880}
+  serializedVersion: 2
   m_LocalRotation: {x: 2.3432602e-17, y: -0.38268346, z: 0.92387956, w: -5.657131e-17}
   m_LocalPosition: {x: 0.00053307845, y: -0.0012784319, z: -0.0012784314}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 133870182577108674}
-  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5137763531007024791
 GameObject:
@@ -487,7 +488,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 179419555597581077}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Customs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -501,6 +502,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5137763531007024791}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -508,7 +510,6 @@ Transform:
   m_Children:
   - {fileID: 7565526578587330446}
   m_Father: {fileID: 902792555751715054}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5194074787943683005
 GameObject:
@@ -519,7 +520,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5939100918502187170}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: guai5_r_legBack_04_je
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -533,13 +534,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5194074787943683005}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.004329, y: 1.9984014e-17, z: 1.222741e-10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5599160189207976706}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5253241583565576747
 GameObject:
@@ -550,7 +551,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8528414282200338605}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: guai5_m_base_03_jj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -564,6 +565,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5253241583565576747}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.00362383, y: -4.1190523e-10, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -571,7 +573,6 @@ Transform:
   m_Children:
   - {fileID: 526816166749301563}
   m_Father: {fileID: 133870182577108674}
-  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5863204760909452736
 GameObject:
@@ -582,7 +583,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3973706406546761571}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: guai5_l_legBack_04_je
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -596,13 +597,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5863204760909452736}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.004329, y: -1.3322676e-17, z: -7.236175e-11}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 944521127840181982}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5930659594966770192
 GameObject:
@@ -613,7 +614,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9052416633590297710}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: guai5_m_base_01_jj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -627,6 +628,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5930659594966770192}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -634,7 +636,6 @@ Transform:
   m_Children:
   - {fileID: 133870182577108674}
   m_Father: {fileID: 2453936470017806458}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5990105782885694480
 GameObject:
@@ -645,7 +646,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9145069839210556907}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: HurtCol
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -659,13 +660,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5990105782885694480}
+  serializedVersion: 2
   m_LocalRotation: {x: -2.4377894e-15, y: 0.000000114520866, z: 0.70710695, w: 0.7071066}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 526816166749301563}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6025641366143597921
 GameObject:
@@ -676,7 +677,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3714660684629437762}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: guai5_l_legFront_02_jj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -690,6 +691,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6025641366143597921}
+  serializedVersion: 2
   m_LocalRotation: {x: 4.2263247e-15, y: 0.00000009430584, z: 0.96519804, w: -0.26152027}
   m_LocalPosition: {x: -0.0040871133, y: 6.3039977e-19, z: 5.949917e-19}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -697,7 +699,6 @@ Transform:
   m_Children:
   - {fileID: 3324514871189323550}
   m_Father: {fileID: 3337531968567383340}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6030307744990859855
 GameObject:
@@ -708,7 +709,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3324514871189323550}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: guai5_l_legFront_03_jj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -722,6 +723,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6030307744990859855}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.000000008227695, y: 0.000000046085766, z: 0.9844346, w: 0.17575118}
   m_LocalPosition: {x: -0.00371774, y: 1.8307e-18, z: -2.4957753e-19}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -729,7 +731,6 @@ Transform:
   m_Children:
   - {fileID: 8325588648897138121}
   m_Father: {fileID: 3714660684629437762}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7036476435486729092
 GameObject:
@@ -740,7 +741,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8770818911742667356}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: guai5_l_legBackCon_01_jj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -754,13 +755,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7036476435486729092}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.92387956, y: 0.000000105013434, z: -1.4505699e-15, w: 0.38268346}
   m_LocalPosition: {x: 0.0005330749, y: 0.0012784307, z: -0.0012784314}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 133870182577108674}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7180629530342896026
 GameObject:
@@ -771,7 +772,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8325588648897138121}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: guai5_l_legFront_04_je
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -785,13 +786,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7180629530342896026}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.00432899, y: 7.860263e-18, z: 7.2361575e-11}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3324514871189323550}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7212138438935547994
 GameObject:
@@ -802,7 +803,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 511121281076535749}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: guai5_r_legBack_02_jj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -816,6 +817,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7212138438935547994}
+  serializedVersion: 2
   m_LocalRotation: {x: -0.000000004354432, y: 0.00000011038601, z: 0.9652017, w: -0.2615066}
   m_LocalPosition: {x: -0.004087104, y: 4.533052e-10, z: 4.7415124e-11}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -823,7 +825,6 @@ Transform:
   m_Children:
   - {fileID: 5599160189207976706}
   m_Father: {fileID: 1845115729033342967}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7341609709437453985
 GameObject:
@@ -834,7 +835,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3900480178580280590}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: guai5_r_legBackCon_01_jj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -848,13 +849,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7341609709437453985}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.00000012302272, y: 0.92388487, z: -0.38267052, w: -0.000000050955663}
   m_LocalPosition: {x: 0.0005330749, y: 0.0012784307, z: 0.0012784313}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 133870182577108674}
-  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7784216136204972463
 GameObject:
@@ -865,7 +866,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 321210815392776461}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: guai5_l_legBack_02_jj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -879,6 +880,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7784216136204972463}
+  serializedVersion: 2
   m_LocalRotation: {x: 4.2263247e-15, y: 0.00000009430584, z: 0.96519804, w: -0.26152027}
   m_LocalPosition: {x: 0.0040871045, y: -0.0000000030640595, z: -0.0000000026990659}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -886,7 +888,6 @@ Transform:
   m_Children:
   - {fileID: 944521127840181982}
   m_Father: {fileID: 8999848723087844049}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8215729700923183670
 GameObject:
@@ -899,7 +900,7 @@ GameObject:
   - component: {fileID: 8095396691790071006}
   - component: {fileID: 2810980609960315468}
   - component: {fileID: 1084409828346115758}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: shieldMove
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -913,13 +914,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8215729700923183670}
+  serializedVersion: 2
   m_LocalRotation: {x: -0.00000007766328, y: 0.000000119209275, z: 0.00000027395453, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0.003316455}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 526816166749301563}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &2810980609960315468
 MeshFilter:
@@ -946,6 +947,8 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -980,7 +983,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5599160189207976706}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: guai5_r_legBack_03_jj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -994,6 +997,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8452384161074503264}
+  serializedVersion: 2
   m_LocalRotation: {x: -0.0000011297307, y: 0.000013460115, z: 0.9844361, w: 0.17574292}
   m_LocalPosition: {x: -0.0037177515, y: 0.0000000046888644, z: 2.6868563e-10}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -1001,7 +1005,6 @@ Transform:
   m_Children:
   - {fileID: 5939100918502187170}
   m_Father: {fileID: 511121281076535749}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8726611892197452509
 GameObject:
@@ -1012,7 +1015,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6874816102111957868}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: guai5_r_legFrontCon_01_jj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1026,13 +1029,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8726611892197452509}
+  serializedVersion: 2
   m_LocalRotation: {x: -0.38268346, y: -0.00000004349799, z: 1.643559e-16, w: 0.92387956}
   m_LocalPosition: {x: 0.00053307525, y: -0.001278432, z: 0.0012784313}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 133870182577108674}
-  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9019770499878313769
 GameObject:
@@ -1044,7 +1047,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4927475364977534795}
   - component: {fileID: 2303938986934343877}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: guai5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1058,13 +1061,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9019770499878313769}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2453936470017806458}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &2303938986934343877
 SkinnedMeshRenderer:
@@ -1083,6 +1086,8 @@ SkinnedMeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1146,7 +1151,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 262495256043602934}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: guai5_r_legFront_01_jj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1160,6 +1165,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9158499135987828897}
+  serializedVersion: 2
   m_LocalRotation: {x: -0.38120508, y: -0.033605304, z: -0.08113027, w: 0.92031044}
   m_LocalPosition: {x: 0.0014276378, y: -0.0012784319, z: 0.0012784313}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -1167,5 +1173,4 @@ Transform:
   m_Children:
   - {fileID: 2989601437789397881}
   m_Father: {fileID: 133870182577108674}
-  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

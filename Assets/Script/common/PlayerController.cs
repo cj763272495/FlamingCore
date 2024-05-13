@@ -66,7 +66,7 @@ public class PlayerController : MonoBehaviour {
         if(destructible && collisionLayer == 7) {//bullet 
             battleMgr.EndBattle(false,contactPoint.point); 
             Destroy(gameObject);
-        } else if(collisionLayer == 6) {//enemy
+        } else if(collisionLayer == 14) {//enemy
             battleMgr.EliminateEnemy(); 
         } else {
             battleMgr.particleMgr.PlayHitWallParticle(contactPoint);

@@ -8,7 +8,7 @@ public class Enemy : MonoBehaviour
     public GameObject player;
     protected bool canDestroy = true;
     public int destoryCoinValue = 5;
-    public bool canAttack = false;
+    protected bool canAttack = true;
 
     protected virtual void OnCollisionEnter(Collision collision) {
         if (collision.gameObject.layer == 8 && canDestroy) {
