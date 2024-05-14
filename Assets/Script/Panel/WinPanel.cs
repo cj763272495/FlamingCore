@@ -1,16 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
+using System.Collections; 
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class WinPanel : MonoBehaviour
 {
     public Text curLevel;
-    public Text coinTxt;
-
-    private readonly int minSize = 30;
-    private readonly int maxSize = 80;
-    private readonly float cycleDuration = 2.0f; 
+    public TextMeshProUGUI coinTxt;
+     
     public float breathRate = 2.0f;
     public Image BreathImage; 
     public Chest chest;
@@ -23,13 +20,41 @@ public class WinPanel : MonoBehaviour
         coinTxt.text = "+ " + coinNum.ToString();
         gameObject.SetActive(true);  
         chest.OpenChest();
-        InvokeRepeating(nameof(Breathe), 0f, breathRate);
+        StartCoroutine(BreathingLight());
     }
 
-    void Breathe() {
-        float t = Mathf.Sin(Time.time * Mathf.PI / breathRate);
-        float alpha = t * 0.5f + 0.5f;
-        BreathImage.color = new Color(1,1,1,alpha);
+    public void Show1stCoinTxt() {
+        coinTxt.gameObject.SetActive(true);
+        StartCoroutine(MoveAndFadeOut(coinTxt.gameObject,2f,1.5f));
+    }
+
+    private IEnumerator MoveAndFadeOut(GameObject obj,float delay,float duration) {
+        yield return new WaitForSeconds(delay);
+
+        Vector3 startPos = obj.transform.position;
+        Vector3 endPos = startPos + new Vector3(0,1,0); // 上移的目标位置
+        Color startColor = obj.GetComponent<TextMeshProUGUI>().color;
+        Color endColor = new Color(startColor.r,startColor.g,startColor.b,0); // 透明的目标颜色
+
+        float time = 0;
+        while(time < duration) {
+            time += Time.deltaTime;
+            float t = time / duration;
+            obj.transform.position = Vector3.Lerp(startPos,endPos,t);
+            obj.GetComponent<TextMeshProUGUI>().color = Color.Lerp(startColor,endColor,t);
+            yield return null;
+        }
+
+        obj.GetComponent<TextMeshProUGUI>().color = startColor;
+        obj.SetActive(false);
+    }
+
+    private IEnumerator BreathingLight() {
+        while(true) {
+            float alpha = Mathf.PingPong(Time.time, 0.7f) + 0.3f;
+            BreathImage.color = new Color(BreathImage.color.r,BreathImage.color.g,BreathImage.color.b,alpha);
+            yield return null;
+        }
     }
 
     public void ClickReturnHomeBtn() {
@@ -44,7 +69,6 @@ public class WinPanel : MonoBehaviour
 
     public void ClickAgainBtn() {
         StopAllCoroutines();
-        CancelInvoke("Breathe");
         gameObject.SetActive(false);
         BattleSys.Instance.battleMgr.PlayAgain();
         chest.Exit();
@@ -53,8 +77,7 @@ public class WinPanel : MonoBehaviour
     private void LeaveWinPanel() {
         gameObject.SetActive(false);
         BattleSys.Instance.battleMgr.DestoryBattle();
-        StopAllCoroutines();
-        CancelInvoke("Breathe");
+        StopAllCoroutines(); 
         chest.Exit();
     }
 }

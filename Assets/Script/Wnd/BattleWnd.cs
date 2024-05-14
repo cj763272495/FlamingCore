@@ -17,6 +17,8 @@ public class BattleWnd:MonoBehaviour {
 
     public GameObject energyShow;
     public GameObject hpShow;
+    public GuideLine guideLine;
+    public FloatingJoystick joystick;
 
     public BattleMgr battleMgr;
 

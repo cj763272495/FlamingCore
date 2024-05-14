@@ -49,6 +49,9 @@ public class BattleMgr:MonoBehaviour {
     public void EarnCoin(int num) {
         coin += num;
     }
+    public float GetCoin() {
+        return coin;
+    }
 
     public void EliminateEnemy() {
         eliminateEnemyNum++;
@@ -70,6 +73,8 @@ public class BattleMgr:MonoBehaviour {
         battleSys = BattleSys.Instance;
         resSvc = ResSvc.Instance;
 
+        guideLine = battleWnd.guideLine;
+        joystick = battleWnd.joystick;
         CurWaveIndex = mapid;
         hp = 3;
         coin = 0;
@@ -89,14 +94,7 @@ public class BattleMgr:MonoBehaviour {
         }
     }
     private void OnSceneLoaded(Action cb) {
-        if(!guideLine) {
-            guideLine = resSvc.LoadPrefab("Prefab/GuideLine").GetComponent<GuideLine>();
-        }
-        guideLine.gameObject.SetActive(false);
-        if(!joystick) {
-            joystick = resSvc.LoadPrefab("Prefab/FloatingJoystick").GetComponent<FloatingJoystick>();
-            joystick.transform.SetParent(GameRoot.Instance.canvasTrans);
-        }
+        guideLine.gameObject.SetActive(false); 
         joystick.gameObject.SetActive(true);
         joystick.SetIsShow(gameRoot.gameSettings.showJoyStick);
         joystick.OnPointerDownAction = OnPointerDown;
@@ -136,6 +134,9 @@ public class BattleMgr:MonoBehaviour {
     public void OnPointerUp() {
         if(!StartBattle) {
             return;
+        }
+        if(makeGuideLineCoroutine != null) {
+            StopCoroutine(makeGuideLineCoroutine);
         }
         // 在这里处理鼠标或触摸输入
         guideLine.gameObject.SetActive(false);

@@ -53,7 +53,8 @@ public class GameRoot : MonoBehaviour
         battleSys.InitSys();
         gameSettings = resSvc.LoadConf(); 
         UIManager.Instance.SetBgAuidoOn(gameSettings.bgAudio);
-        UIManager.Instance.ShowJoyStick(gameSettings.showJoyStick); 
+        UIManager.Instance.ShowJoyStick(gameSettings.showJoyStick);
+        
     }
 
     public void GameStart() {

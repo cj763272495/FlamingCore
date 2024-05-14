@@ -32,7 +32,9 @@ public class HomeWnd : MonoBehaviour
         UpdateHomeWndCoinAndEnergy();
     }
 
-    public void UpdateHomeWndCoinAndEnergy() { 
+    public void UpdateHomeWndCoinAndEnergy() {
+        coinTxt.transform.parent.gameObject.SetActive(true);
+        energyTxt.transform.parent.gameObject.SetActive(true);
         coinTxt.text = pds.PlayerData.coin.ToString();
         energyTxt.text = pds.PlayerData.energy.ToString();
     }
