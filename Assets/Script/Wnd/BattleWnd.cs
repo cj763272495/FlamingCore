@@ -12,10 +12,12 @@ public class BattleWnd:MonoBehaviour {
     public WinPanel win_panel;
     public DeadPanel dead_panel;
     public FailPanel fail_panel; 
+    public TransitionLevelPanel transitionLevelPanel;
     public Text hp_txt;
     public Text countdownText;
 
     public GameObject energyShow;
+    public GameObject coinShow;
     public GameObject hpShow;
     public GuideLine guideLine;
     public FloatingJoystick joystick;
@@ -26,7 +28,9 @@ public class BattleWnd:MonoBehaviour {
         gameObject.SetActive(true);
         win_panel.gameObject.SetActive(false);
         dead_panel.gameObject.SetActive(false);
-        pause_panel.gameObject.SetActive(false); 
+        fail_panel.gameObject.SetActive(false);
+        pause_panel.gameObject.SetActive(false);
+        transitionLevelPanel.gameObject.SetActive(false);
         battleMgr.OnStartBattleChanged += HandleStartBattleChanged;
     }
  
@@ -51,7 +55,8 @@ public class BattleWnd:MonoBehaviour {
 
     public void ShowHp(bool isShow = true) {
         hpShow.SetActive(isShow);
-        energyShow.SetActive(!isShow); 
+        energyShow.SetActive(!isShow);
+        coinShow.SetActive(!isShow);
     }
 
     //private IEnumerator FadeCoroutine(float targetAlpha, float duration) {

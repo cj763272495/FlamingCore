@@ -38,7 +38,7 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
     private RectTransform baseRect = null;
 
     private Canvas canvas;
-    private Camera cam;
+    public Camera cam;
 
     private Vector2 input = Vector2.zero;
     public Vector2 Input { get { return input; } }
@@ -66,17 +66,20 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
         OnDrag(eventData); 
     }
 
-    public void OnDrag(PointerEventData eventData) { 
+    public void OnDrag(PointerEventData eventData) {
         cam = null;
-        if (canvas.renderMode == RenderMode.ScreenSpaceCamera)
+        if(canvas.renderMode == RenderMode.ScreenSpaceCamera)
             cam = canvas.worldCamera;
 
-        Vector2 position = RectTransformUtility.WorldToScreenPoint(cam, background.position);
+        Vector2 position = RectTransformUtility.WorldToScreenPoint(cam,background.position);
         Vector2 radius = background.sizeDelta / 2;
-        input = (eventData.position - position) / (radius * canvas.scaleFactor);
-        FormatInput();
-        HandleInput(input.magnitude, input.normalized, radius, cam);
-        handle.anchoredPosition = input * radius * handleRange;
+        Vector2 newInput = (eventData.position - position) / (radius * canvas.scaleFactor);
+        if(newInput != input) {
+            input = newInput;
+            FormatInput();
+            HandleInput(input.magnitude,input.normalized,radius,cam);
+            handle.anchoredPosition = input * radius * handleRange;
+        }
     }
 
     protected virtual void HandleInput(float magnitude, Vector2 normalised, Vector2 radius, Camera cam)
@@ -140,8 +143,7 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
 
     protected Vector2 ScreenPointToAnchoredPosition(Vector2 screenPosition)
     {
-        if (RectTransformUtility.ScreenPointToLocalPointInRectangle(baseRect, screenPosition,
-            cam, out Vector2 localPoint)) {
+        if(RectTransformUtility.ScreenPointToLocalPointInRectangle(baseRect, screenPosition,  cam, out Vector2 localPoint)) {
                 Vector2 pivotOffset = baseRect.pivot * baseRect.sizeDelta;
                 return localPoint - (background.anchorMax * baseRect.sizeDelta) + pivotOffset;
         }

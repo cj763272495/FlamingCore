@@ -22,6 +22,6 @@ public class LevelPanel : MonoBehaviour
         if (PlayersDataSystem.Instance.PlayerData.max_unLock_wave < scrollView.CurrentIndex) {
             return;
         }
-        GameRoot.Instance.StartBattle(scrollView.CurrentIndex);
+        GameRoot.Instance.StartBattle(scrollView.CurrentIndex-1);
     }
 }

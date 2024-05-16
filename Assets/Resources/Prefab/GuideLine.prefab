@@ -76,7 +76,7 @@ LineRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 11
+  m_SortingOrder: 2
   m_Positions:
   - {x: 9.240992, y: 8.530876, z: -18.424988}
   - {x: 9.993151, y: 8.499131, z: -19.241772}
@@ -142,7 +142,7 @@ LineRenderer:
     numCornerVertices: 0
     numCapVertices: 0
     alignment: 0
-    textureMode: 4
+    textureMode: 1
     textureScale: {x: 3, y: 1}
     shadowBias: 0
     generateLightingData: 0

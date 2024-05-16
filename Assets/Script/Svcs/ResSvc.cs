@@ -6,6 +6,7 @@ using System.IO;
 using UnityEngine.SceneManagement;
 using Newtonsoft.Json;
 using Unity.VisualScripting;
+using DG.Tweening;
 
 public class ResSvc : MonoBehaviour {
     public static ResSvc Instance = null;
@@ -19,21 +20,29 @@ public class ResSvc : MonoBehaviour {
     private Action prgCB = null;
     public void AsyncLoadScene(string sceneName, Action loaded) {
         UIManager uIManager = UIManager.Instance;
-        uIManager.loadingWnd.SetWndState(); 
-        AsyncOperation sceneAsync = SceneManager.LoadSceneAsync(sceneName);
-        prgCB = () => {
-            float val = sceneAsync.progress;
-            uIManager.loadingWnd.SetProgress(val);
-            if (val == 1) {
-                //LoginSys.Instance.OpenLoginWnd();
-                if (loaded != null) {
-                    loaded();
+        uIManager.FadeIn().onComplete += () => {  
+            AsyncOperation sceneAsync = SceneManager.LoadSceneAsync(sceneName);
+            prgCB = () => {
+                float val = sceneAsync.progress;
+                //uIManager.loadingWnd.SetProgress(val); 
+                if(val == 1) {
+                    //LoginSys.Instance.OpenLoginWnd();
+                    if(loaded != null) {
+                        loaded();
+                    }
+                    prgCB = null;
+                    sceneAsync = null;
+                    //uIManager.loadingWnd.SetWndState(false);
+                    //DG.Tweening.Sequence seq = DOTween.Sequence();
+                    //seq.AppendInterval(1f); // µÈ´ý1Ãë
+                    //seq.AppendCallback(() => uIManager.FadeOut());
+                    //seq.SetUpdate(UpdateType.Normal,true);
+                    //seq.Play();
+                    uIManager.FadeOut();
                 }
-                prgCB = null;
-                sceneAsync = null;
-                uIManager.loadingWnd.SetWndState(false);
-            }
+            };
         };
+
 
     }
 

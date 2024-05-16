@@ -92,5 +92,6 @@ public class Chest : MonoBehaviour
             coinPS.SetParticles(particles,numParticles); 
             yield return null;
         }
+        UIManager.Instance.winPanel.SecndShowCoinTxt();
     }
 }

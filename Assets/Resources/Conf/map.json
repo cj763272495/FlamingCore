@@ -1,5 +1,5 @@
 {
-  "level1": {
+  "level0": {
     "playerStartPosition": {
       "x": 27.3,
       "y": 0.8,
@@ -16,23 +16,113 @@
       "z": 0
     },
     "enemyNum": 7
-  },
-  "level2": {
+  }, 
+    "level1": {
     "playerStartPosition": {
-      "x": 4.0,
-      "y": 1,
-      "z": 3.0
+      "x": 27.3,
+      "y": 0.8,
+      "z": 21.2
     },
     "cameraOffset": {
-      "x": 18,
-      "y": 23,
-      "z": -11
+      "x": 27.4,
+      "y": 27.9,
+      "z": -4.5
     },
     "cameraRotation": {
       "x": 45.0,
-      "y": -45.0,
+      "y": 0.0,
       "z": 0
     },
-    "enemyNum": 1
+    "enemyNum": 7
+  }, 
+    "level2": {
+    "playerStartPosition": {
+      "x": 27.3,
+      "y": 0.8,
+      "z": 21.2
+    },
+    "cameraOffset": {
+      "x": 27.4,
+      "y": 27.9,
+      "z": -4.5
+    },
+    "cameraRotation": {
+      "x": 45.0,
+      "y": 0.0,
+      "z": 0
+    },
+    "enemyNum": 7
+  }, 
+    "level3": {
+    "playerStartPosition": {
+      "x": 27.3,
+      "y": 0.8,
+      "z": 21.2
+    },
+    "cameraOffset": {
+      "x": 27.4,
+      "y": 27.9,
+      "z": -4.5
+    },
+    "cameraRotation": {
+      "x": 45.0,
+      "y": 0.0,
+      "z": 0
+    },
+    "enemyNum": 7
+  }, 
+    "level4": {
+    "playerStartPosition": {
+      "x": 27.3,
+      "y": 0.8,
+      "z": 21.2
+    },
+    "cameraOffset": {
+      "x": 27.4,
+      "y": 27.9,
+      "z": -4.5
+    },
+    "cameraRotation": {
+      "x": 45.0,
+      "y": 0.0,
+      "z": 0
+    },
+    "enemyNum": 7
+  }, 
+    "level5": {
+    "playerStartPosition": {
+      "x": 27.3,
+      "y": 0.8,
+      "z": 21.2
+    },
+    "cameraOffset": {
+      "x": 27.4,
+      "y": 27.9,
+      "z": -4.5
+    },
+    "cameraRotation": {
+      "x": 45.0,
+      "y": 0.0,
+      "z": 0
+    },
+    "enemyNum": 7
+  }, 
+    "level6": {
+    "playerStartPosition": {
+      "x": 27.3,
+      "y": 0.8,
+      "z": 21.2
+    },
+    "cameraOffset": {
+      "x": 27.4,
+      "y": 27.9,
+      "z": -4.5
+    },
+    "cameraRotation": {
+      "x": 45.0,
+      "y": 0.0,
+      "z": 0
+    },
+    "enemyNum": 7
   }
 }

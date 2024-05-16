@@ -1,8 +1,10 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class StartPanel : MonoBehaviour
 {
@@ -14,6 +16,7 @@ public class StartPanel : MonoBehaviour
     void Start() {
         //可以使用Invoke显示logo等
         GameStart();
+        DOTween.Init();
     }
 
     private void GameStart() {//显示Start加载界面且同时获取加载数据
