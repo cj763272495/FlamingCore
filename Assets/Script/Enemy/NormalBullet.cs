@@ -15,7 +15,7 @@ public class NormalBullet : MonoBehaviour
         transform.Translate(BulletSpeed * Time.deltaTime * shootDir);
         timer += Time.deltaTime;
         if (timer >= remainTime) {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
             timer = 0;
         }
     }
@@ -23,7 +23,7 @@ public class NormalBullet : MonoBehaviour
     private void OnCollisionEnter(Collision collision) {
         if(collision.transform != owner) {
             ParticleMgr.Instance.PlayBulletDestoryParticle(collision.contacts[0]);
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
 }

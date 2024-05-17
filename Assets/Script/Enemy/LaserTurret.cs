@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LaserTurret : Enemy
+public class LaserTurret : EnemyEntity
 {
-    private void Update() {
+    public override void Update() {
         transform.Rotate(rotateSpeed * Time.deltaTime * Vector3.up); 
     }
 }

@@ -1,10 +1,7 @@
-using DG.Tweening;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using DG.Tweening;
+using DG.Tweening; 
+using UnityEngine; 
 using UnityEngine.UI;
-using TMPro;
+using TMPro; 
 
 public static class ToolClass {
     public static void SetGameObjectPosXZ(GameObject player,Vector3 pos) {
@@ -47,5 +44,9 @@ public static class ToolClass {
         });
 
         return tween;
-    } 
+    }
+
+    public static Tween ChangeCameraFov(Camera camera,float targetFov,float duration) {
+        return camera.DOFieldOfView(targetFov,duration).SetUpdate(UpdateType.Normal,true); 
+    }
 }

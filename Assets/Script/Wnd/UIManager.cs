@@ -1,6 +1,4 @@
-using DG.Tweening;
-using System.Collections;
-using System.Collections.Generic;
+using DG.Tweening; 
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,6 +17,8 @@ public class UIManager : MonoBehaviour
     public Image blendImg;
     public CanvasGroup canvasGroup;
     public static UIManager Instance { get; private set; }
+
+    public GameObject ImgEnergyDecrease;
 
     private void Awake() {
         Instance = this;
@@ -48,6 +48,10 @@ public class UIManager : MonoBehaviour
         return  canvasGroup.DOFade(0,1f).SetUpdate(UpdateType.Normal,true).OnComplete(() => {
             blendImg.raycastTarget = false;
         });
+    }
+
+    public void ShowImgEnergyDecrease() {
+        ToolClass.MoveUpAndFadeOut(ImgEnergyDecrease,0,2);
     }
 
 }

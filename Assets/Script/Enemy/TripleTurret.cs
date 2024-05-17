@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TripleTurret : Enemy
+public class TripleTurret : EnemyEntity
 {
     private readonly float shootTime = 3;
     private float shootTimer;
@@ -16,7 +16,7 @@ public class TripleTurret : Enemy
     public void OnPlayerLoaded() {
         player = GameObject.FindGameObjectWithTag("Player");
     }
-    private void Update() {
+    public override void Update() {
         if(player) {
             transform.rotation = Quaternion.Lerp(transform.rotation,
                 Quaternion.LookRotation(player.transform.position - transform.position),

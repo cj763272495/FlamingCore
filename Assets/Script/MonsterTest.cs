@@ -2,17 +2,38 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MonsterTest : Enemy
-{
-    // Start is called before the first frame update
-    void Start()
-    {
+public class MonsterTest : EnemyEntity
+{ 
+    public GameObject firePoint;
+
+    public GameObject spawnedlaser;
+    public float len=20;
+    public LineRenderer lineRenderer;
+
+    private void Start() {
+        lineRenderer.positionCount = 2;
+        lineRenderer.SetPosition(0,Vector3.zero);
         
+        EnableLaser();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public override void  Update() {
+        ShootLaser();
     }
+    void ShootLaser() {
+        RaycastHit hit;
+        if(Physics.Raycast(firePoint.transform.position,firePoint.transform.forward,out hit,len)) {
+            lineRenderer.SetPosition(1,new Vector3(0,0,hit.distance));
+        } else {
+            lineRenderer.SetPosition(1,new Vector3(0,0,len));
+        }
+    }
+
+    void EnableLaser() {
+        spawnedlaser.SetActive(true);
+    }
+
+    void DisableLaser() {
+        spawnedlaser.SetActive(false);
+    }   
 }

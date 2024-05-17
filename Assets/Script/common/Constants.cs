@@ -16,6 +16,8 @@ public class Constants {
     public const float OverloadSpeed = 20;
     public const float overloadDuration = 2.0f;
     public static readonly Vector3 DefaultCamOffset = new Vector3(0,27,-26);
+    //超载模式fov
+    public const float OverloadFov = 45;
 
     //最大guideline长度
     public const float MaxGuideLineLen = 7;

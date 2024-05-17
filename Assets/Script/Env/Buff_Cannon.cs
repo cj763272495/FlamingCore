@@ -12,6 +12,7 @@ public class Buff_Cannon:MonoBehaviour {
 
     private void OnTriggerEnter(Collider other) {
         if(other.gameObject.tag == "Player") {
+            ToolClass.ChangeCameraFov(Camera.main,Constants.OverloadFov,1);
             _collider.enabled = false;
             ToolClass.SetGameObjectPosXZ(other.gameObject,transform.position);
             transform.rotation = Quaternion.LookRotation(BattleSys.Instance.battleMgr.joyStickDir);

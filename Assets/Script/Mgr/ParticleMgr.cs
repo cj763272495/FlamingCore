@@ -82,7 +82,7 @@ public class ParticleMgr : MonoBehaviour
         EnemyDeadCoin enemyDeadCoin = lastParticleSystem.gameObject.GetComponent<EnemyDeadCoin>();
         enemyDeadCoin.isPlaying = true;
         enemyDeadCoin.player = player.gameObject;
-        Enemy enemy = contact.otherCollider.GetComponent<Enemy>();
+        EnemyEntity enemy = contact.otherCollider.GetComponent<EnemyEntity>();
         if(enemy) {
             enemyDeadCoin.coinValue = enemy.destoryCoinValue;
         }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class NormalTurret : Enemy {
+public class NormalTurret : EnemyEntity {
     private readonly float shootTime = 2;
     private float shootTimer;
     public Transform shootPoint;
@@ -14,7 +14,7 @@ public class NormalTurret : Enemy {
     }
 
 
-    private void Update() {
+    public override void Update() {
         if(player) {
             Vector3 dir = player.transform.position - transform.position;
             dir.y = 0;

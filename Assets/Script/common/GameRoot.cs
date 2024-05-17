@@ -74,6 +74,7 @@ public class GameRoot : MonoBehaviour
         }
         uIManager.homeWnd.gameObject.SetActive(false);
         BattleSys.Instance.StartBattle(wave);
+        uIManager.ShowImgEnergyDecrease();
     }
 
     public void LevelSettlement(int coin) {//πÿø®Ω·À„

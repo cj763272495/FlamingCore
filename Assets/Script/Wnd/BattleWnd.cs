@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Threading.Tasks;
 using Unity.VisualScripting;
+using DG.Tweening;
 
 public class BattleWnd:MonoBehaviour {
     public Image btn_pause;
@@ -42,16 +43,22 @@ public class BattleWnd:MonoBehaviour {
         pause_panel.gameObject.SetActive(true); 
         battleMgr.PauseBattle(); 
     }
-
-    public async void StartCountDown3Seconds() {
+    public Tween StartCountDown3Seconds() {
+        countdownText.text = "3";
         countdownText.gameObject.SetActive(true);
-        for(int i = 3; i > 0; i--) {
-            countdownText.text = i.ToString();
-            await Task.Delay(1000);
+        countdownText.color = new Color(countdownText.color.r,countdownText.color.g,countdownText.color.b,1f);
+        DG.Tweening.Sequence sequence = DOTween.Sequence().SetUpdate(UpdateType.Normal,true);
+        for(int i = 3; i > 0; --i) {
+            int j = i;
+            sequence.AppendInterval(0.8f)
+                    .Append(countdownText.transform.DOScaleY(0,0.1f)) // 将字体的高度变为0
+                    .AppendCallback(() => countdownText.text = (j - 1).ToString()) // 更新显示的数字
+                    .Append(countdownText.transform.DOScaleY(1,0.1f)); // 将字体的高度变为1
         }
-        countdownText.gameObject.SetActive(false);
-
+        sequence.OnComplete(() => countdownText.gameObject.SetActive(false));
+        return sequence.Play();
     }
+
 
     public void ShowHp(bool isShow = true) {
         hpShow.SetActive(isShow);

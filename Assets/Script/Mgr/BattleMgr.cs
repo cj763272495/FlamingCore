@@ -3,6 +3,8 @@ using UnityEngine;
 using System;
 using Unity.VisualScripting;
 using UnityEngine.EventSystems;
+using DG.Tweening;
+using static UnityEngine.GraphicsBuffer;
 
 public class BattleMgr:MonoBehaviour {
     private ResSvc resSvc;
@@ -21,7 +23,8 @@ public class BattleMgr:MonoBehaviour {
     private LevelData levelData;
     private int eliminateEnemyNum;
 
-    private bool startBattle;
+    //test
+    public bool startBattle;
     public bool StartBattle {
         get { return startBattle; }
         private set {
@@ -48,6 +51,7 @@ public class BattleMgr:MonoBehaviour {
     private AudioClip deadClip;
 
     private Coroutine makeGuideLineCoroutine;
+    public float DefaultFov { private set; get; }
 
     public void EarnCoin(int num) {
         coin += num;
@@ -125,17 +129,14 @@ public class BattleMgr:MonoBehaviour {
         joystick.SetIsShow(gameRoot.gameSettings.showJoyStick);
         joystick.OnPointerDownAction = OnPointerDown;
         joystick.OnPointerUpAction = OnPointerUp;
+        cam = Camera.main;
+        SetCameraData(levelData);
+        defaultCamOffset = Constants.DefaultCamOffset;
 
         LoadPlayer(new Vector3(
             levelData.PlayerStartPosition.X,
             levelData.PlayerStartPosition.Y,
             levelData.PlayerStartPosition.Z));
-
-        cam = Camera.main;
-        //joystick.OnPointerDown(new PointerEventData(null));
-        SetCameraPositionAndRotation(levelData); 
-        defaultCamOffset = Constants.DefaultCamOffset;
-
         if(gameRoot.gameSettings.bgAudio) {
             gameRoot.bgPlayer.clipSource = resSvc.LoadAudio(Constants.BGGame);
             gameRoot.bgPlayer.PlaySound(true);
@@ -193,7 +194,7 @@ public class BattleMgr:MonoBehaviour {
         joyStickDir = direction;
         guideLine.SetDir(player.transform, direction);
     }
-    private void SetCameraPositionAndRotation(LevelData levelData) {
+    private void SetCameraData(LevelData levelData) {
         cam.transform.position = new Vector3(
             levelData.CameraOffset.X,
             levelData.CameraOffset.Y,
@@ -202,6 +203,7 @@ public class BattleMgr:MonoBehaviour {
             levelData.CameraRotation.X,
             levelData.CameraRotation.Y,
             levelData.CameraRotation.Z  );
+        cam.fieldOfView = DefaultFov = levelData.CamFOV;
     }
 
     private void LoadPlayer(Vector3 pos) {
@@ -226,20 +228,23 @@ public class BattleMgr:MonoBehaviour {
     }
 
     public void ResumeBattle() {//取消暂停,恢复游戏
-        battleWnd.StartCountDown3Seconds();
-        battleWnd.ShowHp();
-        Invoke("EnterLevel",3f);
-    }
-
-    private void EnterLevel() {
-        StartBattle = true;
-        joystick.IsDown = true;
+        battleWnd.StartCountDown3Seconds().onComplete+=()=> {
+            StartBattle = true;
+            joystick.IsDown = true;
+        };
+        battleWnd.ShowHp(); 
     }
 
     public void ReviveAndContinueBattle() {//消耗生命继续游戏
         Time.timeScale = 0.1f;
         hp--;
-        battleWnd.hp_txt.text = "x " + hp;
+        DG.Tweening.Sequence sequence = DOTween.Sequence().SetUpdate(UpdateType.Normal,true);
+        sequence.Append(battleWnd.hp_txt.transform.DOScaleY(0.2f,0.25f));
+        sequence.AppendCallback(() => battleWnd.hp_txt.text = "x " + hp);
+        sequence.Append(battleWnd.hp_txt.transform.DOScaleY(1f,0.25f)); 
+        //DOTween.To(() => hp,x => hp = x,hp,1f).SetUpdate(UpdateType.Normal,true)
+        //    .OnUpdate(() => battleWnd.hp_txt.text = "x " + hp);
+
         LoadPlayer(deadPos);
         guideLine.player = player;
         player.GetComponent<PlayerController>().Revive();
@@ -257,18 +262,21 @@ public class BattleMgr:MonoBehaviour {
         Init(CurWaveIndex,CurLevelID);
     }
 
-    public void EndBattle(bool isWin,Vector3 contactPoint = new Vector3()) {
-        if(isWin) {
-            StartCoroutine(SmoothTransitionToFov());
+    public void EndBattle(bool isWin,Vector3 pos = new Vector3()) {
+        if(isWin) { 
+            Time.timeScale = 0.2f;
+            ToolClass.ChangeCameraFov(cam,20,3f).onComplete+=()=> {
+                Time.timeScale = 1;
+                GameWin();
+            };
             battleWnd.win_panel.ShowClearance();
         } else {
-            ParticleMgr.Instance.PlayDeadParticle(contactPoint);
+            ParticleMgr.Instance.PlayDeadParticle(pos);
             AudioManager.Instance.PlaySound(deadClip);
             StartBattle = false;
             Time.timeScale = 1;
-            new WaitForSeconds(0.5f);
             if(hp > 0) {//剩余生命值大于0才能复活继续
-                deadPos = player.transform.position;
+                deadPos = pos;
                 battleSys.battleWnd.dead_panel.ShowAndStartCountDown();
                 if(_pds.PlayerData.coin < 100) {
                     battleSys.battleWnd.dead_panel.CannotContinueByCoin();
@@ -290,30 +298,7 @@ public class BattleMgr:MonoBehaviour {
     private void LevelSettlement() {//关卡结算
         GameRoot.Instance.LevelSettlement(coin);
     }
-
-
-    //拉近镜头
-    IEnumerator SmoothTransitionToFov() {
-        if(cam) {
-            float transitionDuration = 0.3f;
-            float targetFov = 20f;
-            float startTime = Time.time;
-            Time.timeScale = 0.2f;
-
-            while(Time.time < startTime + transitionDuration) {
-                float t = (Time.time - startTime) / transitionDuration;
-                // 使用EaseIn函数来实现先快后慢的效果
-                t *= t;// 根据需要调整这个方程来改变过渡曲线
-
-                cam.fieldOfView = Mathf.SmoothStep(cam.fieldOfView,targetFov,t);
-                yield return null; // 等待下一帧
-            }
-            cam.fieldOfView = targetFov;
-        }
-        Time.timeScale = 1;
-        GameWin();
-    }
-
+     
     public void DestoryBattle() {
         Destroy(gameObject);
     }

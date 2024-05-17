@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Gear : Enemy
+public class Gear : EnemyEntity
 {
     public Transform[] trans;
     public int cur_index=0;
@@ -15,7 +15,7 @@ public class Gear : Enemy
         transform.position = trans[0].position;
         canDestroy = false;
     }
-    private void Update() {
+    public override void Update() {
         transform.Rotate(GearRotateSpeed * Time.deltaTime * Vector3.up);
         if (loopMove) {
             LoopMove();

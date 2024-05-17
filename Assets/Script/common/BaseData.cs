@@ -18,6 +18,7 @@ public class LevelData {
     public Vector3Data PlayerStartPosition { get; set; }
     public Vector3Data CameraOffset { get; set; }
     public Vector3Data CameraRotation { get; set; }
+    public int CamFOV { get; set; }
     public int EnemyNum { get; set; }
 }
 

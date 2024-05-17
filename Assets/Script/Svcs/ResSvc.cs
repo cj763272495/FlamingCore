@@ -181,7 +181,7 @@ public class ResSvc : MonoBehaviour {
     }
     
 
-public bool SavePlayerData(PlayerDataDic playerDataDic) {
+    public bool SavePlayerData(PlayerDataDic playerDataDic) {
         try {
             string json = JsonConvert.SerializeObject(playerDataDic,Formatting.Indented);
             WriteJsonToFile(json,Constants.PlayerDataPath);

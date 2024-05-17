@@ -240,7 +240,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   destoryCoinValue: 5
-  canAttack: 0
 --- !u!1001 &6820988974017082077
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -327,7 +326,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2991793543678041023, guid: a4b4f1a3caa795444aa1990b10b569f5, type: 3}
       propertyPath: m_Layer
-      value: 14
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {  
     protected float _speed;
@@ -39,21 +40,13 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    protected virtual void Update() {
-        //if(battleMgr.StartBattle && isMove) {
-        //    SetMove();
-        //    SetCam();
-        //    SetRotate();
-        //}
-    }
+    protected virtual void Update() {  }
 
     public void SetDir(Vector3 direnction) {
         _dir = direnction;
     }
 
-    public virtual void OnPointerDown() {
-        
-    }
+    public virtual void OnPointerDown() { }
 
     public virtual void OnPointerUp() {
         ExitOverloadMode();
@@ -64,8 +57,7 @@ public class PlayerController : MonoBehaviour {
         ContactPoint contactPoint = collision.contacts[0];
 
         if(destructible && collisionLayer == 7) {//bullet 
-            battleMgr.EndBattle(false,contactPoint.point); 
-            Destroy(gameObject);
+            PlayerDead();
         } else if(collisionLayer == 14) {//enemy
             battleMgr.EliminateEnemy(); 
         } else {
@@ -77,16 +69,19 @@ public class PlayerController : MonoBehaviour {
         Vector3 inDirection = (transform.position - lastPos).normalized;
         Vector3 inNormal = contactPoint.normal;
         inNormal.y = 0;
-        Vector3 tempDir = Vector3.Reflect(inDirection,inNormal).normalized;
-        //if(tempDir!=Vector3.zero && tempDir.y==0) {
-            if(!Physics.Raycast(transform.position,tempDir,0.5f)) {
-                _dir = tempDir;
-            } else {
-                // 如果射线检测到物体，那么调整反射方向
-                _dir = Vector3.Reflect(tempDir,inNormal).normalized;
-            }
-        //}
-        lastPos = transform.position;//更新上一次位置，用于计算反射方向
+        Vector3 tempDir = Vector3.Reflect(inDirection,inNormal).normalized; 
+        if(!Physics.Raycast(transform.position,tempDir,0.5f)) {
+            _dir = tempDir;
+        } else { 
+            _dir = Vector3.Reflect(tempDir,inNormal).normalized;
+        } 
+        lastPos = transform.position; //更新上一次位置，用于计算反射方向
+    }
+
+    public void PlayerDead() {
+        battleMgr.EndBattle(false,transform.position);
+        gameObject.SetActive(false);
+        Destroy(gameObject, 1f);
     }
 
     private void OnTriggerEnter(Collider other) {
@@ -140,11 +135,13 @@ public class PlayerController : MonoBehaviour {
         lastPos = transform.position;
         CancelInvoke("ExitOverloadMode");
         Invoke("ExitOverloadMode",Constants.overloadDuration);//2秒后退出过载模式
+        ToolClass.ChangeCameraFov(Camera.main,Constants.OverloadFov,1);
     }
 
     public void ExitOverloadMode() { 
         _speed = Constants.PlayerSpeed;
         destructible = true;
+        ToolClass.ChangeCameraFov(Camera.main,battleMgr.DefaultFov,0.2f);
     }
 
     public void EnterIdleState() {
