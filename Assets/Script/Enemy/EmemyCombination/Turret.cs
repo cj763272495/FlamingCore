@@ -18,16 +18,21 @@ public class Turret {
         this.rotationMode = rotationMode;
     }
 
-    public virtual void Fire() { 
-        _weapon.Fire();
+    public virtual void Fire() {
+        if(_weapon!=null) { 
+            _weapon.Fire();
+        }
     }
 
     public virtual void Rotate(Transform playerTrans = null) {
-        rotationMode.Rotate(playerTrans);
-        // Default implementation
+        if(rotationMode != null) {
+            rotationMode.Rotate(playerTrans);
+        }
     }
 
-    public virtual void SetMove(Transform trans, Transform targetTrans) {
-        _base.Move(trans, targetTrans); 
+    public virtual void SetMove(EnemyEntity enemy, Transform targetTrans) {
+        if (_base!=null) {
+            _base.Move(enemy,targetTrans); 
+        }
     }
 }

@@ -1,11 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Xml.Serialization;
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
-using static UnityEngine.ParticleSystem;
 
 public class Chest : MonoBehaviour
 {
@@ -36,7 +30,6 @@ public class Chest : MonoBehaviour
     }
 
     public void PlayParticle() {
-        //Quad.SetActive(false);
         UIManager.Instance.winPanel.Show1stCoinTxt();
         var emission = coinPS.emission;
         emission.rateOverTime =  Mathf.Max(BattleSys.Instance.battleMgr.GetCoin(),40);
@@ -47,9 +40,9 @@ public class Chest : MonoBehaviour
     }
 
     public void Exit() {
-        gameObject.SetActive(false);
         startRotate = false;
         ps.Stop();
+        gameObject.SetActive(false);
     }
 
     private ParticleSystem.Particle[] particles;

@@ -13,9 +13,10 @@ public class ChargedLaser :  ContinuousLaser, IFireMode {
     bool isCharging = true;
 
     public ChargedLaser(GameObject spawnedLaser,LineRenderer lineRenderer,
-    GameObject firePoint, MonoBehaviour monoBehaviour,float len = 20) : base(spawnedLaser,lineRenderer,firePoint,len) {
+        List<Transform> firePoint, MonoBehaviour monoBehaviour,float len = 20) :
+            base(spawnedLaser,lineRenderer,firePoint,len) {
         _len = len;
-        _firePoint = firePoint;
+        _firePoints = firePoint;
         _spawnedLaser = spawnedLaser;
         _lineRenderer = lineRenderer;
 
@@ -26,15 +27,17 @@ public class ChargedLaser :  ContinuousLaser, IFireMode {
     }
 
     public override void Fire() {
-        RaycastHit hit;
-        if(Physics.Raycast(_firePoint.transform.position,_firePoint.transform.forward,out hit,_len)) {
-            _lineRenderer.SetPosition(1,new Vector3(0,0,hit.distance));
-            if(hit.collider.gameObject.tag == "Player" && _lineRenderer.startWidth >= effectiveWidth) {
-                hit.collider.gameObject.GetComponent<PlayerController>().PlayerDead();
+        foreach(Transform firePoint in _firePoints) {
+            RaycastHit hit;
+            if(Physics.Raycast(firePoint.transform.position,firePoint.transform.forward,out hit,_len)) {
+                _lineRenderer.SetPosition(1,new Vector3(0,0,hit.distance));
+                if(hit.collider.gameObject.tag == "Player" && _lineRenderer.startWidth >= effectiveWidth) {
+                    hit.collider.gameObject.GetComponent<PlayerController>().PlayerDead();
+                }
+            } else {
+                _lineRenderer.SetPosition(1,new Vector3(0,0,_len));
             }
-        } else {
-            _lineRenderer.SetPosition(1,new Vector3(0,0,_len));
-        }
+        } 
     }
 
     IEnumerator ChargeAndShoot() {

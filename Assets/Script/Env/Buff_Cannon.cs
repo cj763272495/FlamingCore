@@ -19,7 +19,7 @@ public class Buff_Cannon:MonoBehaviour {
 
             animator.SetBool("Show",true);
             playerController = other.gameObject.GetComponent<PlayerController>();
-            playerController.EnterIdleState();
+            playerController.EnterIdleState(false);
             joystick = BattleSys.Instance.battleMgr.joystick;
             joystick.OnPointerDownAction += OnPointerDown;
             joystick.OnPointerUpAction += OnPointerUp;

@@ -1,6 +1,4 @@
-using UnityEngine;
-using static UnityEngine.ParticleSystem;
-using UnityEngine.UIElements;
+using UnityEngine; 
 using System.Collections;
 
 public class ParticleMgr : MonoBehaviour

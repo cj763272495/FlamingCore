@@ -1,9 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using System.Threading.Tasks;
-using Unity.VisualScripting;
+using UnityEngine.UI; 
 using DG.Tweening;
 
 public class BattleWnd:MonoBehaviour {

@@ -722,9 +722,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   destoryCoinValue: 5
+  curAniState: 0
+  ani: {fileID: 0}
+  stateMgr: {fileID: 0}
+  firePoint: {fileID: 4403976575998481318}
+  countDown: {fileID: 0}
   spwanLaser: {fileID: 8557982455302581382}
   linerender: {fileID: 7595691236573873067}
-  firePoint: {fileID: 7017240400194931957}
 --- !u!1 &6275207593203663312
 GameObject:
   m_ObjectHideFlags: 0

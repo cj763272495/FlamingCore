@@ -1,26 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
-
+﻿using UnityEngine;
 
 public class FixedAmiChargedLaserTurret: EnemyEntity {
 
     public GameObject spwanLaser;
-    public LineRenderer linerender;
-    public GameObject firePoint;
-
-    private Turret turret;
+    public LineRenderer linerender; 
 
     private FixedBase fixedBase;
     private AmiRotationMode rotationMode;
     private LaserWeapon laserWeapon;
     private ChargedLaser laser;
 
-    private void Start() {
-        turret = new Turret();
-
+    public override void Start() {
+        base.Start(); 
         fixedBase = new FixedBase();
         turret.SetTurretBase(fixedBase);
 
@@ -28,17 +19,12 @@ public class FixedAmiChargedLaserTurret: EnemyEntity {
         turret.SetRotationMode(rotationMode);
 
         laserWeapon = new LaserWeapon();
-        laser = new ChargedLaser(spwanLaser,linerender,firePoint,this);
+        laser = new ChargedLaser(spwanLaser,linerender,firePoints,this);
         laserWeapon.SetFireMode(laser);
         turret.SetWeapon(laserWeapon);
     }
 
     public override void Update() {
-        base.Update();
-        if(player) {
-            turret.Fire();
-            //turret.Rotate(player.transform);
-            //turret.SetMove(transform);
-        }
+        base.Update(); 
     }
 }

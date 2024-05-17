@@ -1,7 +1,9 @@
 using DG.Tweening; 
 using UnityEngine; 
 using UnityEngine.UI;
-using TMPro; 
+using TMPro;
+using System;
+using System.Threading.Tasks;
 
 public static class ToolClass {
     public static void SetGameObjectPosXZ(GameObject player,Vector3 pos) {
@@ -48,5 +50,10 @@ public static class ToolClass {
 
     public static Tween ChangeCameraFov(Camera camera,float targetFov,float duration) {
         return camera.DOFieldOfView(targetFov,duration).SetUpdate(UpdateType.Normal,true); 
+    }
+
+    public static async void CallAfterDelay(float delay,Action function) {
+        await Task.Delay(TimeSpan.FromSeconds(delay));
+        function();
     }
 }

@@ -9,24 +9,10 @@ public class EnemyDeadCoin : MonoBehaviour
     public bool isPlaying = false;
     public int coinValue;
 
-    private void OnTriggerEnter(Collider other) {
-        //if(other.comparetag("player")) {
-        //    soundplayer = collision.gameobject.getcomponent<soundplayer>();
-        //    soundplayer.clipsource = ressvc.instance.loadaudio(constants.hitenenmyclip);
-        //    soundplayer.playsound();
-        //    particlemgr.instance.playenemydeadparticle(other.transform.position,other.transform);
-        //    destroy(gameobject);
-        //}
-    }
-
     private void Update() {
         if(player && isPlaying) {
-            StartChase();
+            StartCoroutine(AttractParticlesToPlayerAfterDelay(lastParticleSystem,0.4f));
         }
-    }
-
-    public void StartChase() { 
-        StartCoroutine(AttractParticlesToPlayerAfterDelay(lastParticleSystem, 0.4f));//延迟一段时间后粒子飞向玩家
     }
 
     private IEnumerator AttractParticlesToPlayerAfterDelay(ParticleSystem particleSystem,float delay) {

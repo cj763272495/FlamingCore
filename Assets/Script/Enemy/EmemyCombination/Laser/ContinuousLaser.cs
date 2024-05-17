@@ -1,18 +1,17 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ContinuousLaser : IFireMode {
 
     protected float _len = 20;
-    protected GameObject _firePoint;
+    protected List<Transform> _firePoints;
     protected GameObject _spawnedLaser;
     protected LineRenderer _lineRenderer;
 
     public ContinuousLaser(GameObject spawnedLaser,LineRenderer lineRenderer, 
-        GameObject firePoint, float len=20) {
+        List<Transform> firePoints, float len=20) {
         _len = len;
-        _firePoint = firePoint;
+        _firePoints = firePoints;
         _spawnedLaser = spawnedLaser;
         _lineRenderer = lineRenderer;
 
@@ -22,15 +21,17 @@ public class ContinuousLaser : IFireMode {
     }
 
     public virtual void Fire() {
-        RaycastHit hit;
-        if(Physics.Raycast(_firePoint.transform.position,_firePoint.transform.forward,out hit,_len)) {
-            _lineRenderer.SetPosition(1,new Vector3(0,0,hit.distance));
-            if(hit.collider.gameObject.tag == "Player") {
-                hit.collider.gameObject.GetComponent<PlayerController>().PlayerDead();
+        foreach(Transform firePoint in _firePoints) {
+            RaycastHit hit;
+            if(Physics.Raycast(firePoint.position,firePoint.forward,out hit,_len)) {
+                _lineRenderer.SetPosition(1,new Vector3(0,0,hit.distance));
+                if(hit.collider.gameObject.tag == "Player") {
+                    hit.collider.gameObject.GetComponent<PlayerController>().PlayerDead();
+                }
+            } else {
+                _lineRenderer.SetPosition(1,new Vector3(0,0,_len));
             }
-        } else {
-            _lineRenderer.SetPosition(1,new Vector3(0,0,_len));
-        }
+        } 
     }
 
     public void EnableLaser() {

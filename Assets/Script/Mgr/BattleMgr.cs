@@ -1,14 +1,12 @@
 using System.Collections;
 using UnityEngine;
-using System;
-using Unity.VisualScripting;
-using UnityEngine.EventSystems;
-using DG.Tweening;
-using static UnityEngine.GraphicsBuffer;
+using System; 
+using DG.Tweening; 
 
 public class BattleMgr:MonoBehaviour {
     private ResSvc resSvc;
-    private GameRoot gameRoot;
+    private GameRoot gameRoot; 
+    public StateMgr stateMgr;
     private PlayersDataSystem _pds;
     private BattleSys battleSys;
     private int coin;
@@ -97,6 +95,8 @@ public class BattleMgr:MonoBehaviour {
         CurWaveIndex = waveid;
         CurLevelID = levelid;
         if(levelid==0) {//大关开始
+            stateMgr = gameObject.AddComponent<StateMgr>();
+            stateMgr.Init();
             gameRoot = GameRoot.Instance;
             _pds = PlayersDataSystem.Instance;
             battleSys = BattleSys.Instance;
@@ -219,6 +219,7 @@ public class BattleMgr:MonoBehaviour {
         player.transform.localScale = Vector3.one;
         player.Init();
         player.battleMgr = this;
+        EventManager.PlayerLoaded(player);
         joystick.OnPointerDownAction += player.OnPointerDown;
         joystick.OnPointerUpAction += player.OnPointerUp;
     }
@@ -241,7 +242,7 @@ public class BattleMgr:MonoBehaviour {
         DG.Tweening.Sequence sequence = DOTween.Sequence().SetUpdate(UpdateType.Normal,true);
         sequence.Append(battleWnd.hp_txt.transform.DOScaleY(0.2f,0.25f));
         sequence.AppendCallback(() => battleWnd.hp_txt.text = "x " + hp);
-        sequence.Append(battleWnd.hp_txt.transform.DOScaleY(1f,0.25f)); 
+        sequence.Append(battleWnd.hp_txt.transform.DOScaleY(1f,0.25f));
         //DOTween.To(() => hp,x => hp = x,hp,1f).SetUpdate(UpdateType.Normal,true)
         //    .OnUpdate(() => battleWnd.hp_txt.text = "x " + hp);
 

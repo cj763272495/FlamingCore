@@ -144,8 +144,8 @@ public class PlayerController : MonoBehaviour {
         ToolClass.ChangeCameraFov(Camera.main,battleMgr.DefaultFov,0.2f);
     }
 
-    public void EnterIdleState() {
-        gameObject.SetActive(false);
+    public void EnterIdleState(bool isActive) {
+        gameObject.SetActive(isActive);
         isMove = false;
         lastPos = transform.position;
     }
