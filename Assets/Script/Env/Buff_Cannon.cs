@@ -10,11 +10,13 @@ public class Buff_Cannon:MonoBehaviour {
     public const float OnBuffCannonGuideLineLen = 10;
     private FloatingJoystick joystick;
 
+    public ParticleSystem ps;
+
     private void OnTriggerEnter(Collider other) {
         if(other.gameObject.tag == "Player") {
             ToolClass.ChangeCameraFov(Camera.main,Constants.OverloadFov,1);
             _collider.enabled = false;
-            ToolClass.SetGameObjectPosXZ(other.gameObject,transform.position);
+            ToolClass.SetGameObjectXZPos(other.gameObject,transform.position);
             transform.rotation = Quaternion.LookRotation(BattleSys.Instance.battleMgr.joyStickDir);
 
             animator.SetBool("Show",true);
@@ -25,6 +27,7 @@ public class Buff_Cannon:MonoBehaviour {
             joystick.OnPointerUpAction += OnPointerUp;
             joystick.enabled = false;
             rotateTrt = true;
+            ps.Play();
         }
     }
 
@@ -51,7 +54,6 @@ public class Buff_Cannon:MonoBehaviour {
         animator.SetBool("Attack",true);
     }
 
-
     public void Attack() {
         playerController.ExitIdleState();
         playerController.EnterOverloadMode();
@@ -60,6 +62,7 @@ public class Buff_Cannon:MonoBehaviour {
         joystick.OnPointerUpAction -= OnPointerDown;
         BattleSys.Instance.battleMgr.guideLine.SetLen(Constants.MaxGuideLineLen); 
         rotateTrt = false;
+        ps.Stop();
         StopAllCoroutines(); 
     }
 

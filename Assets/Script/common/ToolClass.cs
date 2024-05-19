@@ -6,7 +6,7 @@ using System;
 using System.Threading.Tasks;
 
 public static class ToolClass {
-    public static void SetGameObjectPosXZ(GameObject player,Vector3 pos) {
+    public static void SetGameObjectXZPos(GameObject player,Vector3 pos) {
         player.transform.position = new Vector3(pos.x,player.transform.position.y,pos.z);
     }
 
@@ -54,6 +54,6 @@ public static class ToolClass {
 
     public static async void CallAfterDelay(float delay,Action function) {
         await Task.Delay(TimeSpan.FromSeconds(delay));
-        function();
+        function(); 
     }
 }
