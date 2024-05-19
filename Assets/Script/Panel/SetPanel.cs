@@ -45,6 +45,7 @@ public class SetPanel : MonoBehaviour
 
     public void ClickRetunLogin() {
         ResSvc.Instance.AsyncLoadScene("StartScene",() => {
+            GameRoot.Instance.ClearUIRoot();
             gameObject.SetActive(false);
             UIManager.Instance.regLogInWnd.Init();
             UIManager.Instance.homeWnd.mainShow.SetActive(false);

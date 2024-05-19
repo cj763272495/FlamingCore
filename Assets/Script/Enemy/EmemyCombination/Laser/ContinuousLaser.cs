@@ -22,17 +22,35 @@ public class ContinuousLaser : IFireMode {
 
     public virtual void Fire() {
         foreach(Transform firePoint in _firePoints) {
-            RaycastHit hit;
-            if(Physics.Raycast(firePoint.position,firePoint.forward,out hit,_len)) {
-                _lineRenderer.SetPosition(1,new Vector3(0,0,hit.distance));
-                if(hit.collider.gameObject.tag == "Player") {
-                    hit.collider.gameObject.GetComponent<PlayerController>().PlayerDead();
+            Vector3 direction = firePoint.forward;
+            Vector3 origin = firePoint.position;
+            while(true) {
+                RaycastHit hit;
+                if(Physics.Raycast(origin,direction,out hit,_len)) {
+                    _lineRenderer.positionCount += 1;
+                    _lineRenderer.SetPosition(_lineRenderer.positionCount - 1,hit.point);
+                    if(hit.collider.gameObject.tag == "Player") {
+                        hit.collider.gameObject.GetComponent<PlayerController>().PlayerDead();
+                        break;
+                    } else if(hit.collider.gameObject.tag == "Mirror") {
+                        // 如果射线碰到了镜子，计算反射方向
+                        Vector3 incomingVec = Vector3.Normalize(hit.point - origin);
+                        direction = Vector3.Reflect(incomingVec,hit.normal);
+                        origin = hit.point;
+                    } else if(hit.collider.gameObject.tag == "Wall") {
+                        // 如果射线碰到了墙体，停止进一步的射线投射
+                        break;
+                    }
+                } else {
+                    _lineRenderer.positionCount += 1;
+                    _lineRenderer.SetPosition(_lineRenderer.positionCount - 1,origin + direction * _len);
+                    break;
                 }
-            } else {
-                _lineRenderer.SetPosition(1,new Vector3(0,0,_len));
             }
-        } 
+        }
     }
+
+
 
     public void EnableLaser() {
         _spawnedLaser.SetActive(true);

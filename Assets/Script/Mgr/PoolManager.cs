@@ -15,8 +15,8 @@ public class PoolManager : MonoBehaviour {
     /// </summary>
     /// <param name="prefab">指定预制体的类型</param>
     /// <param name="size">当前对应类型的对象池的长度</param>
-    public void InitPool(Object prefab, int size, Transform parent = null) {
-        if (poolsDict.ContainsKey(prefab)) {
+    public void InitPool(Object prefab, int size, Transform parent = null) { 
+        if (!prefab ||poolsDict.ContainsKey(prefab)) {
             return;
         }
         Queue<Object> queue = new();

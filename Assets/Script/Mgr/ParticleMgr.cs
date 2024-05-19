@@ -19,29 +19,28 @@ public class ParticleMgr : MonoBehaviour
     }
 
     public void Init() {
-        // 碰撞墙壁的粒子特效
-        hitWallParticle = ResSvc.Instance.LoadPrefab("Prefab/Particles/HitWallParticle");
-        PoolManager.Instance.InitPool(hitWallParticle, 3, battleMgr.transform);
-
+        // 碰撞墙壁的粒子特效 
+        InitParticlePool(out hitWallParticle,"Prefab/Particles/Cores/HitWallParticle"); 
         //碰撞敌人的粒子特效
-        enemyDeadParticle = ResSvc.Instance.LoadPrefab("Prefab/Particles/EnemyDeadParticle");
-        PoolManager.Instance.InitPool(enemyDeadParticle, 3, battleMgr.transform);
-
+        InitParticlePool(out enemyDeadParticle,"Prefab/Particles/EnemyDeadParticle");  
         //玩家死亡的粒子特效
-        deadParticle = ResSvc.Instance.LoadPrefab("Prefab/Particles/DeadParticle");
-        PoolManager.Instance.InitPool(deadParticle, 1, battleMgr.transform);
-
+        InitParticlePool(out deadParticle,"Prefab/Particles/Cores/DeadParticle",1); 
         //子弹销毁的粒子特效
-        bulletDestoryParticle = ResSvc.Instance.LoadPrefab("Prefab/Particles/BulletDestoryParticle");
-        PoolManager.Instance.InitPool(bulletDestoryParticle, 5, battleMgr.transform);
-
+        InitParticlePool(out bulletDestoryParticle,"Prefab/Particles/BulletDestoryParticle", 10);
         //获取金币特效 
-        getCoinParticle = ResSvc.Instance.LoadPrefab("Prefab/Particles/GetCoinParticle");
-        PoolManager.Instance.InitPool(getCoinParticle, 5, battleMgr.transform);
-         
-        overLoadParticle = ResSvc.Instance.LoadPrefab("Prefab/Particles/OverLoadParticle");
-        PoolManager.Instance.InitPool(overLoadParticle, 2, battleMgr.transform);
-}
+        InitParticlePool(out getCoinParticle,"Prefab/Particles/GetCoinParticle", 5);
+        //超载模式特效
+        InitParticlePool(out overLoadParticle,"Prefab/Particles/Cores/OverLoadParticle", 1);
+    }
+
+    public void  InitParticlePool(out GameObject particle, string path, int num=3) {
+        particle = ResSvc.Instance.LoadPrefab(path);
+        if(particle != null) {
+            PoolManager.Instance.InitPool(particle,num,battleMgr.transform);
+        } else {
+            Debug.LogError("InitParticlePool failed, particle is null, path: "+ path);
+        }
+    }
 
     public void AddCustomParticle(GameObject particle, int num=3) {
         PoolManager.Instance.InitPool(particle, num, battleMgr.transform);
@@ -55,17 +54,14 @@ public class ParticleMgr : MonoBehaviour
     }
 
     public void PlayHitWallParticle(ContactPoint contact) {
-        GameObject go =  PoolManager.Instance.
-            GetInstance<GameObject>(hitWallParticle);
+        GameObject go =  PoolManager.Instance.GetInstance<GameObject>(hitWallParticle);
         Vector3 point = contact.point;
         Vector3 normal = contact.normal;
         go.transform.position = point;
         go.transform.parent = battleMgr.transform;
-        // 旋转go使go的z轴和碰撞点point的法线平行
         Quaternion rotation = Quaternion.LookRotation(normal);
-        go.GetComponentInChildren<ParticleSystem>().transform.rotation = rotation;
-        //go.transform.forward = point;
-        go.GetComponentInChildren<ParticleSystem>().Play();
+        go.GetComponent<ParticleSystem>().transform.rotation = rotation;
+        go.GetComponent<ParticleSystem>().Play();
     }
 
     public void PlayEnemyDeadParticle(ContactPoint contact, Transform player) {
@@ -87,8 +83,7 @@ public class ParticleMgr : MonoBehaviour
     }
 
     public void PlayBulletDestoryParticle(ContactPoint contact) {
-        GameObject go = PoolManager.Instance.
-    GetInstance<GameObject>(bulletDestoryParticle);
+        GameObject go = PoolManager.Instance.GetInstance<GameObject>(bulletDestoryParticle);
         Vector3 point = contact.point;
         Vector3 normal = contact.normal;
         go.transform.position = point;

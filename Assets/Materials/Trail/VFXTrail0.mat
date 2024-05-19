@@ -52,7 +52,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Erosion:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: a593eab558be81643a6f197d0c2e3204, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -60,7 +60,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Mask:
-        m_Texture: {fileID: 2800000, guid: 5a18020c08e354047beb758bb7aaa98b, type: 3}
+        m_Texture: {fileID: 2800000, guid: da2b272d8dc75004e8e58b9e748470ea, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -104,7 +104,7 @@ Material:
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _Mask_Multiply: 1
-    - _Mask_Power: 2
+    - _Mask_Power: 1
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1

@@ -41,8 +41,7 @@ public class Constants {
 
     public const int ReviceCost = 80; //重生消耗金额
 
-    //public static int[] skinPrice = new int[] { 0,100,200,300 };//皮肤价格
-    public static int[] trailPrice = new int[] { 0,100,300,500 };//拖尾价格
+    public static int[] trailPrice = new int[] { 0,100,300,500,700,900 };//拖尾价格
 
     public const string DashTargetPosSprite = "Sprite/Huan";
 

@@ -147,6 +147,12 @@ public class BattleMgr:MonoBehaviour {
         cb?.Invoke();
     }
 
+    public void EnterBulletTime() {
+        Time.timeScale = 0.1f;
+        guideLine.gameObject.SetActive(true);
+        makeGuideLineCoroutine = StartCoroutine(MakeGuideLineCoroutine());
+    }
+
     public void OnPointerDown() {
         if(!StartBattle) {
             return;
@@ -231,7 +237,7 @@ public class BattleMgr:MonoBehaviour {
     public void ResumeBattle() {//È¡ÏûÔÝÍ£,»Ö¸´ÓÎÏ·
         battleWnd.StartCountDown3Seconds().onComplete+=()=> {
             StartBattle = true;
-            joystick.IsDown = true;
+            EnterBulletTime();
         };
         battleWnd.ShowHp(); 
     }
