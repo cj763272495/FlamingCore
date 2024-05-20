@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 
-public class AutoRotationMode:IRotationMode {
+public class AutoRotationMode: IRotationMode {
     private Transform transform;
-    private readonly float rotateSpeed = 10f;
+    private float rotateSpeed;
 
-   public AutoRotationMode(Transform transform) {
+   public AutoRotationMode(Transform transform, float roSpeed=10f) {
         this.transform = transform;
+        rotateSpeed = roSpeed;
     }
 
     public void Rotate(Transform player = null) {

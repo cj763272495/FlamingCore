@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ElasticWall : MonoBehaviour
+public class ElasticWall : MonoBehaviour //µ¯Á¦Ç½
 {
     PlayerController _player;
     private void OnCollisionEnter(Collision collision) {
@@ -11,11 +11,4 @@ public class ElasticWall : MonoBehaviour
             _player.EnterOverloadMode(); 
         }
     }
-
-    //public void OnPointerUp() {
-    //    _player.ExitIdleState();
-    //    ToolClass.CallAfterDelay(0.5f,() => {
-    //        BattleSys.Instance.battleMgr.joystick.OnPointerUpAction -= OnPointerUp;
-    //    });
-    //}
 }

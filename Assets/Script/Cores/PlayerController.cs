@@ -1,13 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
+using System.Collections; 
+using UnityEngine; 
 
 public class PlayerController : MonoBehaviour {  
     protected float _speed;
-    private float _rotateSpeed;
+    protected float _rotateSpeed;
     public bool isMove;
     protected Vector3 _dir;
 
@@ -43,6 +39,7 @@ public class PlayerController : MonoBehaviour {
     protected virtual void Update() {  }
 
     public void SetDir(Vector3 direnction) {
+        lastPos = transform.position;
         _dir = direnction;
     }
 
@@ -102,7 +99,7 @@ public class PlayerController : MonoBehaviour {
 
 
     }
-    private void SetRotate() {
+    protected void SetRotate() {
         Vector3 rotationAxis = Vector3.Cross(_dir,Vector3.up);
         float rotationAmount = _speed * _rotateSpeed * Time.deltaTime;
         transform.Rotate(-rotationAxis,rotationAmount,Space.World);
@@ -133,14 +130,14 @@ public class PlayerController : MonoBehaviour {
         _speed = Constants.OverloadSpeed;
         destructible = false;
         lastPos = transform.position;
-        CancelInvoke("ExitOverloadMode");
-        Invoke("ExitOverloadMode",Constants.overloadDuration);//2秒后退出过载模式
+        CancelInvoke("ExitOverloadMode"); 
         ToolClass.ChangeCameraFov(Camera.main,Constants.OverloadFov,1);
     }
 
     public void ExitOverloadMode() { 
         _speed = Constants.PlayerSpeed;
         destructible = true;
+        CancelInvoke("EnterOverloadMode");
         ToolClass.ChangeCameraFov(Camera.main,battleMgr.DefaultFov,0.2f);
     }
 

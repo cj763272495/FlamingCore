@@ -54,6 +54,6 @@ public static class ToolClass {
 
     public static async void CallAfterDelay(float delay,Action function) {
         await Task.Delay(TimeSpan.FromSeconds(delay));
-        function(); 
+        function();
     }
 }

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 26160200}
   - component: {fileID: 6397245055201791358}
   - component: {fileID: 6051543971520210662}
+  - component: {fileID: 44257837863904248}
   m_Layer: 7
   m_Name: Gear
   m_TagString: Untagged
@@ -107,6 +108,26 @@ MonoBehaviour:
   speed: 2
   moveDir: 1
   loopMove: 1
+--- !u!114 &44257837863904248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1192734330702569528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3e69a3af24c217429c7705e8470c81c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canAttack: 1
+  curAniState: 0
+  rotateSpeed: 400
+  firePoints: []
+  countDown: {fileID: 0}
+  ani: {fileID: 0}
+  canDestroy: 0
+  destoryCoinValue: 5
 --- !u!1 &2238438020100014886
 GameObject:
   m_ObjectHideFlags: 0

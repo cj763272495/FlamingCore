@@ -14,13 +14,13 @@ public class PatrolBase: MonoBehaviour {
 
     public void Move() { 
         if(loopMove) {
-            LoopMove(transform);
+            LoopMove();
         } else {
-            BackMove(transform);
+            BackMove();
         }
     }
 
-    private void LoopMove(Transform transform) {//正向循环移动
+    private void LoopMove() {//正向循环移动
         if(transform.position != pathTrans[_curIndex].position) {
             transform.position = Vector3.MoveTowards(transform.position,
                 pathTrans[_curIndex].position,speed * Time.deltaTime);
@@ -32,7 +32,7 @@ public class PatrolBase: MonoBehaviour {
         }
     }
 
-    private void BackMove(Transform transform) { //到终点返回
+    private void BackMove() { //到终点返回
         if(transform.position != pathTrans[_curIndex].position) {
             transform.position = Vector3.MoveTowards(transform.position, pathTrans[_curIndex].position,speed * Time.deltaTime);
         } else {

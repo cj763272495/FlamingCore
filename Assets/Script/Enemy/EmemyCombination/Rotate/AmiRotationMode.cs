@@ -5,8 +5,9 @@ public class AmiRotationMode : IRotationMode {
     private Transform transform;
     private readonly float rotateSpeed = 60f;
 
-    public AmiRotationMode(Transform transform) {
+    public AmiRotationMode(Transform transform, float roSpeed=60f) {
         this.transform = transform;
+        rotateSpeed = roSpeed;
     }
 
     public void Rotate(Transform player) {

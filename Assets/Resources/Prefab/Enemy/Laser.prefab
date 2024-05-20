@@ -79,8 +79,6 @@ LineRenderer:
   m_Positions:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 1}
-  - {x: 3.3977356, y: 0.12475586, z: 0.9886074}
-  - {x: 3.8704834, y: 0.4593506, z: 4.6968346}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1

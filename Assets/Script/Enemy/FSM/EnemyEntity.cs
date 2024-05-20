@@ -10,7 +10,7 @@ public class EnemyEntity : MonoBehaviour
     protected Turret turret;
     public AniState curAniState = AniState.None;
 
-    protected float rotateSpeed = 100;
+    public float rotateSpeed = 100;
     public List<Transform> firePoints;
     public Image countDown; 
     public Animator ani;
