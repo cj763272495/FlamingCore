@@ -9,6 +9,7 @@ TagManager:
   - coin
   - DirField
   - Boom
+  - CheckPoint
   layers:
   - Default
   - TransparentFX

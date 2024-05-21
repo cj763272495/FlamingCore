@@ -195,6 +195,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7040626454332595854, guid: f72620ef97ea49944bf512f5cce82b21, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -216,7 +220,7 @@ GameObject:
   - component: {fileID: 120626016}
   - component: {fileID: 120626015}
   - component: {fileID: 120626014}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: WallLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -294,7 +298,7 @@ Light:
   m_RenderMode: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 65535
+    m_Bits: 33792
   m_RenderingLayerMask: 1
   m_Lightmapping: 4
   m_LightShadowCasterMode: 0
@@ -916,7 +920,7 @@ Light:
   m_Enabled: 1
   serializedVersion: 11
   m_Type: 1
-  m_Color: {r: 0.13725491, g: 0.3372549, b: 0.7176471, a: 1}
+  m_Color: {r: 0.27450982, g: 0.27058825, b: 0.27058825, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30

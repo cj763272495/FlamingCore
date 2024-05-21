@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour {
 
     public BattleMgr battleMgr;
     public bool destructible=true;
+    public ParticleSystem overLoadField;
 
     public virtual void Init() {
         lastPos = transform.position;
@@ -130,13 +131,15 @@ public class PlayerController : MonoBehaviour {
         _speed = Constants.OverloadSpeed;
         destructible = false;
         lastPos = transform.position;
-        CancelInvoke("ExitOverloadMode"); 
+        CancelInvoke("ExitOverloadMode");
+        overLoadField.Play();
         ToolClass.ChangeCameraFov(Camera.main,Constants.OverloadFov,1);
     }
 
     public void ExitOverloadMode() { 
         _speed = Constants.PlayerSpeed;
         destructible = true;
+        overLoadField.Stop();
         CancelInvoke("EnterOverloadMode");
         ToolClass.ChangeCameraFov(Camera.main,battleMgr.DefaultFov,0.2f);
     }

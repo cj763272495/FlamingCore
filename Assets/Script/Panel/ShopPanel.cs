@@ -31,6 +31,7 @@ public class ShopPanel:MonoBehaviour {
     private Sprite normalSprite;
 
     public Text descript;
+    public ShopPlayer player;
 
     private void Start() {
         skinView.gameObject.SetActive(true);
@@ -45,11 +46,18 @@ public class ShopPanel:MonoBehaviour {
         normalSprite = ResSvc.Instance.LoadSprite("Sprite/bg_btn_small_normal_new");
     }
 
+    private void OnEnable() {
+        player.Init();
+    }
+    private void OnDisable() {
+        player.LeavePanel();
+    }
+
     private void Update() {
         UpdatePurchaseBtnInfo();
     }
 
-    // 定义一个方法用于设置购买按钮和装备文本的状态
+    // 设置购买按钮和装备文本的状态
     void UpdatePurchaseBtnInfo() {
         _currentViewID = selectBuySkin ? skinView.CurrentIndex-1 : trailView.CurrentIndex-1;
         int currentPlayerDataIndex = selectBuySkin ? pds.PlayerData.cur_skin : pds.PlayerData.cur_trail;
@@ -99,14 +107,6 @@ public class ShopPanel:MonoBehaviour {
     private void SetBuyInfoView(bool show) {
         buyBtnCoinImag.gameObject.SetActive(show);
         buyButtonCoinTxt.gameObject.SetActive(show);
-    }
-
-    public void OpenShopPanel() {
-        gameObject.SetActive(true);
-    }
-
-    public void CloseShopPanel() {
-        gameObject.SetActive(true);
     }
 
     public void SelectBuyCore() {

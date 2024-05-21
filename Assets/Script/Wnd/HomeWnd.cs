@@ -7,7 +7,7 @@ public class HomeWnd : MonoBehaviour
     public BattleWnd battleWnd; 
     [SerializeField] private ToggleGroup toggleGroup;
     [SerializeField] private GameObject levelPanel;   // 主页UI面板
-    [SerializeField] private GameObject storePanel;  // 商店UI面板
+    [SerializeField] private GameObject shopPanel;  // 商店UI面板
     [SerializeField] private GameObject settingsPanel; // 设置UI面板
     public Toggle tgLevel;
     public Toggle tgShop;
@@ -39,7 +39,7 @@ public class HomeWnd : MonoBehaviour
 
     public void ActivatePanel(GameObject panel) {
         levelPanel.SetActive(panel == levelPanel);
-        storePanel.SetActive(panel == storePanel);
+        shopPanel.SetActive(panel == shopPanel);
         settingsPanel.SetActive(panel == settingsPanel);
     }
 
@@ -52,7 +52,7 @@ public class HomeWnd : MonoBehaviour
                 mainShow.SetActive(true);
                 break;
             case PageType.Store:
-                ActivatePanel(storePanel);
+                ActivatePanel(shopPanel);
                 mainShow.SetActive(false);
                 break;
             case PageType.Settings:

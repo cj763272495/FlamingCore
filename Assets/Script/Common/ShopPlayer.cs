@@ -1,14 +1,16 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class ShopPlayer:PlayerController {
     private IEnumerator coroutine;
     public ParticleSystem hitWallParticle;
     public Material[] materials;
     public GameObject[] trails;
+    public GameObject ShopShow;
 
-    protected void Start() {
+    public override void Init() {
+        gameObject.SetActive(true);
+        ShopShow.SetActive(true);
         lastPos = transform.position;
         _speed = Constants.PlayerSpeed;
         _rotateSpeed = Constants.RotateSpeed;
@@ -17,12 +19,18 @@ public class ShopPlayer:PlayerController {
         trails[0].SetActive(true);
     }
 
+    public void LeavePanel() {
+        gameObject.SetActive(false);
+        ShopShow.SetActive(false);
+        //gameObject.SetActive(false);
+    }
+
     private IEnumerator CallSetDir() {
         while(true) {
             Vector3 randomVector = new Vector3(Random.Range(-1f,1f),0,Random.Range(-1f,1f));
             SetDir(randomVector);
-            SetScale(Random.Range(2f,3f));
-            yield return new WaitForSeconds(Random.Range(2,4));
+            SetScale(1f);
+            yield return new WaitForSeconds(Random.Range(3,5));
         }
     }
 
