@@ -20,9 +20,10 @@ public class BattleMgr:MonoBehaviour {
     private int hp;
     private LevelData levelData;
     private int eliminateEnemyNum;
+    public bool isRobotLevel=false;
 
     //test
-    public bool startBattle;
+    private bool startBattle;
     public bool StartBattle {
         get { return startBattle; }
         private set {
@@ -70,7 +71,7 @@ public class BattleMgr:MonoBehaviour {
                 Time.timeScale = 0.2f;
                 player.destructible = false;
                 battleWnd.transitionLevelPanel.TransitionToNextLevel(CurWaveIndex,CurLevelID, hp).onComplete += () => {
-                    startBattle = false;
+                    StartBattle = false;
                     Time.timeScale = 1;
                     UIManager.Instance.ShowBlend();
                     StratNextLevel();
@@ -94,6 +95,8 @@ public class BattleMgr:MonoBehaviour {
     public void Init(int waveid,int levelid=0,Action cb = null) {
         CurWaveIndex = waveid;
         CurLevelID = levelid;
+        //isRobotLevel = levelid !=0 && levelid %4 ==0;
+        isRobotLevel = true;
         if(levelid==0) {//大关开始
             stateMgr = gameObject.AddComponent<StateMgr>();
             stateMgr.Init();
@@ -104,7 +107,7 @@ public class BattleMgr:MonoBehaviour {
             guideLine = battleWnd.guideLine;
             joystick = battleWnd.joystick; 
             hp = 3;
-            coin = 0; 
+            coin = 0;
             hitWallClip = resSvc.LoadAudio(Constants.HitWallClip,true);
             deadClip = resSvc.LoadAudio(Constants.DeadClip);
         }
@@ -118,13 +121,15 @@ public class BattleMgr:MonoBehaviour {
             particleMgr.Init();
         }
 
-        levelData = resSvc.GetMapCfgData(waveid.ToString());
+        levelData = resSvc.GetMapCfgData(waveName);
         if(levelData != null) {
             resSvc.AsyncLoadScene(waveName, ()=>OnSceneLoaded(cb));
+        } else {
+            Debug.Log("load scen failed, name:" + waveName);
         }
     }
     private void OnSceneLoaded(Action cb) {
-        guideLine.gameObject.SetActive(false); 
+        guideLine.gameObject.SetActive(false);
         joystick.gameObject.SetActive(true);
         joystick.SetIsShow(gameRoot.gameSettings.showJoyStick);
         joystick.OnPointerDownAction = OnPointerDown;
@@ -157,9 +162,14 @@ public class BattleMgr:MonoBehaviour {
         if(!StartBattle) {
             return;
         }
-        Time.timeScale = 0.1f;
-        guideLine.gameObject.SetActive(true);
-        makeGuideLineCoroutine = StartCoroutine(MakeGuideLineCoroutine());
+        if(isRobotLevel) {
+            Time.timeScale = 1f;
+            player.isMove = true; 
+        } else {
+            Time.timeScale = 0.1f;
+            guideLine.gameObject.SetActive(true);
+            makeGuideLineCoroutine = StartCoroutine(MakeGuideLineCoroutine());
+        }
     }
     private IEnumerator MakeGuideLineCoroutine() {
         while(true) {
@@ -172,17 +182,21 @@ public class BattleMgr:MonoBehaviour {
         if(!StartBattle) {
             return;
         }
-        if(makeGuideLineCoroutine != null) {
-            StopCoroutine(makeGuideLineCoroutine);
+        if(isRobotLevel) {
+            Time.timeScale = 0.2f;
+            player.isMove = false;
+        } else {
+            if(makeGuideLineCoroutine != null) {
+                StopCoroutine(makeGuideLineCoroutine);
+            }
+            guideLine.gameObject.SetActive(false);
+            Time.timeScale = 1;
+            if(joystick.UpDirection != Vector3.zero) {
+                player.SetDir(joystick.UpDirection.normalized);
+            }
+            player.isMove = true;
+            player.lastPos = player.transform.position;
         }
-        // 在这里处理鼠标或触摸输入
-        guideLine.gameObject.SetActive(false);
-        Time.timeScale = 1;
-        if(joystick.UpDirection != Vector3.zero) { 
-            player.SetDir(joystick.UpDirection.normalized);
-        }
-        player.isMove = true;
-        player.lastPos = player.transform.position;
     }
 
     public void PlayHitWallClip() {
@@ -213,20 +227,26 @@ public class BattleMgr:MonoBehaviour {
     }
 
     private void LoadPlayer(Vector3 pos) {
-        string skinId = _pds.PlayerData.cur_skin.ToString();
-        string trailId = _pds.PlayerData.cur_trail.ToString();
-        player = resSvc.LoadPrefab("Prefab/Cores/qiu_" + skinId).GetComponent<PlayerController>();
-        GameObject trail = resSvc.LoadPrefab("Prefab/Trails/" + trailId);
-        trail.transform.parent = player.transform;
-        trail.transform.localScale = Vector3.one;
-        trail.transform.localPosition = Vector3.zero;
+        if(isRobotLevel) {
+            string robotName = levelData.RobotName;
+            player = resSvc.LoadPrefab("Prefab/Robot/" + robotName).GetComponent<PlayerController>();
+        } else {
+            string skinId = _pds.PlayerData.cur_skin.ToString();
+            string trailId = _pds.PlayerData.cur_trail.ToString();
+            player = resSvc.LoadPrefab("Prefab/Cores/qiu_" + skinId).GetComponent<PlayerController>();
+            GameObject trail = resSvc.LoadPrefab("Prefab/Trails/" + trailId); 
+            trail.transform.parent = player.transform;
+            trail.transform.localScale = Vector3.one;
+            trail.transform.localPosition = Vector3.zero;
+        }
+
         player.transform.position = pos;
         player.transform.localEulerAngles = Vector3.zero;
         player.transform.localScale = Vector3.one;
-        player.Init();
-        player.battleMgr = this;
+        player.Init(this,stateMgr);
         EventManager.PlayerLoaded(player);
         joystick.OnPointerDownAction += player.OnPointerDown;
+        joystick.OnDragAction += player.OnDrag;
         joystick.OnPointerUpAction += player.OnPointerUp;
     }
 

@@ -145,8 +145,8 @@ public class ResSvc : MonoBehaviour {
             Debug.LogError("An error occurred: " + ex.Message);
         }
     }
-    public LevelData GetMapCfgData(string id) { 
-        if (mapCfgDataDic.TryGetValue("level"+id, out LevelData data)) {
+    public LevelData GetMapCfgData(string waveName) { 
+        if (mapCfgDataDic.TryGetValue(waveName, out LevelData data)) {
             return data;
         }
         return null;

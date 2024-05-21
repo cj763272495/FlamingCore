@@ -2,18 +2,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI; 
 
-public class EnemyEntity : MonoBehaviour
+public class EnemyEntity : Entity
 {
     protected PlayerController _player;
     public bool canAttack = true; 
     private StateMgr stateMgr;
     protected Turret turret;
-    public AniState curAniState = AniState.None;
 
     public float rotateSpeed = 100;
     public List<Transform> firePoints;
     public Image countDown; 
-    public Animator ani;
     public bool canDestroy = true;
     public int destoryCoinValue = 5;
 

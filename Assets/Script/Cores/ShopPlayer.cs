@@ -1,6 +1,5 @@
 using System.Collections;
-using UnityEngine;
-using static UnityEngine.ParticleSystem;
+using UnityEngine; 
 
 public class ShopPlayer:PlayerController {
     private IEnumerator coroutine;
@@ -9,7 +8,7 @@ public class ShopPlayer:PlayerController {
     public GameObject[] trails;
     public GameObject ShopShow;
 
-    public override void Init() {
+    public override void Init(BattleMgr b=null,StateMgr state=null) {
         gameObject.SetActive(true);
         ShopShow.SetActive(true);
         lastPos = transform.position;

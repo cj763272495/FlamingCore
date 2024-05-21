@@ -1,7 +1,7 @@
 using System.Collections; 
 using UnityEngine; 
 
-public class PlayerController : MonoBehaviour {  
+public class PlayerController: Entity {
     protected float _speed;
     protected float _rotateSpeed;
     public bool isMove;
@@ -19,8 +19,11 @@ public class PlayerController : MonoBehaviour {
     public BattleMgr battleMgr;
     public bool destructible=true;
     public ParticleSystem overLoadField;
+    public StateMgr stateMgr;
 
-    public virtual void Init() {
+    public virtual void Init(BattleMgr battle=null,StateMgr state=null) {
+        battleMgr = battle;
+        stateMgr = state;
         lastPos = transform.position;
         camTrans = Camera.main.transform;
         destructible = true;
@@ -45,6 +48,8 @@ public class PlayerController : MonoBehaviour {
     }
 
     public virtual void OnPointerDown() { }
+
+    public virtual void OnDrag() {}
 
     public virtual void OnPointerUp() {
         ExitOverloadMode();
@@ -96,11 +101,9 @@ public class PlayerController : MonoBehaviour {
     protected virtual void SetMove() {
         //transform.position = Vector3.MoveTowards(transform.position,
             //transform.position + _dir.normalized,_speed * Time.deltaTime);
-        _rb.MovePosition(transform.position + _dir * _speed * Time.fixedDeltaTime);
-
-
+        _rb.MovePosition(transform.position + _dir * _speed * Time.deltaTime); 
     }
-    protected void SetRotate() {
+    protected virtual void SetRotate() {
         Vector3 rotationAxis = Vector3.Cross(_dir,Vector3.up);
         float rotationAmount = _speed * _rotateSpeed * Time.deltaTime;
         transform.Rotate(-rotationAxis,rotationAmount,Space.World);
@@ -153,4 +156,14 @@ public class PlayerController : MonoBehaviour {
         isMove = true;
         gameObject.SetActive(true);
     }
+
+    public void Born() {
+        stateMgr.ChangeStatus(this,AniState.Born,null);
+    }
+    public void Take() {
+        stateMgr.ChangeStatus(this,AniState.Take,null);
+    }
+    public void Idle() {
+        stateMgr.ChangeStatus(this,AniState.Idle,null);
+    } 
 }

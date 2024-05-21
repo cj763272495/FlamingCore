@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Burst.Intrinsics;
-using Unity.VisualScripting;
+using System.Collections.Generic; 
 using UnityEngine;
 
 public class StateMgr : MonoBehaviour
@@ -15,19 +12,19 @@ public class StateMgr : MonoBehaviour
         //fsm.Add(AniState.Attack,new StateAttack()); 
     }
 
-    public void ChangeStatus(EnemyEntity enemy,AniState targetState,params object[] args) {
-        if(enemy.curAniState == targetState) {
+    public void ChangeStatus(Entity entity,AniState targetState,params object[] args) {
+        if(entity.curAniState == targetState) {
             return;
         }
         if(fsm.ContainsKey(targetState)) {
-            if(enemy.curAniState == targetState) {
+            if(entity.curAniState == targetState) {
                 return;
             }
-            if(enemy.curAniState != AniState.None) {
-                fsm[enemy.curAniState].Exit(enemy,args);
+            if(entity.curAniState != AniState.None) {
+                fsm[entity.curAniState].Exit(entity,args);
             }
-            fsm[targetState].Enter(enemy,args);
-            fsm[targetState].Process(enemy,args);
+            fsm[targetState].Enter(entity,args);
+            fsm[targetState].Process(entity,args);
         }
     }
 }

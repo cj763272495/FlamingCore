@@ -15,8 +15,8 @@ public class DashBall: PlayerController {
     private float _targetPosImgRadiu;
     private bool _showTargetPos = false;
 
-    public override void Init() {
-        base.Init();
+    public override void Init(BattleMgr battle ,StateMgr state) {
+        base.Init(battle,state);
         _targetPosImg.gameObject.SetActive(false);
         _targetPosImg.transform.position = transform.position;
         ParticleMgr.Instance.AddCustomParticle(dashParticle);

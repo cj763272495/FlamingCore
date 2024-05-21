@@ -11,6 +11,7 @@ public class FloatingJoystick : Joystick
     public float UpV;
     private bool isShow = true;
     public Action OnPointerDownAction;
+    public Action OnDragAction;
     public Action OnPointerUpAction; 
 
     protected override void Start()
@@ -31,6 +32,11 @@ public class FloatingJoystick : Joystick
         }
         OnPointerDownAction?.Invoke();
         base.OnPointerDown(eventData);
+    }
+
+    public override void OnDrag(PointerEventData eventData) {
+        base.OnDrag(eventData);
+        OnDragAction?.Invoke();
     }
 
     public override void OnPointerUp(PointerEventData eventData)

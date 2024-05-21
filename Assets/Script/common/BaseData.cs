@@ -15,6 +15,7 @@ public class Vector3Data {
 }
 
 public class LevelData {
+    public string RobotName { get; set; }
     public Vector3Data PlayerStartPosition { get; set; }
     public Vector3Data CameraOffset { get; set; }
     public Vector3Data CameraRotation { get; set; }

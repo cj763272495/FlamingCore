@@ -1,9 +1,9 @@
 public interface IState {
-    void Enter(EnemyEntity enemy, params object[] args);
+    void Enter(Entity enemy, params object[] args);
 
-    void Process(EnemyEntity enemy, params object[] args);
+    void Process(Entity enemy, params object[] args);
 
-    void Exit(EnemyEntity enemy, params object[] args);
+    void Exit(Entity enemy, params object[] args);
 
 }
 

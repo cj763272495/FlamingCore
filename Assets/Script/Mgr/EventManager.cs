@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class EventManager:MonoBehaviour {
+public class EventManager: MonoBehaviour {
     // 定义一个事件，当玩家被加载时触发
     public static event Action<PlayerController> OnPlayerLoaded;
 
