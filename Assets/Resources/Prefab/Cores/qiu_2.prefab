@@ -197,9 +197,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 378724268666625263}
     m_Modifications:
+    - target: {fileID: 338632740996128759, guid: 0107191d9ff79294caac3b86b82ef688, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 2059206581726958387, guid: 0107191d9ff79294caac3b86b82ef688, type: 3}
       propertyPath: m_Name
       value: OverLoadShield
+      objectReference: {fileID: 0}
+    - target: {fileID: 2059206581726958387, guid: 0107191d9ff79294caac3b86b82ef688, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4772700036642057429, guid: 0107191d9ff79294caac3b86b82ef688, type: 3}
       propertyPath: m_LocalPosition.x

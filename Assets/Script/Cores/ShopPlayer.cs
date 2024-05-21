@@ -1,10 +1,11 @@
 using System.Collections;
 using UnityEngine;
+using static UnityEngine.ParticleSystem;
 
 public class ShopPlayer:PlayerController {
     private IEnumerator coroutine;
     public ParticleSystem hitWallParticle;
-    public Material[] materials;
+    public GameObject[] coreModes;
     public GameObject[] trails;
     public GameObject ShopShow;
 
@@ -16,13 +17,13 @@ public class ShopPlayer:PlayerController {
         _rotateSpeed = Constants.RotateSpeed;
         coroutine = CallSetDir();
         StartCoroutine(coroutine);
+        coreModes[0].SetActive(true);
         trails[0].SetActive(true);
     }
 
     public void LeavePanel() {
         gameObject.SetActive(false);
-        ShopShow.SetActive(false);
-        //gameObject.SetActive(false);
+        ShopShow.SetActive(false); 
     }
 
     private IEnumerator CallSetDir() {
@@ -61,43 +62,22 @@ public class ShopPlayer:PlayerController {
         lastPos = transform.position; //更新上一次位置，用于计算反射方向
     }
 
-    public void ChangeMaterial(GameObject go, int coreIndex) {
-        if(coreIndex > materials.Length-1) {
-            Debug.LogError("coreIndex out of range");
-            return;
-        }
-        Renderer renderer = go.GetComponentInChildren<Renderer>();
-        if(renderer != null && renderer.materials.Length > 0) {
-            Material[] materials = renderer.materials;
-            materials[0] = materials[coreIndex];
-            renderer.materials = materials;
-        }
+    public void ChangeModes(int index) {
+        ChangeProps(index,coreModes); 
+    }
+    public void ChangeTrails(int index) {
+        ChangeProps(index, trails);
     }
 
-    public void ChangeTrail(int trailIndex) {
-        if(trailIndex > trails.Length-1) {
-            Debug.LogError("trailIndex out of range");
+    public void ChangeProps(int index ,GameObject[] props) {
+        if(index > props.Length-1) {
+            Debug.LogError("out of range");
             return;
         }
-        switch(trailIndex) {
-            case 0:
-                trails[0].SetActive(false);
-                break;
-            case 1:
-                trails[1].SetActive(true);
-                break;
-            case 2:
-                trails[2].SetActive(true);
-                break;
-            case 3:
-                trails[3].SetActive(true);
-                break;
-            case 4:
-                trails[4].SetActive(true);
-                break;
-            default:
-                break;
+        foreach(GameObject item in props) {
+            item.SetActive(false);
         }
+        props[index].SetActive(true);
     }
 
 }

@@ -53,8 +53,8 @@ public class GameRoot : MonoBehaviour
         battleSys.InitSys();
         gameSettings = resSvc.LoadConf(); 
         UIManager.Instance.SetBgAuidoOn(gameSettings.bgAudio);
-        UIManager.Instance.ShowJoyStick(gameSettings.showJoyStick);
-        
+        UIManager.Instance.ShowJoyStick(gameSettings.showJoyStick); 
+        bgPlayer.clipSource = ResSvc.Instance.LoadAudio(Constants.BGMainCity);
     }
 
     public void GameStart() {
@@ -91,7 +91,6 @@ public class GameRoot : MonoBehaviour
 
     public void PlayBgAudio(bool isOn) {
         if (isOn) {
-            bgPlayer.clipSource = ResSvc.Instance.LoadAudio(Constants.BGMainCity);
             bgPlayer.PlaySound(true);
         } else {
             if (bgPlayer.audioSource.isPlaying) {

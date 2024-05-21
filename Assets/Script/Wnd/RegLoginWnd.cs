@@ -8,6 +8,7 @@ public class RegLoginWnd : MonoBehaviour
     private bool isLogin ;
     private GameObject startCanvas;
     public GameObject loginGroup;
+    private GameObject logo;
 
     public void Init() {
         gameObject.SetActive(true);
@@ -16,9 +17,11 @@ public class RegLoginWnd : MonoBehaviour
             username.text = pds._playerID;
         }
         startCanvas = GameObject.Find("startCanvas").gameObject;
+        logo = GameObject.Find("Logo").gameObject;
         isLogin = false;
         loginGroup.SetActive(true);
         startCanvas.SetActive(false);
+        logo.SetActive(false);
     }
 
     public void ClickStart() {
@@ -26,6 +29,7 @@ public class RegLoginWnd : MonoBehaviour
             isLogin = true;
             loginGroup.SetActive(false);
             startCanvas.SetActive(true);
+            logo.SetActive(true);
         }
     }
 
