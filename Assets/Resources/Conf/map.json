@@ -3,7 +3,7 @@
     "RobotName": "Robot1",
     "playerStartPosition": {
       "x": 27.3,
-      "y": 5.8,
+      "y": 0.8,
       "z": 21.2
     },
     "cameraOffset": {

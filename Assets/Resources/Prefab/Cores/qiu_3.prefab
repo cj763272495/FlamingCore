@@ -281,7 +281,7 @@ Rigidbody:
     m_Bits: 26304
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 6462
+    m_Bits: 104766
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
@@ -301,6 +301,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27786a656363c574b8359350086b8a86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  curAniState: 0
+  ani: {fileID: 0}
   isMove: 0
   _rb: {fileID: 2424980329562365169}
   lastPos: {x: 0, y: 0, z: 0}
@@ -308,6 +310,7 @@ MonoBehaviour:
   battleMgr: {fileID: 0}
   destructible: 1
   overLoadField: {fileID: 5541478576953151716}
+  stateMgr: {fileID: 0}
   clearRadius: 4
   clearParticle: {fileID: 6317405865675647278}
 --- !u!1001 &3555274383916658938

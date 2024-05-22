@@ -115,11 +115,6 @@ public class BattleMgr:MonoBehaviour {
         string waveName = $"Level{waveid * 5 + levelid}";
         battleWnd.hp_txt.text = $"x {hp}";
 
-        if(gameObject.GetComponent<ParticleMgr>() == null) {
-            particleMgr = gameObject.AddComponent<ParticleMgr>();
-            particleMgr.Init(this);
-        }
-
         levelData = resSvc.GetMapCfgData(waveName);
         if(levelData != null) {
             resSvc.AsyncLoadScene(waveName, ()=>OnSceneLoaded(cb));
@@ -146,6 +141,10 @@ public class BattleMgr:MonoBehaviour {
             gameRoot.bgPlayer.PlaySound(true);
         }
 
+        if(gameObject.GetComponent<ParticleMgr>() == null) {
+            particleMgr = gameObject.AddComponent<ParticleMgr>();
+            particleMgr.Init(this);
+        }
         OnStartBattleChanged += HandleStartBattleChanged;
         StartBattle = true;
         cb?.Invoke();

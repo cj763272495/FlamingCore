@@ -10,8 +10,7 @@ public class NoReboundCore : PlayerController
 
         if(destructible && collisionLayer == 7) {//bullet 
             PlayerDead();
-        } else if(collisionLayer == 14) {//enemy
-            battleMgr.EliminateEnemy();
+        } else if(collisionLayer == 14) {//enemy 
         } else {
             battleMgr.particleMgr.PlayHitWallParticle(contactPoint);
             battleMgr.PlayHitWallClip();

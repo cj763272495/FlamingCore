@@ -179,7 +179,7 @@ Rigidbody:
     m_Bits: 26304
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 6462
+    m_Bits: 104766
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
@@ -199,6 +199,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1ea990f6fed31f4182dd5b2f3d8e344, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  curAniState: 0
+  ani: {fileID: 0}
   isMove: 0
   _rb: {fileID: 6432278958197351681}
   lastPos: {x: 0, y: 0, z: 0}
@@ -206,6 +208,7 @@ MonoBehaviour:
   battleMgr: {fileID: 0}
   destructible: 1
   overLoadField: {fileID: 3320113609188317020}
+  stateMgr: {fileID: 0}
   _targetPosImg: {fileID: 2738564659283988095}
   canvasTrans: {fileID: 6760565657231944348}
   imgCollisionLayer:

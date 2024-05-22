@@ -1,6 +1,5 @@
 using UnityEngine; 
-using System.Collections;
-
+using System.Collections; 
 public class ParticleMgr : MonoBehaviour
 {
     public static ParticleMgr Instance { get; private set; }
@@ -8,21 +7,22 @@ public class ParticleMgr : MonoBehaviour
     private GameObject enemyDeadParticle;
     private GameObject deadParticle;
     private GameObject bulletDestoryParticle;
-    private GameObject getCoinParticle; 
+    private GameObject getCoinParticle;
     private GameObject overLoadParticle;
 
     public BattleMgr battleMgr;
 
     private void Awake() {
+        if(Instance != null) {
+            Debug.LogError("Another instance of ParticleMgr already exists!");
+            return;
+        }
         Instance = this;
     }
 
     public void Init(BattleMgr battle) {
-        battleMgr = battle;
-    }
-    private void Start() {
-        // 碰撞墙壁的粒子特效 
-        hitWallParticle = InitParticlePool( "Prefab/Particles/Cores/HitWallParticle");
+        battleMgr = battle;        // 碰撞墙壁的粒子特效 
+        hitWallParticle = InitParticlePool("Prefab/Particles/Cores/HitWallParticle");
         //碰撞敌人的粒子特效
         enemyDeadParticle = InitParticlePool("Prefab/Particles/EnemyDeadParticle");
         //玩家死亡的粒子特效
@@ -45,37 +45,39 @@ public class ParticleMgr : MonoBehaviour
         return particle;
     }
 
+    private GameObject PlayParticle(GameObject particle,Vector3 position) {
+        GameObject go = PoolManager.Instance.GetInstance<GameObject>(particle);
+        go.transform.position = position;
+        go.transform.parent = battleMgr.transform;
+        go.GetComponentInChildren<ParticleSystem>().Play();
+        StartCoroutine(ReturnPool(go));
+        return go;
+    }
+
+    IEnumerator ReturnPool(GameObject particle) { 
+        yield return new WaitWhile(() => particle.GetComponentInChildren<ParticleSystem>().isPlaying); 
+        PoolManager.Instance.ReturnToPool(particle);
+    }
+
     public void AddCustomParticle(GameObject particle, int num=3) {
         PoolManager.Instance.InitPool(particle, num, battleMgr.transform);
     }
-
+    
     public void PlayCustomParticle(GameObject particle, Vector3 position) {
-        GameObject go = PoolManager.Instance.GetInstance<GameObject>(particle);
-        go.transform.position =position;
-        go.transform.parent = battleMgr.transform;
-        go.GetComponentInChildren<ParticleSystem>().Play();
+        PlayParticle(particle, position);
     }
 
-    public void PlayHitWallParticle(ContactPoint contact) {
-        GameObject go =  PoolManager.Instance.GetInstance<GameObject>(hitWallParticle);
-        Vector3 point = contact.point;
+    public void PlayHitWallParticle(ContactPoint contact) {  
+        GameObject go = PlayParticle(hitWallParticle,contact.point); 
         Vector3 normal = contact.normal;
-        go.transform.position = point;
-        go.transform.parent = battleMgr.transform;
         Quaternion rotation = Quaternion.LookRotation(normal);
-        go.GetComponent<ParticleSystem>().transform.rotation = rotation;
-        go.GetComponent<ParticleSystem>().Play();
+        go.GetComponent<ParticleSystem>().transform.rotation = rotation; 
     }
 
-    public void PlayEnemyDeadParticle(ContactPoint contact, Transform player) {
-        GameObject go = PoolManager.Instance.GetInstance<GameObject>(enemyDeadParticle);
-        go.transform.position = contact.point;
-        go.transform.parent = battleMgr.transform;
-        go.GetComponent<ParticleSystem>().Play();
-
+    public void PlayEnemyDeadParticle(ContactPoint contact, Transform player) {    
+        GameObject go = PlayParticle(enemyDeadParticle,contact.point);
         ParticleSystem[] particleSystems = go.GetComponentsInChildren<ParticleSystem>();
         ParticleSystem lastParticleSystem = particleSystems[particleSystems.Length - 1];
-
         EnemyDeadCoin enemyDeadCoin = lastParticleSystem.gameObject.GetComponent<EnemyDeadCoin>();
         enemyDeadCoin.isPlaying = true;
         enemyDeadCoin.player = player.gameObject;
@@ -86,39 +88,21 @@ public class ParticleMgr : MonoBehaviour
     }
 
     public void PlayBulletDestoryParticle(ContactPoint contact) {
-        GameObject go = PoolManager.Instance.GetInstance<GameObject>(bulletDestoryParticle);
-        if(go) {
-            Vector3 point = contact.point;
-            Vector3 normal = contact.normal;
-            go.transform.position = point;
-            go.transform.parent = battleMgr.transform;
-
-            Quaternion rotation = Quaternion.LookRotation(normal);
-            go.GetComponentInChildren<ParticleSystem>().transform.rotation = rotation;
-            go.GetComponentInChildren<ParticleSystem>().Play();
-
-        }
+        GameObject go = PlayParticle(bulletDestoryParticle,contact.point); 
+        Vector3 normal = contact.normal;
+        Quaternion rotation = Quaternion.LookRotation(normal);
+        go.GetComponentInChildren<ParticleSystem>().transform.rotation = rotation; 
     }
 
     public void PlayGetCoinParticle(Vector3 point) {
-        GameObject go = PoolManager.Instance.GetInstance<GameObject>(getCoinParticle);
-        go.transform.position = point;
-        go.transform.parent = battleMgr.transform;
-        go.GetComponent<ParticleSystem>().Play();
+        PlayParticle(getCoinParticle, point);
     }
 
     public void PlayDeadParticle(Vector3 point) {
-        GameObject go = PoolManager.Instance.GetInstance<GameObject>(deadParticle);
-        go.transform.position = point;
-        go.transform.parent = battleMgr.transform;
-        go.GetComponent<ParticleSystem>().Play();
+        PlayParticle(deadParticle, point);
     }
     public void PlayOverLoadParticle( PlayerController player) {
-        GameObject go = PoolManager.Instance.GetInstance<GameObject>(overLoadParticle);
-        go.transform.position = player.transform.position;
-        go.transform.parent = battleMgr.transform;
-        go.transform.forward = player.Dir;
-        go.GetComponentInChildren<ParticleSystem>().Play();
+        GameObject go =  PlayParticle(overLoadParticle, player.transform.position);
         // 使用协程实现粒子特效跟随玩家，播放完成后停止协程
         StartCoroutine(OverLoadParticleFollowPlayer(go, player));
     }
@@ -133,10 +117,5 @@ public class ParticleMgr : MonoBehaviour
         }
     }
 
-    private void PlayParticle(GameObject particle, Vector3 position) {
-        GameObject go = PoolManager.Instance.GetInstance<GameObject>(particle);
-        go.transform.position = position;
-        go.transform.parent = battleMgr.transform;
-        go.GetComponentInChildren<ParticleSystem>().Play();
-    }
+
 }

@@ -61,8 +61,7 @@ public class PlayerController: Entity {
 
         if(destructible && collisionLayer == 7) {//bullet 
             PlayerDead();
-        } else if(collisionLayer == 14) {//enemy
-            battleMgr.EliminateEnemy(); 
+        } else if(collisionLayer == 14) {//en 
         } else {
             battleMgr.particleMgr.PlayHitWallParticle(contactPoint);
             battleMgr.PlayHitWallClip();
@@ -84,6 +83,7 @@ public class PlayerController: Entity {
     public void PlayerDead() {
         battleMgr.EndBattle(false,transform.position);
         gameObject.SetActive(false);
+        ParticleMgr.Instance.PlayDeadParticle(transform.position);
         Destroy(gameObject, 1f);
     }
 

@@ -45,7 +45,7 @@ public class PaiJiPaoDan : MonoBehaviour
         exploreRange.gameObject.SetActive(false);
         explosionParticle.Play();
         Explode();
-        gameObject.SetActive(false);
+        PoolManager.Instance.ReturnToPool(gameObject);
     }
 
     void Explode() {

@@ -785,7 +785,7 @@ MonoBehaviour:
   Bullet: {fileID: 4490071193806909661, guid: 8aa8349a6393e4746ad2a8a9a2bf53ab, type: 3}
   shootPoints:
   - {fileID: 288543541247039582}
-  rotateSpeed: 150
+  rotateSpeed: 100
   arrow: {fileID: 5427606553127894432}
   countCircle: {fileID: 7844334788160430500}
   moveSpeed: 5

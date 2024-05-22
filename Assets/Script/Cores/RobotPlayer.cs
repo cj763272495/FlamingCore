@@ -68,7 +68,7 @@ public class RobotPlayer: PlayerController {
 
     public override void OnDrag() {
         arrow.gameObject.SetActive(true);
-        Vector3 dir = (Vector3.forward * battleMgr.joystick.Vertical + Vector3.right * battleMgr.joystick.Horizontal).normalized;
+        Vector3 dir = Vector3.forward * battleMgr.joystick.Vertical + Vector3.right * battleMgr.joystick.Horizontal;
         SetDir(dir); 
         arrow.transform.LookAt(arrow.transform.position + dir); 
         arrow.transform.position = transform.position + dir * 2.5f;

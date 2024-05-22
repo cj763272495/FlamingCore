@@ -45,7 +45,7 @@ public class PoolManager : MonoBehaviour {
     }
 
 
-    public T GetInstance<T>(Object prefab) where T : Object {
+    public T GetInstance<T>(Object prefab, Transform parent=null) where T : Object {
         if(!prefab) {
             return null;
         }
@@ -60,7 +60,7 @@ public class PoolManager : MonoBehaviour {
                 obj = Instantiate(prefab);
                 itemGo = obj as GameObject ?? (obj as Component).gameObject;
                 itemGo.name = prefab.name;
-                CreateGameObjectAndSetActive(itemGo,true,null,true);
+                CreateGameObjectAndSetActive(itemGo,true,parent,true);
             }
             return itemGo as T;
         }

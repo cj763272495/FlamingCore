@@ -27,7 +27,7 @@ public class Constants {
 
     public const string HitWallClip = "AudioClip/wall";
     public const string HitWall2Clip = "AudioClip/hitwall01";
-    public const string HitEnenmyClip = "AudioClip/hit2";
+    public const string HitEnenmyClip = "AudioClip/Click_Heavy_00";
     public const string DeadClip = "AudioClip/Dead";
 
     public const string BGMainCity = "AudioClip/Tiero - Action Dubstep";
