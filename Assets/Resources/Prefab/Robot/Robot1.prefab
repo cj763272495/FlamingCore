@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5958703434926893523}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ShotPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6609534599906111260}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: guai5_m_base_02_jj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -80,7 +80,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8986267779851417468}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: guai5_l_legBack_04_je
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -111,7 +111,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7812193162001246680}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: guai5_r_legBackCon_01_jj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -142,7 +142,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2161816211501113050}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: guai5_l_legFront_02_jj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -174,7 +174,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8697114201211206716}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Muzzle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -205,7 +205,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7393585301265450703}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: guai5_r_legFrontCon_01_jj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -236,7 +236,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7299201647949283253}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: guai5_r_legBack_03_jj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -268,7 +268,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8848077588765951726}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: guai5_m_base_01_jj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -300,7 +300,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6394554053662014776}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: guai5_l_legBack_03_jj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -332,7 +332,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4988208867390223941}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: guai5_mod
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -365,7 +365,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8633938162546758173}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: guai5_l_legBack_02_jj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -397,7 +397,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8010603190705280166}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: guai5_l_legBackCon_01_jj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -428,7 +428,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 592950163726349054}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: guai5_r_legFront_01_jj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -460,7 +460,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 831218680218343897}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: guai5_l_legFront_03_jj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -492,7 +492,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4563730054638611181}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HeadAim
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -526,7 +526,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7932683641269755951}
   - component: {fileID: 8132956375714490263}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ArrowSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -611,7 +611,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5006711842951195454}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: guai5_r_legBack_02_jj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -643,7 +643,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8342729241378850321}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: guai5_r_legBack_04_je
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -674,7 +674,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7638563910988889886}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: guai5_l_legFrontCon_01_jj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -710,7 +710,7 @@ GameObject:
   - component: {fileID: 2964344287629739795}
   - component: {fileID: 8456706479315318444}
   - component: {fileID: 8610848943836653854}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Robot1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -867,7 +867,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8566113250862583132}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Arrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -899,7 +899,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2792680451148658073}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: guai5_l_legBack_01_jj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -932,7 +932,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1460755163024521245}
   - component: {fileID: 7844334788160430500}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: CountCircle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1017,7 +1017,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5784673201401149497}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: guai5_m_base_03_jj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1049,7 +1049,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2285884428472681849}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: guai5_r_legFront_04_je
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1080,7 +1080,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1070168830018338493}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Buff_HackRob
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1112,7 +1112,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7511259680096549338}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: guai5_r_legFront_02_jj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1144,7 +1144,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1128322530131366113}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: guai5_l_legFront_04_je
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1175,7 +1175,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2633347258288954162}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: guai5_l_legFront_01_jj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1207,7 +1207,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6557315423369594850}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: guai5_r_legBack_01_jj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1240,7 +1240,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3891269829544400016}
   - component: {fileID: 5026791416743851179}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: guai5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1346,7 +1346,7 @@ GameObject:
   - component: {fileID: 1482769023207886767}
   - component: {fileID: 7391765664150100700}
   - component: {fileID: 6365166649010065093}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: guai5_up
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1429,7 +1429,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5828879382171673989}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: guai5_r_legFront_03_jj
   m_TagString: Untagged
   m_Icon: {fileID: 0}

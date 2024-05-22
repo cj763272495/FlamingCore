@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6405113509958234978}
   - component: {fileID: 4224569107368118846}
   - component: {fileID: 3000878030932243038}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: bulletMesh_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 7616002850600010551}
   - component: {fileID: 545274558920685989}
   - component: {fileID: 7222771430052326894}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: RobotBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -167,7 +167,7 @@ GameObject:
   - component: {fileID: 463877601799433002}
   - component: {fileID: 889829220193356264}
   - component: {fileID: 1343423551062654815}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: Trail
   m_TagString: Untagged
   m_Icon: {fileID: 0}

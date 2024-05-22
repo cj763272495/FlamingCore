@@ -1,3 +1,5 @@
+//小关卡之间过渡
+
 using DG.Tweening; 
 using System.Collections.Generic;
 using TMPro;
@@ -22,9 +24,13 @@ public class TransitionLevelPanel : MonoBehaviour
 
     public void Reset() {
         foreach(var tag in levelTagTrans) {
-            tag.GetComponent<Image>().sprite = lockedSprite;
+            var image = tag.GetComponent<Image>();
+            if(image != null) {
+                image.sprite = lockedSprite;
+            }
         }
     }
+
 
     public Tween TransitionToNextLevel(int curWave, int curLevel,int hp) {
         levelTagTrans.Clear();

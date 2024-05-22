@@ -4,8 +4,6 @@ using UnityEngine.UI;
 
 public class StartPanel : MonoBehaviour
 {
-    //todo：实现点击触摸屏幕开始游戏的方法 
-
     public float breathRate = 2.0f;
     public Image BreathImage;
 
@@ -28,8 +26,9 @@ public class StartPanel : MonoBehaviour
 
     void Breathe() {
         float t = Mathf.PingPong(Time.time,breathRate) / breathRate;
-        float alpha = Mathf.SmoothStep(0,1,t); // 平滑过渡
-        BreathImage.color = new Color(1,1,1,alpha);
-    }
-
+        float alpha = Mathf.SmoothStep(0,1,t);
+        Color color = BreathImage.color;
+        color.a = alpha;
+        BreathImage.color = color;
+    } 
 }

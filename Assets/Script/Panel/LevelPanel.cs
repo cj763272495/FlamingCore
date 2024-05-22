@@ -8,14 +8,6 @@ public class LevelPanel : MonoBehaviour
         scrollView.Init();
     }
 
-    public void OpenLevelPanel() {
-        gameObject.SetActive(true);
-    }
-
-    public void CloseLevelPanel() {
-        gameObject.SetActive(true);
-    }
-
     public void ClickStartBtn() {
         if (PlayersDataSystem.Instance.PlayerData.max_unLock_wave < scrollView.CurrentIndex) {
             return;

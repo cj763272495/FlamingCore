@@ -51,7 +51,8 @@ public class UIManager : MonoBehaviour
     }
 
     public void ShowImgEnergyDecrease() {
-        ToolClass.MoveUpAndFadeOut(ImgEnergyDecrease,0,2);
+        ImgEnergyDecrease.SetActive(true);
+        ToolClass.MoveUpAndFadeOut(ImgEnergyDecrease,0,1);
     }
 
 }

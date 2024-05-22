@@ -35,14 +35,6 @@ public class SetPanel : MonoBehaviour
         joyStickTg.isOn = on;
     }
 
-    public void OpenSetPanel() {
-        gameObject.SetActive(true);
-    }
-
-    public void CloseSetPanel() {
-        gameObject.SetActive(true);
-    }
-
     public void ClickRetunLogin() {
         ResSvc.Instance.AsyncLoadScene("StartScene",() => {
             GameRoot.Instance.ClearUIRoot();

@@ -13,6 +13,7 @@ public class WinPanel:MonoBehaviour {
     public Chest chest;
     public Image curWaveBg;
     public RawImage chestShow;
+    public GameObject chestGroup;
     public GameObject tongGuangTxt;
 
     public GameObject LeftTopCoinObj;
@@ -21,6 +22,8 @@ public class WinPanel:MonoBehaviour {
     public ParticleSystem ps;
     public AudioClip Hit2;
     public Image blendImg;
+
+    private Sequence sequence;
 
     public void SetWinPanelLevelTxt(string wave) {
         curLevelTxt.text = wave;
@@ -34,13 +37,14 @@ public class WinPanel:MonoBehaviour {
         breathImage.gameObject.SetActive(false);
 
         chestShow.gameObject.SetActive(false);
+        chestGroup.SetActive(false);
         tongGuangTxt.SetActive(false);
         LeftTopCoinObj.SetActive(false);
         curLevelTxt.gameObject.SetActive(false);
         btnGroup.gameObject.SetActive(false);
         curWaveBg.transform.localScale = new Vector3(0.1f,0.1f,0.1f);
 
-        Sequence sequence = DOTween.Sequence().SetUpdate(UpdateType.Normal,true);
+        sequence = DOTween.Sequence().SetUpdate(UpdateType.Normal,true);
         sequence.Append(curWaveBg.transform.DOScale(1,1f).OnComplete(() => {
             curLevelTxt.gameObject.SetActive(true);
             sequence.Join(curLevelTxt.DOFade(0,0.1f).SetLoops(8,LoopType.Yoyo).OnComplete(() => {
@@ -48,10 +52,11 @@ public class WinPanel:MonoBehaviour {
             }));
         }));
         tagsGroup.SetActive(true);
+        Vector3 tagsMaxScale = new Vector3(2f,2f,2f);
         foreach(Transform child in tagsGroup.transform) {
             child.gameObject.SetActive(false);
             sequence.AppendCallback(() => child.gameObject.SetActive(true));
-            sequence.Append(child.DOScale(new Vector3(2f,2f,2f),0.05f));
+            sequence.Append(child.DOScale(tagsMaxScale, 0.05f));
             sequence.Append(child.DOScale(Vector3.one,0.1f));
             sequence.AppendCallback(() => AudioManager.Instance.PlaySound(Hit2));
         }
@@ -63,19 +68,18 @@ public class WinPanel:MonoBehaviour {
         sequence.Play();
     }
 
-    public void OpenWinPanel(int coinNum) {
-            //ToolClass.ShowBlendImg(blendImg).onComplete += () => {
-            UIManager.Instance.FadeIn().onComplete+=()=> {
-                tagsGroup.SetActive(false);
-                ps.Play();
-                tongGuangTxt.SetActive(true);
-                chestShow.gameObject.SetActive(true);
-                btnGroup.gameObject.SetActive(true);
-                firstCoinTxt.text = "+ " + coinNum.ToString();
-                chest.OpenChest();
-                UIManager.Instance.FadeOut();
-            }; 
-        //};
+    public void OpenWinPanel(int coinNum) { 
+        UIManager.Instance.FadeIn().onComplete+=()=> {
+            tagsGroup.SetActive(false);
+            ps.Play();
+            tongGuangTxt.SetActive(true);
+            chestShow.gameObject.SetActive(true);
+            chestGroup.SetActive(true);
+            btnGroup.gameObject.SetActive(true);
+            firstCoinTxt.text = "+ " + coinNum.ToString();
+            chest.OpenChest();
+            UIManager.Instance.FadeOut();
+        };
     }
 
     public void Show1stCoinTxt() {
@@ -118,8 +122,9 @@ public class WinPanel:MonoBehaviour {
 
     private void LeaveWinPanel() {
         gameObject.SetActive(false);
-        DOTween.KillAll();
+         sequence.Kill();
         StopAllCoroutines();
         chest.Exit();
+        chestGroup.SetActive(false);
     }
 }

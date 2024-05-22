@@ -37,15 +37,11 @@ public class DeadPanel : MonoBehaviour
 
     IEnumerator CountdownCoroutine() {
         elapsedTime = countdownDuration; 
-        // 倒计时开始
         while (elapsedTime > 0) {
             elapsedTime -= Time.deltaTime; 
-            // 更新UI或游戏状态显示倒计时
             UpdateCountdownDisplay(elapsedTime);
-            yield return null; // 等待下一帧
+            yield return null;
         }
-
-        // 倒计时结束，可以在这里处理倒计时结束的逻辑
         FinishCountdown();
     }
 

@@ -95,8 +95,8 @@ public class BattleMgr:MonoBehaviour {
     public void Init(int waveid,int levelid=0,Action cb = null) {
         CurWaveIndex = waveid;
         CurLevelID = levelid;
-        //isRobotLevel = levelid !=0 && levelid %4 ==0;
-        isRobotLevel = true;
+        isRobotLevel = levelid !=0 && levelid %4 ==0;
+        //isRobotLevel = true;
         if(levelid==0) {//大关开始
             stateMgr = gameObject.AddComponent<StateMgr>();
             stateMgr.Init();
@@ -115,6 +115,7 @@ public class BattleMgr:MonoBehaviour {
         string waveName = $"Level{waveid * 5 + levelid}";
         battleWnd.hp_txt.text = $"x {hp}";
 
+        battleSys.CleanBattleRoot(); 
         levelData = resSvc.GetMapCfgData(waveName);
         if(levelData != null) {
             resSvc.AsyncLoadScene(waveName, ()=>OnSceneLoaded(cb));
@@ -263,12 +264,10 @@ public class BattleMgr:MonoBehaviour {
     public void ReviveAndContinueBattle() {//消耗生命继续游戏
         Time.timeScale = 0.1f;
         hp--;
-        DG.Tweening.Sequence sequence = DOTween.Sequence().SetUpdate(UpdateType.Normal,true);
+        Sequence sequence = DOTween.Sequence().SetUpdate(UpdateType.Normal,true);
         sequence.Append(battleWnd.hp_txt.transform.DOScaleY(0.2f,0.25f));
         sequence.AppendCallback(() => battleWnd.hp_txt.text = "x " + hp);
         sequence.Append(battleWnd.hp_txt.transform.DOScaleY(1f,0.25f));
-        //DOTween.To(() => hp,x => hp = x,hp,1f).SetUpdate(UpdateType.Normal,true)
-        //    .OnUpdate(() => battleWnd.hp_txt.text = "x " + hp);
 
         LoadPlayer(deadPos);
         guideLine.player = player;
@@ -277,7 +276,8 @@ public class BattleMgr:MonoBehaviour {
     }
     public void StratNextWave() {//开始下一大关
         CurWaveIndex++;
-        Init(CurWaveIndex);
+        Init(CurWaveIndex); 
+        UIManager.Instance.ShowImgEnergyDecrease();
     }
     public void PlayAgain() {
         Init(CurWaveIndex,CurLevelID);
@@ -287,7 +287,7 @@ public class BattleMgr:MonoBehaviour {
         Init(CurWaveIndex,CurLevelID);
     }
 
-    public void EndBattle(bool isWin,Vector3 pos = new Vector3()) {
+    public void EndBattle(bool isWin, Vector3 pos = new Vector3()) {
         if(isWin) { 
             Time.timeScale = 0.2f;
             ToolClass.ChangeCameraFov(cam,20,3f).onComplete+=()=> {
@@ -300,7 +300,7 @@ public class BattleMgr:MonoBehaviour {
             AudioManager.Instance.PlaySound(deadClip);
             StartBattle = false;
             Time.timeScale = 1;
-            if(hp > 0) {//剩余生命值大于0才能复活继续
+            if(hp > 0) {
                 deadPos = pos;
                 battleSys.battleWnd.dead_panel.ShowAndStartCountDown();
                 if(_pds.PlayerData.coin < 100) {

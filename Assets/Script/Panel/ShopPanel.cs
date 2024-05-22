@@ -43,6 +43,7 @@ public class ShopPanel:MonoBehaviour {
 
     public Text descript;
     public ShopPlayer player;
+    public GameObject Shopgroup;
 
     private void Start() {
         skinView.gameObject.SetActive(true);
@@ -60,14 +61,20 @@ public class ShopPanel:MonoBehaviour {
     }
 
     private void OnEnable() {
+        Shopgroup.SetActive(true);
         player.Init();
     }
     private void OnDisable() {
-        player.LeavePanel();
+        Shopgroup.SetActive(false);
+        player.gameObject.SetActive(false);
     }
 
-    private void Update() { 
-        CurrentViewID = selectBuySkin ? skinView.CurrentIndex - 1 : trailView.CurrentIndex - 1;
+    private void Update() {
+        int newIndex = selectBuySkin ? skinView.CurrentIndex - 1 : trailView.CurrentIndex - 1;
+        if(CurrentViewID != newIndex) {
+            CurrentViewID = newIndex;
+            HandleCurrentViewIDChanged(newIndex);
+        }
     }
 
     void HandleCurrentViewIDChanged(int newViewID) {

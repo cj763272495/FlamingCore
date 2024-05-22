@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2645865226796530587}
   - component: {fileID: 7255555279899318949}
   - component: {fileID: 2293944365067668438}
-  m_Layer: 14
+  m_Layer: 6
   m_Name: TracerCannonLow_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7224506928119566213}
-  m_Layer: 14
+  - component: {fileID: 2898259248936029536}
+  - component: {fileID: 1868383343921183423}
+  - component: {fileID: 1939777428647501563}
+  m_Layer: 6
   m_Name: TracerCannonLow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -115,5 +118,94 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2645865226796530587}
+  - {fileID: 5544579094013304892}
   m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2898259248936029536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8001008035304183103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f24b6b224b29175438ecb78ee64fa639, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  missile: {fileID: 256538692478932128, guid: 809e1f06f7c67be4aaee0d1f14ef7120, type: 3}
+  fireInterval: 5
+  firePoint: {fileID: 5544579094013304892}
+--- !u!135 &1868383343921183423
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8001008035304183103}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 256
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 261887
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 10
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!65 &1939777428647501563
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8001008035304183103}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1.81}
+  m_Center: {x: 0, y: 0.5, z: 0}
+--- !u!1 &8171725850918307269
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5544579094013304892}
+  m_Layer: 6
+  m_Name: ShotPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5544579094013304892
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8171725850918307269}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.57, z: 0.418}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7224506928119566213}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

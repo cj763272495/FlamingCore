@@ -1,5 +1,4 @@
-using System.Collections.Generic;
-using System.Linq;
+using System.Collections.Generic; 
 using UnityEngine;
 
 public class PlayersDataSystem : MonoBehaviour
@@ -17,13 +16,14 @@ public class PlayersDataSystem : MonoBehaviour
       
     public void InitSys() {
         _resSvc = ResSvc.Instance;
-        Instance = this; 
-        //PlayerData = resSvc.GetPlayerData(playerID);
+        Instance = this;  
         _resSvc.LoadPlayerData(out _playerDataDic);
         _isNewInviorment = _playerDataDic.Count == 0;
         if(!IsNewInviorment) {
-            _playerID = _playerDataDic.First().Key;
-            PlayerData = _playerDataDic.First().Value;
+            var firstPlayerData = _playerDataDic.GetEnumerator();
+            firstPlayerData.MoveNext();
+            _playerID = firstPlayerData.Current.Key;
+            PlayerData = firstPlayerData.Current.Value;
         }
     }
 
@@ -56,12 +56,8 @@ public class PlayersDataSystem : MonoBehaviour
     }
 
     public bool SavePlayerData() {
-        if(_playerDataDic.ContainsKey(_playerID)) {
-            _playerDataDic[_playerID] = PlayerData;
-        } else {
-            _playerDataDic.Add(_playerID,PlayerData);
-        }
-         return _resSvc.SavePlayerData(_playerDataDic);
+        _playerDataDic[_playerID] = PlayerData;
+        return _resSvc.SavePlayerData(_playerDataDic);
     }
 
 }

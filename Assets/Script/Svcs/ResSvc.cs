@@ -51,11 +51,7 @@ public class ResSvc : MonoBehaviour {
                 goDic.Add(path, prefab);
             }
         }
-        GameObject go = null;
-        if (prefab != null) {
-            go = Instantiate(prefab);
-        }
-        return go;
+        return prefab != null ? Instantiate(prefab) : null;
     }
 
     private readonly Dictionary<string, AudioClip> adDic = new();
@@ -123,26 +119,16 @@ public class ResSvc : MonoBehaviour {
     /// </summary>
     private Dictionary<string, LevelData> mapCfgDataDic = new();
     public void LoadMap() {
-        try {
-            TextAsset textAsset = Resources.Load<TextAsset>(Constants.MapCfg);
-            string jsonText = null;
-            if (textAsset != null) {
-                jsonText = textAsset.text; 
-            } else {
-                Debug.LogError("Failed to load resource: " + Constants.MapCfg);
-            }
-            LevelConfig levelConfig = JsonConvert.DeserializeObject<LevelConfig>(jsonText);
-            if (levelConfig != null) {
+        TextAsset textAsset = Resources.Load<TextAsset>(Constants.MapCfg);
+        if(textAsset != null) {
+            LevelConfig levelConfig = JsonConvert.DeserializeObject<LevelConfig>(textAsset.text);
+            if(levelConfig != null) {
                 mapCfgDataDic = levelConfig;
             } else {
                 Debug.LogError("Failed to parse JSON data.");
             }
-        } catch (UnityException ex) {
-            // 捕获并处理异常
-            Debug.LogError("Exception occurred while loading resource: " + ex.Message);
-        } catch (Exception ex) {
-            // 捕获其他可能的异常
-            Debug.LogError("An error occurred: " + ex.Message);
+        } else {
+            Debug.LogError("Failed to load resource: " + Constants.MapCfg);
         }
     }
     public LevelData GetMapCfgData(string waveName) { 
@@ -162,19 +148,7 @@ public class ResSvc : MonoBehaviour {
             playerDataDic = JsonConvert.DeserializeObject<PlayerDataDic>(json);
         } else {
             playerDataDic = null;
-        }// else {
-        //    PlayerData pd = new() { 
-        //        coin = 0,
-        //        skin = new List<int> { 0 },
-        //        trail = new List<int> { 0 },
-        //        energy = 5,
-        //        max_unLock_wave = 1,
-        //        cur_skin = 0,
-        //        cur_trail = 0
-        //    };
-        //    SavePlayerData("11", pd);
-        //}
-        //return playerDataDic.Count==0;
+        }
     }
     
 

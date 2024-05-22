@@ -43,7 +43,7 @@ public class BattleWnd:MonoBehaviour {
         countdownText.text = "3";
         countdownText.gameObject.SetActive(true);
         countdownText.color = new Color(countdownText.color.r,countdownText.color.g,countdownText.color.b,1f);
-        DG.Tweening.Sequence sequence = DOTween.Sequence().SetUpdate(UpdateType.Normal,true);
+        Sequence sequence = DOTween.Sequence().SetUpdate(UpdateType.Normal,true);
         for(int i = 3; i > 0; --i) {
             int j = i;
             sequence.AppendInterval(0.8f)
@@ -61,14 +61,4 @@ public class BattleWnd:MonoBehaviour {
         energyShow.SetActive(!isShow);
         coinShow.SetActive(!isShow);
     }
-
-    //private IEnumerator FadeCoroutine(float targetAlpha, float duration) {
-    //    float startTime = Time.time;
-    //    while (Time.time - startTime < duration) {
-    //        float t = (Time.time - startTime) / duration;
-    //        countdownText.color = new Color(countdownText.color.r, countdownText.color.g, countdownText.color.b, targetAlpha * t);
-    //        yield return null;
-    //    }
-    //    countdownText.color = new Color(countdownText.color.r, countdownText.color.g, countdownText.color.b, targetAlpha);
-    //} 
 }

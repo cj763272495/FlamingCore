@@ -5,12 +5,10 @@ public class ShopPlayer:PlayerController {
     private IEnumerator coroutine;
     public ParticleSystem hitWallParticle;
     public GameObject[] coreModes;
-    public GameObject[] trails;
-    public GameObject ShopShow;
+    public GameObject[] trails; 
 
     public override void Init(BattleMgr b=null,StateMgr state=null) {
-        gameObject.SetActive(true);
-        ShopShow.SetActive(true);
+        gameObject.SetActive(true); 
         lastPos = transform.position;
         _speed = Constants.PlayerSpeed;
         _rotateSpeed = Constants.RotateSpeed;
@@ -19,11 +17,7 @@ public class ShopPlayer:PlayerController {
         coreModes[0].SetActive(true);
         trails[0].SetActive(true);
     }
-
-    public void LeavePanel() {
-        gameObject.SetActive(false);
-        ShopShow.SetActive(false); 
-    }
+    
 
     private IEnumerator CallSetDir() {
         while(true) {

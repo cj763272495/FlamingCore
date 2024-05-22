@@ -6,7 +6,7 @@ public class BattleSys : MonoBehaviour
     public BattleMgr battleMgr;
     private GameRoot gameRoot;
     public BattleWnd battleWnd;
-
+    public GameObject battleRoot;
 
     public void InitSys() {
         Instance = this;
@@ -14,11 +14,11 @@ public class BattleSys : MonoBehaviour
     }
 
     public void StartBattle(int wave) { 
-        GameObject go = new() {
+        battleRoot = new() {
             name = "BattleRoot"
         };
-        go.transform.SetParent(gameRoot.transform);
-        battleMgr = go.AddComponent<BattleMgr>();
+        battleRoot.transform.SetParent(gameRoot.transform);
+        battleMgr = battleRoot.AddComponent<BattleMgr>();
         battleMgr.battleWnd = battleWnd;
         battleMgr.Init(wave);
 
@@ -26,15 +26,15 @@ public class BattleSys : MonoBehaviour
         battleWnd.Init();
 
         PlayersDataSystem.Instance.PlayerData.energy--;
-
     }
 
     public void ReviveAndContinueBattle() {//玩家重生继续游戏
         battleMgr.ReviveAndContinueBattle();
     }
 
-    public void ClickPauseBtn() {
-        battleWnd.ClickPauseBtn();
+    public void CleanBattleRoot() {
+        foreach(Transform child in battleRoot.transform) {
+            child.gameObject.SetActive(false);
+        }
     }
-
 }
