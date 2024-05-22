@@ -9,7 +9,7 @@ public class TracerCannon : MonoBehaviour
     private Coroutine fireCoroutine; // ∑¢…‰–≠≥Ã
 
     private void Start() { 
-        PoolManager.Instance.InitPool(missile,3);
+        PoolManager.Instance.InitPool(missile,3,BattleSys.Instance.battleMgr.transform);
     }
 
     private void OnTriggerEnter(Collider other) {

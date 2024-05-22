@@ -4,13 +4,12 @@ using System.Collections;
 public class ParticleMgr : MonoBehaviour
 {
     public static ParticleMgr Instance { get; private set; }
-    public GameObject hitWallParticle;
-    public GameObject enemyDeadParticle;
-    public GameObject deadParticle;
-    public GameObject bulletDestoryParticle;
-    public GameObject getCoinParticle;
-    public GameObject dashParticle;
-    public GameObject overLoadParticle;
+    private GameObject hitWallParticle;
+    private GameObject enemyDeadParticle;
+    private GameObject deadParticle;
+    private GameObject bulletDestoryParticle;
+    private GameObject getCoinParticle; 
+    private GameObject overLoadParticle;
 
     public BattleMgr battleMgr;
 
@@ -18,28 +17,32 @@ public class ParticleMgr : MonoBehaviour
         Instance = this;
     }
 
-    public void Init() {
+    public void Init(BattleMgr battle) {
+        battleMgr = battle;
+    }
+    private void Start() {
         // 碰撞墙壁的粒子特效 
-        InitParticlePool(out hitWallParticle,"Prefab/Particles/Cores/HitWallParticle"); 
+        hitWallParticle = InitParticlePool( "Prefab/Particles/Cores/HitWallParticle");
         //碰撞敌人的粒子特效
-        InitParticlePool(out enemyDeadParticle,"Prefab/Particles/EnemyDeadParticle");  
+        enemyDeadParticle = InitParticlePool("Prefab/Particles/EnemyDeadParticle");
         //玩家死亡的粒子特效
-        InitParticlePool(out deadParticle,"Prefab/Particles/Cores/DeadParticle",1); 
+        deadParticle = InitParticlePool("Prefab/Particles/Cores/DeadParticle",1);
         //子弹销毁的粒子特效
-        InitParticlePool(out bulletDestoryParticle,"Prefab/Particles/BulletDestoryParticle", 10);
+        bulletDestoryParticle = InitParticlePool("Prefab/Particles/BulletDestoryParticle",10);
         //获取金币特效 
-        InitParticlePool(out getCoinParticle,"Prefab/Particles/GetCoinParticle", 5);
+        getCoinParticle = InitParticlePool("Prefab/Particles/GetCoinParticle",5);
         //超载模式特效
-        InitParticlePool(out overLoadParticle,"Prefab/Particles/Cores/OverLoadParticle", 1);
+        overLoadParticle = InitParticlePool("Prefab/Particles/Cores/OverLoadParticle",1);
     }
 
-    public void  InitParticlePool(out GameObject particle, string path, int num=3) {
-        particle = ResSvc.Instance.LoadPrefab(path);
+    public GameObject InitParticlePool(string path,int num = 3) {
+        GameObject particle = ResSvc.Instance.LoadPrefab(path);
         if(particle != null) {
             PoolManager.Instance.InitPool(particle,num,battleMgr.transform);
         } else {
-            Debug.LogError("InitParticlePool failed, particle is null, path: "+ path);
+            Debug.LogError("InitParticlePool failed, particle is null, path: " + path);
         }
+        return particle;
     }
 
     public void AddCustomParticle(GameObject particle, int num=3) {
@@ -84,14 +87,17 @@ public class ParticleMgr : MonoBehaviour
 
     public void PlayBulletDestoryParticle(ContactPoint contact) {
         GameObject go = PoolManager.Instance.GetInstance<GameObject>(bulletDestoryParticle);
-        Vector3 point = contact.point;
-        Vector3 normal = contact.normal;
-        go.transform.position = point;
-        go.transform.parent = battleMgr.transform; 
+        if(go) {
+            Vector3 point = contact.point;
+            Vector3 normal = contact.normal;
+            go.transform.position = point;
+            go.transform.parent = battleMgr.transform;
 
-        Quaternion rotation = Quaternion.LookRotation(normal);
-        go.GetComponentInChildren<ParticleSystem>().transform.rotation = rotation; 
-        go.GetComponentInChildren<ParticleSystem>().Play();
+            Quaternion rotation = Quaternion.LookRotation(normal);
+            go.GetComponentInChildren<ParticleSystem>().transform.rotation = rotation;
+            go.GetComponentInChildren<ParticleSystem>().Play();
+
+        }
     }
 
     public void PlayGetCoinParticle(Vector3 point) {

@@ -41,7 +41,7 @@ public class ShopPlayer:PlayerController {
 
     protected override void FixedUpdate() {
         SetMove();
-        SetRotate();
+        SetRotateAndShot();
     }
 
     protected override void OnCollisionEnter(Collision collision) {

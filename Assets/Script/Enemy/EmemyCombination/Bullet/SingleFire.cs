@@ -12,7 +12,7 @@ public class SingleFire : IFireMode
 
     public SingleFire(List<Transform> shootPoint) {
         bullet = ResSvc.Instance.LoadPrefab("Prefab/Enemy/Bullet",true);
-        PoolManager.Instance.InitPool(bullet,20);
+        PoolManager.Instance.InitPool(bullet,20,BattleSys.Instance.battleMgr.transform);
         this.shootPoint = shootPoint;
     }
 
@@ -22,8 +22,8 @@ public class SingleFire : IFireMode
                 GameObject go = PoolManager.Instance.GetInstance<GameObject>(bullet);
                 go.transform.position = point.position;
                 go.transform.localScale = new Vector3(0.5f,0.5f,0.5f);
-                go.GetComponent<NormalBullet>().shootDir = point.forward;
-                //go.GetComponent<NormalBullet>().owner = transform;//防止子弹碰撞到自己
+                go.GetComponent<NormalBullet>().SetBulletShotDir(point.forward);
+                go.GetComponent<NormalBullet>().owner = point;//防止子弹碰撞到自己
             }
             shootTimer = 0;
             countDown.fillAmount = 0;

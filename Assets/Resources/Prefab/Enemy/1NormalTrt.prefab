@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 5610667576237703866}
   - component: {fileID: 5610667576237703812}
   - component: {fileID: 3636216164161660439}
-  - component: {fileID: 2609366441139109858}
+  - component: {fileID: 3539966725166479392}
   m_Layer: 14
   m_Name: 1NormalTrt
   m_TagString: Untagged
@@ -113,7 +113,7 @@ Transform:
   m_GameObject: {fileID: 5610667576237703867}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.76, y: 0.539, z: -0.12}
+  m_LocalPosition: {x: 9.76, y: 0.483, z: -0.12}
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -161,17 +161,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1b050b779d8e1d439638d2983a80290, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canAttack: 1
   curAniState: 0
+  ani: {fileID: 0}
+  canAttack: 1
   rotateSpeed: 100
   firePoints:
   - {fileID: 5610667577144074538}
   countDown: {fileID: 5610667577246653361}
-  ani: {fileID: 0}
   canDestroy: 1
   destoryCoinValue: 5
---- !u!135 &2609366441139109858
-SphereCollider:
+--- !u!136 &3539966725166479392
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -188,9 +188,11 @@ SphereCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.17
-  m_Center: {x: 0, y: 0.08, z: 0}
+  serializedVersion: 2
+  m_Radius: 0.16
+  m_Height: 0.6
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.17, z: 0}
 --- !u!1 &5610667577246653367
 GameObject:
   m_ObjectHideFlags: 0

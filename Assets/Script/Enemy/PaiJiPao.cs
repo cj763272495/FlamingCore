@@ -7,7 +7,7 @@ public class PaiJiPao : MonoBehaviour
     public GameObject paiJiPaoDan;
 
     private void Start() {
-        PoolManager.Instance.InitPool(paiJiPaoDan,1);
+        PoolManager.Instance.InitPool(paiJiPaoDan,1,BattleSys.Instance.battleMgr.transform);
     }
 
     private void OnTriggerEnter(Collider other) {

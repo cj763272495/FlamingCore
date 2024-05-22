@@ -117,8 +117,7 @@ public class BattleMgr:MonoBehaviour {
 
         if(gameObject.GetComponent<ParticleMgr>() == null) {
             particleMgr = gameObject.AddComponent<ParticleMgr>();
-            particleMgr.battleMgr = this;
-            particleMgr.Init();
+            particleMgr.Init(this);
         }
 
         levelData = resSvc.GetMapCfgData(waveName);

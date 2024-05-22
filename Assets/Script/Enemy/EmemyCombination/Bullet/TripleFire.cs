@@ -14,7 +14,7 @@ public class TripleFire: IFireMode {
 
     public TripleFire(List<Transform> shootPoints) {
         bullet = ResSvc.Instance.LoadPrefab("Prefab/Enemy/Bullet",true);
-        PoolManager.Instance.InitPool(bullet,20);
+        PoolManager.Instance.InitPool(bullet,20,BattleSys.Instance.battleMgr.transform);
         this.shootPoints = shootPoints;
     }
 
@@ -39,7 +39,7 @@ public class TripleFire: IFireMode {
                     GameObject go = PoolManager.Instance.GetInstance<GameObject>(bullet);
                     go.transform.position = shootPoint.position;
                     go.transform.localScale = new Vector3(0.5f,0.5f,0.5f);
-                    go.GetComponent<NormalBullet>().shootDir = shootPoint.forward;
+                    go.GetComponent<NormalBullet>().SetBulletShotDir(shootPoint.forward);
                     //go.GetComponent<NormalBullet>().owner = transform;//防止子弹碰撞到自己
                     bulletsFired++;
                     bulletTimer = 0; 

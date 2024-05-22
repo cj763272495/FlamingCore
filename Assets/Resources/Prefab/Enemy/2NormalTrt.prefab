@@ -125,8 +125,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3916655049142721928}
-  - component: {fileID: 2603856312710227495}
   - component: {fileID: 5919183562462045324}
+  - component: {fileID: 3069733081211177820}
   m_Layer: 14
   m_Name: 2NormalTrt
   m_TagString: Untagged
@@ -151,8 +151,30 @@ Transform:
   - {fileID: 5711887931238300527}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &2603856312710227495
-SphereCollider:
+--- !u!114 &5919183562462045324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4400317726675175218}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3e69a3af24c217429c7705e8470c81c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curAniState: 0
+  ani: {fileID: 0}
+  canAttack: 1
+  rotateSpeed: 100
+  firePoints:
+  - {fileID: 1674522514821041937}
+  - {fileID: 4440794922551818774}
+  countDown: {fileID: 0}
+  canDestroy: 1
+  destoryCoinValue: 5
+--- !u!136 &3069733081211177820
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -169,31 +191,11 @@ SphereCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 2
   m_Radius: 0.4
-  m_Center: {x: 0, y: 0.77, z: 0}
---- !u!114 &5919183562462045324
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4400317726675175218}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3e69a3af24c217429c7705e8470c81c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  canAttack: 1
-  curAniState: 0
-  rotateSpeed: 100
-  firePoints:
-  - {fileID: 1674522514821041937}
-  - {fileID: 4440794922551818774}
-  countDown: {fileID: 0}
-  ani: {fileID: 0}
-  canDestroy: 1
-  destoryCoinValue: 5
+  m_Height: 1.5
+  m_Direction: 1
+  m_Center: {x: 0, y: 1.06, z: 0}
 --- !u!1 &6273284222122256818
 GameObject:
   m_ObjectHideFlags: 0

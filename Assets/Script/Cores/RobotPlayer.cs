@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class RobotPlayer: PlayerController { 
     private List<GameObject> enemiesInRange = new List<GameObject>();
-    public float fireRate = 0.5f; // 子弹发射的频率，单位是秒
+    public float fireRate = 0.1f; // 子弹发射的频率，单位是秒
+    public float bulletSpeed = 50; // 子弹发射的频率，单位是秒
     private bool canShoot = true;
     public GameObject Bullet;
 
     public GameObject[] shootPoints;
     public float rotateSpeed = 100;
 
-    public SpriteRenderer arrow;
+    public GameObject arrow;
     public SpriteRenderer countCircle;
     public float moveSpeed = 6;
 
@@ -22,7 +23,7 @@ public class RobotPlayer: PlayerController {
         destructible = true;
         _speed = moveSpeed;
         isMove = false;
-        PoolManager.Instance.InitPool(Bullet, 10);
+        PoolManager.Instance.InitPool(Bullet, 10,battleMgr.transform);
         Born();
         arrow.gameObject.SetActive(false);
         countCircle.gameObject.SetActive(true);
@@ -33,16 +34,32 @@ public class RobotPlayer: PlayerController {
             SetMove();
             SetCam();
             if(enemiesInRange.Count > 0) {
-                SetRotate();
-                Shot();
+                SetRotateAndShot();
             }
         }
     }
 
-    protected override void SetRotate() { 
-        Vector3 direction = enemiesInRange[0].transform.position - transform.position;
-        Quaternion toRotation = Quaternion.LookRotation(direction);
-        transform.rotation = Quaternion.Slerp(transform.rotation,toRotation,Time.deltaTime * rotateSpeed); 
+    protected override void SetRotateAndShot() {
+        // 找到距离最近的敌人
+        GameObject closestEnemy = enemiesInRange[0];
+        if(enemiesInRange.Count>1) {
+            float minDistance = Vector3.Distance(transform.position,closestEnemy.transform.position);
+            foreach(GameObject enemy in enemiesInRange) {
+                float distance = Vector3.Distance(transform.position,enemy.transform.position);
+                if(distance < minDistance) {
+                    closestEnemy = enemy;
+                    minDistance = distance;
+                }
+            }
+        }
+        Vector3 direction = closestEnemy.transform.position - transform.position;
+        Quaternion toRotation = Quaternion.LookRotation(direction); 
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotateSpeed * Time.deltaTime);
+        // 检查物体是否面向敌人
+        if(Vector3.Dot(transform.forward,direction.normalized) > 0.9f) {
+            // 物体面向敌人，允许射击
+            Shot();
+        } 
     }
 
     public override void OnPointerDown() {
@@ -51,11 +68,10 @@ public class RobotPlayer: PlayerController {
 
     public override void OnDrag() {
         arrow.gameObject.SetActive(true);
-        Vector2 dir = (Vector3.forward * battleMgr.joystick.Vertical + Vector3.right * battleMgr.joystick.Horizontal).normalized;
-        SetDir(dir);
-        arrow.transform.right = new Vector3(-dir.x,0,-dir.y);
-        arrow.transform.forward = Vector3.up;
-        arrow.transform.position = transform.position + new Vector3(dir.x,0,dir.y) * 2.5f;
+        Vector3 dir = (Vector3.forward * battleMgr.joystick.Vertical + Vector3.right * battleMgr.joystick.Horizontal).normalized;
+        SetDir(dir); 
+        arrow.transform.LookAt(arrow.transform.position + dir); 
+        arrow.transform.position = transform.position + dir * 2.5f;
         Take();
     }
 
@@ -80,8 +96,18 @@ public class RobotPlayer: PlayerController {
     private void Shot() {
         if(canShoot) {
             foreach(GameObject shootPoint in shootPoints) {
-                GameObject bullet = PoolManager.Instance.GetInstance<GameObject>(Bullet);
-                bullet.transform.forward = shootPoint.transform.forward;
+                GameObject go = PoolManager.Instance.GetInstance<GameObject>(Bullet);
+                if(go != null) {
+                    NormalBullet bullet = go.GetComponent<NormalBullet>();
+                    bullet.owner = transform;
+                    bullet.transform.position = shootPoint.transform.position;
+                    bullet.SetBulletSpeed(bulletSpeed);
+                    Vector3 shotDir = shootPoint.transform.forward;
+                    bullet.SetBulletShotDir(shotDir);
+                } else {
+                    Debug.LogError("get Bullet failed");
+                    return;
+                }
             }
             StartCoroutine(ShootDelay());
         }

@@ -14,7 +14,7 @@ public class ShotgunFire : IFireMode {
 
     public ShotgunFire(List<Transform> shootPoint, int bulletNum,float spreadAngle) {
         bullet = ResSvc.Instance.LoadPrefab("Prefab/Enemy/Bullet",true);
-        PoolManager.Instance.InitPool(bullet,20);
+        PoolManager.Instance.InitPool(bullet,20,BattleSys.Instance.battleMgr.transform);
         this.shootPoint = shootPoint;
         bulletCount = bulletNum;
         _spreadAngle = spreadAngle;
@@ -31,7 +31,7 @@ public class ShotgunFire : IFireMode {
                     go.transform.position = point.position;
                     go.transform.localScale = new Vector3(0.5f,0.5f,0.5f);
                     float offsetAngle = (i - bulletCount / 2f) / (bulletCount - 1) * _spreadAngle;
-                    go.GetComponent<NormalBullet>().shootDir = Quaternion.Euler(0,offsetAngle,0) * point.forward;
+                    go.GetComponent<NormalBullet>().SetBulletShotDir(Quaternion.Euler(0,offsetAngle,0) * point.forward);
                 }
             }
             shootTimer = 0;

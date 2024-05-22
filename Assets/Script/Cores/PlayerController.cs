@@ -36,7 +36,7 @@ public class PlayerController: Entity {
         if(battleMgr.StartBattle && isMove) {
             SetMove();
             SetCam();
-            SetRotate();
+            SetRotateAndShot();
         }
     }
 
@@ -103,7 +103,7 @@ public class PlayerController: Entity {
             //transform.position + _dir.normalized,_speed * Time.deltaTime);
         _rb.MovePosition(transform.position + _dir * _speed * Time.deltaTime); 
     }
-    protected virtual void SetRotate() {
+    protected virtual void SetRotateAndShot() {
         Vector3 rotationAxis = Vector3.Cross(_dir,Vector3.up);
         float rotationAmount = _speed * _rotateSpeed * Time.deltaTime;
         transform.Rotate(-rotationAxis,rotationAmount,Space.World);

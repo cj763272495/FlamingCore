@@ -1,29 +1,47 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class NormalBullet : MonoBehaviour
-{
-
-    private readonly float BulletSpeed = 10;
-    private readonly float remainTime = 3;
+{ 
+    private float bulletSpeed = 10;
+    public float remainTime = 3;
     public Vector3 shootDir;
     public Transform owner;
     private float timer = 0;
+    private bool startTimer;
 
+    private void OnEnable() {
+        timer = 0;
+        startTimer = true;
+    }
     void Update() {
-        transform.Translate(BulletSpeed * Time.deltaTime * shootDir);
-        timer += Time.deltaTime;
+        transform.Translate(bulletSpeed * Time.deltaTime * shootDir);
+        if(startTimer) {
+            timer += Time.deltaTime;
+        }
+
         if (timer >= remainTime) {
-            gameObject.SetActive(false);
-            timer = 0;
+            ReturnBullet();
         }
     }
 
     private void OnCollisionEnter(Collision collision) {
-        if(collision.transform != owner) {
-            ParticleMgr.Instance.PlayBulletDestoryParticle(collision.contacts[0]);
-            gameObject.SetActive(false);
+        if(collision.transform != owner) { 
+            ContactPoint point = collision.contacts[0];
+            ParticleMgr.Instance.PlayBulletDestoryParticle(point);
+            ReturnBullet();
         }
+    }
+
+    public void SetBulletSpeed(float sp) {
+        bulletSpeed = sp;
+    }
+    public void SetBulletShotDir(Vector3 dir) {
+        shootDir = dir;
+    }
+
+    public void ReturnBullet() {
+        PoolManager.Instance.ReturnToPool(this);
+        startTimer = false;
+        timer = 0;
     }
 }
