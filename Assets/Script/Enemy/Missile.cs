@@ -4,18 +4,20 @@ using UnityEngine;
 
 public class Missile:MonoBehaviour {
     public ParticleSystem tailGasParticle;
-    public ParticleSystem boomParticle;
-
+    public ParticleSystem boomParticle; 
     public float MaxSpeed = 12;
     public float curSpeed = 0;
     public float acceleration = 0.5f; // 加速度
-    public float avoidDistance = 3f; // 避开墙壁的距离
-
-    public PlayerController player;
-    public float rotationSpeed = 100;
-
+    public float avoidDistance = 3f; // 避开墙壁的距离 
+    public float rotationSpeed = 100; 
     public bool startChase = false;
     public LayerMask bulletLayerMask;
+
+    private PlayerController player;
+
+    private void Start() {
+        ParticleMgr.Instance.AddCustomParticle(boomParticle.gameObject,2);
+    }
 
     public void StartChase(PlayerController player) {
         startChase = true;
@@ -40,8 +42,6 @@ public class Missile:MonoBehaviour {
         transform.position += transform.forward * curSpeed * Time.deltaTime;
     }
 
-
-
     private void OnCollisionEnter(Collision collision) {
         GameObject go = collision.gameObject;
         if(go == player || go.layer == 10) {
@@ -49,8 +49,9 @@ public class Missile:MonoBehaviour {
                 player.PlayerDead();
             }
             tailGasParticle.Stop();
-            boomParticle.Play();
+            ParticleMgr.Instance.PlayCustomParticle(boomParticle.gameObject,transform.position);
             PoolManager.Instance.ReturnToPool(gameObject);
         }
     }
 }
+     

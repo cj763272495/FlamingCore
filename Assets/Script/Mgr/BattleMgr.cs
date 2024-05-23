@@ -21,8 +21,7 @@ public class BattleMgr:MonoBehaviour {
     private LevelData levelData;
     private int eliminateEnemyNum;
     public bool isRobotLevel=false;
-
-    //test
+    
     private bool startBattle;
     public bool StartBattle {
         get { return startBattle; }
@@ -326,5 +325,9 @@ public class BattleMgr:MonoBehaviour {
      
     public void DestoryBattle() {
         Destroy(gameObject);
+    }
+
+    public int GetHP() {
+           return hp;
     }
 }

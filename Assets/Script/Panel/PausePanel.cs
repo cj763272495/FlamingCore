@@ -1,7 +1,13 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PausePanel : MonoBehaviour
-{ 
+{
+    public Text hpTxt;
+    private void OnEnable() {
+        hpTxt.text = "x" + BattleSys.Instance.battleMgr.GetHP();
+    }
+
     public void ClickReturn() {//返回主界面
         GameRoot.Instance.EnterMainCity();
         LeaveScene();

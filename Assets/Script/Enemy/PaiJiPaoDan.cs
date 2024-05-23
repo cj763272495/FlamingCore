@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 public class PaiJiPaoDan : MonoBehaviour
@@ -12,7 +13,11 @@ public class PaiJiPaoDan : MonoBehaviour
     public Canvas AmiCanvas;
     public Image countDown;
     private Vector3 targetPos = Vector3.zero;
-    private Vector3 beginDropDownPos = Vector3.zero; 
+    private Vector3 beginDropDownPos = Vector3.zero;
+
+    private void Start() {
+        ParticleMgr.Instance.AddCustomParticle(explosionParticle.gameObject,2);
+    }
 
     private void OnEnable() {
         riseTimer = 0.0f;
@@ -48,9 +53,10 @@ public class PaiJiPaoDan : MonoBehaviour
     private void OnCollisionEnter(Collision collision) {
         AmiCanvas.gameObject.SetActive(false);
         explosionParticle.Play();
-        PoolManager.Instance.ReturnToPool(gameObject);
         ToolClass.CallAfterDelay(0.5f,Explode);
+        ParticleMgr.Instance.PlayCustomParticle(explosionParticle.gameObject,transform.position);
     }
+     
 
     void Explode() {
         // 获取所有在爆炸范围内的物体
@@ -61,6 +67,7 @@ public class PaiJiPaoDan : MonoBehaviour
             }else if(collider.gameObject.tag == "Player") {
                 collider.gameObject.GetComponent<PlayerController>().PlayerDead();
             }
-        }
+        } 
+        PoolManager.Instance.ReturnToPool(gameObject);
     }
 }
