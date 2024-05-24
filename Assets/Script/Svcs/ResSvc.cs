@@ -141,14 +141,14 @@ public class ResSvc : MonoBehaviour {
 
 
     #region PlayerData
-    public void LoadPlayerData( out PlayerDataDic playerDataDic) {
+    private PlayerDataDic playerDataDic = new();
+    public PlayerDataDic LoadPlayerData() {
         string filePath = Constants.PlayerDataPath;
         if(File.Exists(filePath)) {
             string json = File.ReadAllText(filePath);
             playerDataDic = JsonConvert.DeserializeObject<PlayerDataDic>(json);
-        } else {
-            playerDataDic = null;
         }
+        return playerDataDic;
     }
     
 

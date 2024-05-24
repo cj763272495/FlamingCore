@@ -16,9 +16,13 @@ public class PlayersDataSystem : MonoBehaviour
       
     public void InitSys() {
         _resSvc = ResSvc.Instance;
-        Instance = this;  
-        _resSvc.LoadPlayerData(out _playerDataDic);
-        _isNewInviorment = _playerDataDic.Count == 0;
+        Instance = this;
+        _playerDataDic = _resSvc.LoadPlayerData();
+        if(_playerDataDic==null || _playerDataDic.Count==0) {
+            _isNewInviorment = true;
+        } else {
+            _isNewInviorment = false;
+        }
         if(!IsNewInviorment) {
             var firstPlayerData = _playerDataDic.GetEnumerator();
             firstPlayerData.MoveNext();
@@ -31,7 +35,7 @@ public class PlayersDataSystem : MonoBehaviour
         if(_playerDataDic.TryGetValue(Playerid,out PlayerData data)) {
             return data;
         } else {
-            Debug.Log("未获取到玩家数据");
+            //Debug.Log("未获取到玩家数据");
             return null;
         }
     }

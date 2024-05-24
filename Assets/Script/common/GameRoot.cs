@@ -27,13 +27,12 @@ public class GameRoot : MonoBehaviour
             Destroy(this);
         }
     }
-
-    //Ωˆ≤‚ ‘”√
-    //private void Start() {
-    //    ClearUIRoot();
-    //    Init();
-    //    GameStart();
-    //}
+     
+    private void Start() {
+        ClearUIRoot();
+        Init();
+        //GameStart();
+    }
 
     public void ClearUIRoot() {
         Transform canvas = transform.Find("Canvas");
@@ -55,6 +54,7 @@ public class GameRoot : MonoBehaviour
         UIManager.Instance.SetBgAuidoOn(gameSettings.bgAudio);
         UIManager.Instance.ShowJoyStick(gameSettings.showJoyStick); 
         bgPlayer.clipSource = ResSvc.Instance.LoadAudio(Constants.BGMainCity);
+        uIManager.startPanel.gameObject.SetActive(true);
     }
 
     public void GameStart() {
