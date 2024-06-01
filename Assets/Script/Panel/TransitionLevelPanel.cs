@@ -29,8 +29,7 @@ public class TransitionLevelPanel : MonoBehaviour
                 image.sprite = lockedSprite;
             }
         }
-    }
-
+    } 
 
     public Tween TransitionToNextLevel(int curWave, int curLevel,int hp) {
         levelTagTrans.Clear();

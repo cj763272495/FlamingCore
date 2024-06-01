@@ -34,9 +34,14 @@ public class PlayerController: Entity {
 
     protected virtual void FixedUpdate() {
         if(battleMgr.StartBattle && isMove) {
-            SetMove();
-            SetCam();
+            SetMove(); 
             SetRotateAndShot();
+        }
+    }
+
+    protected virtual void LateUpdate() {
+        if(battleMgr.StartBattle && isMove) { 
+            SetCam();
         }
     }
 
@@ -61,7 +66,8 @@ public class PlayerController: Entity {
 
         if(destructible && collisionLayer == 7) {//bullet 
             PlayerDead();
-        } else if(collisionLayer == 14) {//en 
+        } else if(collisionLayer == 14) {
+
         } else {
             battleMgr.particleMgr.PlayHitWallParticle(contactPoint);
             battleMgr.PlayHitWallClip();
@@ -98,9 +104,7 @@ public class PlayerController: Entity {
         }
     }
 
-    protected virtual void SetMove() {
-        //transform.position = Vector3.MoveTowards(transform.position,
-            //transform.position + _dir.normalized,_speed * Time.deltaTime);
+    protected virtual void SetMove() { 
         _rb.MovePosition(transform.position + _dir * _speed * Time.deltaTime); 
     }
     protected virtual void SetRotateAndShot() {

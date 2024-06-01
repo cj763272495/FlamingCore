@@ -15,7 +15,7 @@ public class StartPanel : MonoBehaviour
 
     private void GameStart() {//显示Start加载界面且同时获取加载数据
         gameObject.SetActive(true);
-        InvokeRepeating(nameof(Breathe),0f,breathRate);
+       ToolClass.BreathingImg(BreathImage);
 
         GameRoot.Instance.GameStart();  
         ResSvc.Instance.AsyncLoadScene("StartScene",() => {
@@ -23,12 +23,5 @@ public class StartPanel : MonoBehaviour
             UIManager.Instance.regLogInWnd.Init();
         });
     }
-
-    void Breathe() {
-        float t = Mathf.PingPong(Time.time,breathRate) / breathRate;
-        float alpha = Mathf.SmoothStep(0,1,t);
-        Color color = BreathImage.color;
-        color.a = alpha;
-        BreathImage.color = color;
-    } 
+     
 }

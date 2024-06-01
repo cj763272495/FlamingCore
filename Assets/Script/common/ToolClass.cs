@@ -56,4 +56,9 @@ public static class ToolClass {
         await Task.Delay(TimeSpan.FromSeconds(delay));
         function();
     }
+
+    public static void BreathingImg(Image img) {
+        img.color = new Color(img.color.r,img.color.g,img.color.b,1);
+        img.DOFade(0.3f,1).SetLoops(-1,LoopType.Yoyo).SetEase(Ease.InOutSine);
+    }
 }

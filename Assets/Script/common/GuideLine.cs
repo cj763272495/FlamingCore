@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngineInternal;
+using UnityEngine; 
 
 public class GuideLine : MonoBehaviour
 {
@@ -26,9 +23,10 @@ public class GuideLine : MonoBehaviour
     public void SetDir(Transform trans,Vector3 dir) {
         index = 1;
         lineRenderer.positionCount = 2;
+        Vector3 startPos = trans.position;
         if(gameObject.activeSelf) {
-            lineRenderer.SetPosition(0,trans.position);
-            BounceRay(trans.position,dir,m_len);
+            lineRenderer.SetPosition(0,startPos);
+            BounceRay(startPos,dir,m_len);
         } else {
             HideBoom();
         }

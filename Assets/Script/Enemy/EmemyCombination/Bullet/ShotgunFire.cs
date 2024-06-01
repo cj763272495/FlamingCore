@@ -27,7 +27,7 @@ public class ShotgunFire : IFireMode {
         if(shootTimer > shootTime) {
             for(int i = 0; i < bulletCount; i++) {
                 foreach(Transform point in shootPoint) {
-                    GameObject go = PoolManager.Instance.GetInstance<GameObject>(bullet);
+                    GameObject go = PoolManager.Instance.GetInstance<GameObject>(bullet,BattleSys.Instance.battleMgr.transform);
                     go.transform.position = point.position;
                     go.transform.localScale = new Vector3(0.5f,0.5f,0.5f);
                     float offsetAngle = (i - bulletCount / 2f) / (bulletCount - 1) * _spreadAngle;

@@ -65,11 +65,11 @@ public class EditorWindow:UnityEditor.EditorWindow {
             Repaint();
         }
         GUI.skin.button.normal.textColor = Color.red;
-        if(GUILayout.Button("ClearCombining",GUILayout.Width(80))) { 
+        if(GUILayout.Button("ClearCombining",GUILayout.Width(100))) { 
             combiningCells.Clear();
             Repaint();
         }
-        if(GUILayout.Button("ClearCompleted",GUILayout.Width(80))) {
+        if(GUILayout.Button("ClearCompleted",GUILayout.Width(100))) {
             completedCells.Clear();
             Repaint();
         }
@@ -173,7 +173,7 @@ public class EditorWindow:UnityEditor.EditorWindow {
         }
     }
 
-    // 添加这个方法来实例化组合的碰撞体
+    // 添加碰撞体
     private void InstateCombineCollider() {
         GameObject parent = new GameObject("CombinedObjects");
         parent.transform.position = addedCells[combiningCells[0]].transform.position;
@@ -189,17 +189,13 @@ public class EditorWindow:UnityEditor.EditorWindow {
     }
     private void CombineMesh(GameObject parent) {
         // 获取所有的MeshFilter
-        MeshFilter[] meshFilters = parent.GetComponentsInChildren<MeshFilter>();
-
-        // 创建CombineInstance数组
+        MeshFilter[] meshFilters = parent.GetComponentsInChildren<MeshFilter>(); 
         CombineInstance[] combine = new CombineInstance[meshFilters.Length];
 
         for(int i = 0; i < meshFilters.Length; i++) {
             combine[i].mesh = meshFilters[i].sharedMesh;
             combine[i].transform = meshFilters[i].transform.localToWorldMatrix;
-        }
-
-        // 创建新的Mesh
+        } 
         Mesh newMesh = new Mesh();
         newMesh.CombineMeshes(combine);  
         Material material = Resources.Load<Material>("ResPack/Mesh/Materials/CubeEdge2");

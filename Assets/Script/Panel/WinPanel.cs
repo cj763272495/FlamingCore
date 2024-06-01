@@ -63,7 +63,7 @@ public class WinPanel:MonoBehaviour {
 
         sequence.AppendCallback(() => {
             breathImage.gameObject.SetActive(true); 
-            BreathingImg(breathImage);
+            ToolClass.BreathingImg(breathImage);
         }); 
         sequence.Play();
     }
@@ -87,10 +87,7 @@ public class WinPanel:MonoBehaviour {
         ToolClass.MoveUpAndFadeOut(firstCoinTxt.gameObject,2f,1.5f);
     }
 
-    private void BreathingImg(Image img) { 
-        breathImage.color = new Color(breathImage.color.r,breathImage.color.g,breathImage.color.b,1);
-        img.DOFade(0.3f,1).SetLoops(-1,LoopType.Yoyo).SetEase(Ease.InOutSine);
-    }
+
 
 
     public void SecndShowCoinTxt() {

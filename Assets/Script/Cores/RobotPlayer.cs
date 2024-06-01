@@ -56,7 +56,7 @@ public class RobotPlayer: PlayerController {
         Quaternion toRotation = Quaternion.LookRotation(direction); 
         transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotateSpeed * Time.deltaTime);
         // 检查物体是否面向敌人
-        if(Vector3.Dot(transform.forward,direction.normalized) > 0.9f) {
+        if(Vector3.Dot(transform.forward, direction.normalized) > 0.9f) {
             // 物体面向敌人，允许射击
             Shot();
         } 
@@ -96,7 +96,7 @@ public class RobotPlayer: PlayerController {
     private void Shot() {
         if(canShoot) {
             foreach(GameObject shootPoint in shootPoints) {
-                GameObject go = PoolManager.Instance.GetInstance<GameObject>(Bullet);
+                GameObject go = PoolManager.Instance.GetInstance<GameObject>(Bullet,BattleSys.Instance.battleMgr.transform);
                 if(go != null) {
                     NormalBullet bullet = go.GetComponent<NormalBullet>();
                     bullet.owner = transform;

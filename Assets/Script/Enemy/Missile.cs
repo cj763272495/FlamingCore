@@ -13,13 +13,13 @@ public class Missile:MonoBehaviour {
     public bool startChase = false;
     public LayerMask bulletLayerMask;
 
-    private PlayerController player;
+    private GameObject player;
 
     private void Start() {
         ParticleMgr.Instance.AddCustomParticle(boomParticle.gameObject,2);
     }
 
-    public void StartChase(PlayerController player) {
+    public void StartChase(GameObject player) {
         startChase = true;
         this.player = player;
         tailGasParticle.Play();
@@ -46,7 +46,7 @@ public class Missile:MonoBehaviour {
         GameObject go = collision.gameObject;
         if(go == player || go.layer == 10) {
             if(go == player) {
-                player.PlayerDead();
+                player.GetComponent<PlayerController>().PlayerDead();
             }
             tailGasParticle.Stop();
             ParticleMgr.Instance.PlayCustomParticle(boomParticle.gameObject,transform.position);

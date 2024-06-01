@@ -23,8 +23,8 @@ public class DashBall: PlayerController {
         _targetPosImgRadiu = _targetPosImg.rectTransform.sizeDelta.x / 2;
     }
 
-    override protected void Update() {
-        base.Update();
+    override protected void FixedUpdate() {
+        base.FixedUpdate();
         canvasTrans.rotation = Quaternion.Euler(90,0,0);
     }
 

@@ -20,7 +20,7 @@ public class Constants {
     public const float OverloadFov = 45;
 
     //最大guideline长度
-    public const float MaxGuideLineLen = 7;
+    public const float MaxGuideLineLen = 6;
 
     public const string ButtonClip = "AudioClip/Glitch_High_01";
     public const string EarnMoneyClip = "AudioClip/Glitch_High_01";
@@ -41,10 +41,7 @@ public class Constants {
 
     public const int ReviceCost = 80; //重生消耗金额
 
-    public static int[] trailPrice = new int[] { 0,100,300,500,700,900 };//拖尾价格
-
-    public const string DashTargetPosSprite = "Sprite/Huan";
-
+    public static int[] trailPrice = new int[] { 0,100,300,500,700,900 };//拖尾价格 
     public static Dictionary<CoreType,CoreInfo> CoresInfo = new Dictionary<CoreType,CoreInfo> {
         { CoreType.Core_Normal, new CoreInfo { descript = "让你的子弹时间变得更慢", price = 0 } },
         { CoreType.Core_Immune_Explosion, new CoreInfo { descript = "免疫爆炸伤害", price = 100 } },

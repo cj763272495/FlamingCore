@@ -18,10 +18,12 @@ public class FixedAutoRotationContinuesLaserTurret: EnemyEntity {
         rotationMode = new AutoRotationMode(transform);
         turret.SetRotationMode(rotationMode);
 
-        laserWeapon = new LaserWeapon();
-        laser = new ContinuousLaser(spwanLaser,linerender,firePoints);
-        laserWeapon.SetFireMode(laser);
-        turret.SetWeapon(laserWeapon);
+        if(spwanLaser && linerender) {
+            laserWeapon = new LaserWeapon();
+            laser = new ContinuousLaser(spwanLaser,linerender,firePoints);
+            laserWeapon.SetFireMode(laser);
+            turret.SetWeapon(laserWeapon);
+        } 
     }
 
     public override void Update() {

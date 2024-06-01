@@ -2,9 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
-
-
+ 
 public class ShopPanel:MonoBehaviour {
     public HomeWnd homeWnd;
     public SlideScrollView skinView;

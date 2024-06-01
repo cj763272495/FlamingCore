@@ -40,7 +40,7 @@ public class UIManager : MonoBehaviour
         canvasGroup.gameObject.SetActive(true);
         blendImg.raycastTarget = true;
         canvasGroup.alpha = 0;
-        return  canvasGroup.DOFade(1,0.5f).SetUpdate(UpdateType.Normal,true);
+        return canvasGroup.DOFade(1,0.5f).SetUpdate(UpdateType.Normal,true);
     }
 
     public Tween FadeOut() {

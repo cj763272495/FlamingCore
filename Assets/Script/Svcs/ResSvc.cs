@@ -18,23 +18,19 @@ public class ResSvc : MonoBehaviour {
     public void AsyncLoadScene(string sceneName, Action loaded) {
         UIManager uIManager = UIManager.Instance;
         uIManager.FadeIn().onComplete += () => {  
-            AsyncOperation sceneAsync = SceneManager.LoadSceneAsync(sceneName);
+            AsyncOperation sceneAsync = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
+            Camera.main.clearFlags = CameraClearFlags.SolidColor;
+            Camera.main.backgroundColor = new Color(0,0,0,0);
             prgCB = () => {
                 float val = sceneAsync.progress;
                 //uIManager.loadingWnd.SetProgress(val); 
                 if(val == 1) {
-                    //LoginSys.Instance.OpenLoginWnd();
                     if(loaded != null) {
                         loaded();
                     }
                     prgCB = null;
                     sceneAsync = null;
                     //uIManager.loadingWnd.SetWndState(false);
-                    //DG.Tweening.Sequence seq = DOTween.Sequence();
-                    //seq.AppendInterval(1f); // µÈ´ý1Ãë
-                    //seq.AppendCallback(() => uIManager.FadeOut());
-                    //seq.SetUpdate(UpdateType.Normal,true);
-                    //seq.Play();
                     uIManager.FadeOut();
                 }
             };

@@ -36,7 +36,7 @@ public class TripleFire: IFireMode {
             bulletTimer += Time.deltaTime;
             if(bulletTimer > bulletInterval) {
                 foreach(Transform shootPoint in shootPoints) {
-                    GameObject go = PoolManager.Instance.GetInstance<GameObject>(bullet);
+                    GameObject go = PoolManager.Instance.GetInstance<GameObject>(bullet,BattleSys.Instance.battleMgr.transform);
                     go.transform.position = shootPoint.position;
                     go.transform.localScale = new Vector3(0.5f,0.5f,0.5f);
                     go.GetComponent<NormalBullet>().SetBulletShotDir(shootPoint.forward);

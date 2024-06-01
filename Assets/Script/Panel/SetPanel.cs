@@ -1,11 +1,11 @@
-using UnityEngine;
+using UnityEngine; 
 using UnityEngine.UI;
 
 public class SetPanel : MonoBehaviour
 {
     public Toggle bgAuidoTg; 
     public Toggle joyStickTg;
-    
+
     private void Start() {
         bgAuidoTg.onValueChanged.AddListener(OnBgAuidoTgValueChanged);
         joyStickTg.onValueChanged.AddListener(OnJoyStickTgValueChanged);

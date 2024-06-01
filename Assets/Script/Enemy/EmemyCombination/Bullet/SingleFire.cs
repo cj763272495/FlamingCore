@@ -19,16 +19,20 @@ public class SingleFire : IFireMode
     public void Fire() {
         if(shootTimer > shootTime) {
             foreach(Transform point in shootPoint) {
-                GameObject go = PoolManager.Instance.GetInstance<GameObject>(bullet);
+                GameObject go = PoolManager.Instance.GetInstance<GameObject>(bullet,BattleSys.Instance.battleMgr.transform);
                 go.transform.position = point.position;
                 go.transform.localScale = new Vector3(0.5f,0.5f,0.5f);
                 go.GetComponent<NormalBullet>().SetBulletShotDir(point.forward);
                 go.GetComponent<NormalBullet>().owner = point;//防止子弹碰撞到自己
             }
             shootTimer = 0;
-            countDown.fillAmount = 0;
+            if(countDown) {
+                countDown.fillAmount = 0; 
+            }
         }
         shootTimer += Time.deltaTime;
-        countDown.fillAmount = shootTimer / shootTime;
+        if(countDown) {
+            countDown.fillAmount = shootTimer / shootTime; 
+        }
     }
 }

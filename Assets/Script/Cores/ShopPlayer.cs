@@ -17,8 +17,7 @@ public class ShopPlayer:PlayerController {
         coreModes[0].SetActive(true);
         trails[0].SetActive(true);
     }
-    
-
+     
     private IEnumerator CallSetDir() {
         while(true) {
             Vector3 randomVector = new Vector3(Random.Range(-1f,1f),0,Random.Range(-1f,1f));
@@ -36,6 +35,10 @@ public class ShopPlayer:PlayerController {
     protected override void FixedUpdate() {
         SetMove();
         SetRotateAndShot();
+    }
+
+    protected override void LateUpdate() {
+
     }
 
     protected override void OnCollisionEnter(Collision collision) {
@@ -56,7 +59,7 @@ public class ShopPlayer:PlayerController {
     }
 
     public void ChangeModes(int index) {
-        ChangeProps(index,coreModes); 
+        ChangeProps(index, coreModes); 
     }
     public void ChangeTrails(int index) {
         ChangeProps(index, trails);
