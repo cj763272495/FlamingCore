@@ -41,7 +41,7 @@ public class BattleMgr:MonoBehaviour {
     public FloatingJoystick joystick;
     public GuideLine guideLine;
 
-    //第一大关0-4，第二大关5-9
+    //每一大关有5个小关卡，且小关卡第5关是机器人模式
     public int CurWaveIndex { private set; get; }//大关卡0++
     public int CurLevelID { private set; get; }//小关卡0-4
 
@@ -95,7 +95,7 @@ public class BattleMgr:MonoBehaviour {
         CurWaveIndex = waveid;
         CurLevelID = levelid;
         isRobotLevel = levelid !=0 && levelid %4 ==0;
-        isRobotLevel = true;
+        //isRobotLevel = true;
         if(levelid==0) {//大关开始
             stateMgr = gameObject.AddComponent<StateMgr>();
             stateMgr.Init();
@@ -325,8 +325,8 @@ public class BattleMgr:MonoBehaviour {
         Init(CurWaveIndex); 
         UIManager.Instance.ShowImgEnergyDecrease();
     }
-    public void PlayAgain() {
-        Init(CurWaveIndex,CurLevelID);
+    public void PlayAgain(int levelID=-1) { 
+        Init(CurWaveIndex, levelID==-1? CurLevelID:levelID); 
     }
     public void StratNextLevel() {//开始下一关小关
         CurLevelID++;
@@ -346,15 +346,11 @@ public class BattleMgr:MonoBehaviour {
             AudioManager.Instance.PlaySound(deadClip);
             StartBattle = false;
             Time.timeScale = 1;
-            if(hp > 0) {
-                deadPos = pos;
-                battleSys.battleWnd.dead_panel.ShowAndStartCountDown();
-                if(_pds.PlayerData.coin < 100) {
-                    battleSys.battleWnd.dead_panel.CannotContinueByCoin();
-                }
-            } else {
-                battleSys.battleWnd.fail_panel.gameObject.SetActive(true);
-                LevelSettlement();
+            deadPos = pos;
+            battleSys.battleWnd.dead_panel.ShowAndStartCountDown();
+            UIManager.Instance.deadPanel.ShowContinueBtn(hp > 0);
+            if(hp <= 0) {  
+                battleSys.battleWnd.dead_panel.SetContinueByCoinBtn(_pds.PlayerData.coin >= 80); 
             }
         }
     }
@@ -366,7 +362,7 @@ public class BattleMgr:MonoBehaviour {
         LevelSettlement();
     }
 
-    private void LevelSettlement() {//关卡结算
+    public void LevelSettlement() {//关卡结算
         GameRoot.Instance.LevelSettlement(coin);
     }
      

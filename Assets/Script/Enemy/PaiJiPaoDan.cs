@@ -43,7 +43,7 @@ public class PaiJiPaoDan : MonoBehaviour
                 targetPos = _player.transform.position;
                 AmiCanvas.transform.position = targetPos;
             }
-            countDown.fillAmount =(targetPos.y - transform.position.y) / (targetPos.y - beginDropDownPos.y);
+            countDown.fillAmount =(transform.position.y - beginDropDownPos.y) / (targetPos.y - beginDropDownPos.y);
             Vector3 offset = Vector3.up * speed * Time.deltaTime;
             transform.position -= offset;
             AmiCanvas.transform.position += offset;

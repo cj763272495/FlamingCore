@@ -1,14 +1,13 @@
-using System.Drawing;
 using UnityEngine;
 
 public class NormalBullet : MonoBehaviour
 { 
-    private float bulletSpeed = 10;
+    public float bulletSpeed = 10;
     public float remainTime = 3;
     public Vector3 shootDir;
     public Transform owner;
     private float timer = 0;
-    private bool startTimer;
+    private bool startTimer; 
 
     private void OnEnable() {
         timer = 0;

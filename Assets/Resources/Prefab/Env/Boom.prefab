@@ -162,27 +162,7 @@ LineRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Positions:
-  - {x: 9.362142, y: -0.036767855, z: 43.43268}
-  - {x: 9.789295, y: -0.18374732, z: 43.08998}
-  - {x: 10.792853, y: -0.40350968, z: 42.778675}
-  - {x: 10.81365, y: -0.413621, z: 42.778328}
-  - {x: 9.199827, y: 1.4596661, z: 44.0408}
-  - {x: 9.180699, y: 2.2006698, z: 44.413887}
-  - {x: 9.352505, y: 2.8650513, z: 44.80501}
-  - {x: 9.609393, y: 3.5911298, z: 45.147823}
-  - {x: 10.1536, y: 5.5420256, z: 45.859074}
-  - {x: 10.302543, y: 7.0693245, z: 46.40921}
-  - {x: 16.304752, y: 5.7246394, z: 37.54578}
-  - {x: 16.414434, y: 6.3491297, z: 40.50141}
-  - {x: 24.954672, y: 12.566783, z: 40.741806}
-  - {x: 24.954529, y: 12.566972, z: 40.74182}
-  - {x: 24.966135, y: 12.557536, z: 40.783745}
-  - {x: 27.311165, y: 14.332396, z: 40.561634}
-  - {x: 36.23733, y: 21.802826, z: 36.699463}
-  - {x: 36.2376, y: 21.802826, z: 36.699738}
-  - {x: 36.23742, y: 21.80312, z: 36.69991}
-  - {x: 36.237686, y: 21.80312, z: 36.700188}
+  m_Positions: []
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1
@@ -317,10 +297,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   guideLine: {fileID: 5448597606798024779}
-  attackRange: 8
   rangeShow: {fileID: 7802149244241552841}
   rb: {fileID: 7763544562212265856}
-  _speed: 10
   exploreParticle: {fileID: 2083535687788671250, guid: 01039710148c5bc4fbcc1ca84226e937, type: 3}
   DangerRangeShowMat: {fileID: 2100000, guid: 6e7ba25cb8d547146b325a2b5fb4bef1, type: 2}
   ModelOrgMat: {fileID: 2100000, guid: db4a41dfadc35bc46b7ea5d296748209, type: 2}
@@ -332,7 +310,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6955709258241098785}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 0.0001
   m_Drag: 0
   m_AngularDrag: 0
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -344,7 +322,7 @@ Rigidbody:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 15103
-  m_ImplicitCom: 1
+  m_ImplicitCom: 0
   m_ImplicitTensor: 1
   m_UseGravity: 0
   m_IsKinematic: 0
@@ -401,7 +379,7 @@ Transform:
   m_GameObject: {fileID: 7802149244241552841}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.35, z: 0}
   m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -3,7 +3,7 @@
     "RobotName": "Robot1",
     "playerStartPosition": {
       "x": 27.3,
-      "y": 2.8,
+      "y": 0.8,
       "z": 21.2
     },
     "cameraOffset": {
@@ -17,7 +17,7 @@
       "z": 0
     },
     "camFOV": 37,
-    "enemyNum": 2
+    "enemyNum": 3
   }, 
     "Level1": {
     "RobotName": null,
@@ -37,19 +37,19 @@
       "z": 0
     },
     "camFOV": 37,
-    "enemyNum": 7
+    "enemyNum": 2
   }, 
     "Level2": {
     "RobotName": null,
     "playerStartPosition": {
-      "x": 27.3,
-      "y": 0.8,
-      "z": 21.2
+      "x": 43,
+      "y": 0.33,
+      "z": -32.7
     },
     "cameraOffset": {
-      "x": 27.4,
-      "y": 27.9,
-      "z": -4.5
+      "x": 41.2,
+      "y": 39.3,
+      "z": -66
     },
     "cameraRotation": {
       "x": 45.0,

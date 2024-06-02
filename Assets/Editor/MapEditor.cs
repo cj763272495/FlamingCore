@@ -36,6 +36,7 @@ public class EditorWindow:UnityEditor.EditorWindow {
         DrawGrid();
 
         // Toolbar 
+        EditorGUILayout.BeginVertical(EditorStyles.toolbar);
         EditorGUILayout.BeginHorizontal(EditorStyles.toolbar);
         GUILayout.Label("Width:");
         gridWidth = EditorGUILayout.IntField(gridWidth,GUILayout.Width(50));
@@ -45,11 +46,25 @@ public class EditorWindow:UnityEditor.EditorWindow {
         GUILayout.Space(20);
 
         selectedPrefabIndex = EditorGUILayout.Popup("Ñ¡ÔñÔ¤ÖÆÌå",selectedPrefabIndex,prefabNames);
-        GUILayout.Space(20);
+        GUILayout.Space(5);
         if(GUILayout.Button("AddPrefab",GUILayout.Width(80))) {
             isCombining = false;
         }
-        GUILayout.Space(20);
+        GUILayout.Space(10);
+        if(GUILayout.Button("SelectAllToCombine",GUILayout.Width(120))) {
+            combiningCells = addedCells.Keys.ToList();
+        }
+
+        GUILayout.Space(10);
+        if(GUILayout.Button("SelectCombineGo",GUILayout.Width(140))) {
+            isCombining = true;
+        }
+        if(GUILayout.Button("InstateCombineCollider",GUILayout.Width(140))) {
+            InstateCombineCollider();
+        }
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.BeginHorizontal(EditorStyles.toolbar);
         Color oldColor = GUI.skin.button.normal.textColor;
         GUI.skin.button.normal.textColor = Color.red;
         if(GUILayout.Button("ClearAll",GUILayout.Width(80))) {
@@ -63,8 +78,7 @@ public class EditorWindow:UnityEditor.EditorWindow {
                 DestroyImmediate(item);
             }
             Repaint();
-        }
-        GUI.skin.button.normal.textColor = Color.red;
+        } 
         if(GUILayout.Button("ClearCombining",GUILayout.Width(100))) { 
             combiningCells.Clear();
             Repaint();
@@ -73,17 +87,12 @@ public class EditorWindow:UnityEditor.EditorWindow {
             completedCells.Clear();
             Repaint();
         }
-        GUILayout.Space(20);
-
-        GUI.skin.button.normal.textColor = oldColor;
-        if(GUILayout.Button("SelectCombineGo",GUILayout.Width(160))) {
-            isCombining = true;
-        }
-        if(GUILayout.Button("InstateCombineCollider",GUILayout.Width(160))) {
-            InstateCombineCollider();
-        }
-
+        GUILayout.Space(10); 
+        GUI.skin.button.normal.textColor = oldColor; 
         EditorGUILayout.EndHorizontal();
+
+
+        EditorGUILayout.EndVertical();
         toolbarRect = GUILayoutUtility.GetLastRect();
 
 

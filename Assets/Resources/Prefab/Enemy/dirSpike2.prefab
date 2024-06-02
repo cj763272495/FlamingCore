@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4914006997632422610}
   - component: {fileID: 6387142283985590218}
   m_Layer: 14
-  m_Name: Languai_Shield
+  m_Name: dirSpike2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

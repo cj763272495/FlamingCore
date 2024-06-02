@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using System.Linq;
+using UnityEngine; 
+using UnityEngine.UI;
 
 public class RobotPlayer: PlayerController { 
     private List<GameObject> enemiesInRange = new List<GameObject>();
-    public float fireRate = 0.1f; // 子弹发射的频率，单位是秒
+    public float fireRate = 0.2f; // 子弹发射的频率，单位是秒
     public float bulletSpeed = 50; // 子弹发射的频率，单位是秒
     private bool canShoot = true;
     public GameObject Bullet;
@@ -13,8 +15,13 @@ public class RobotPlayer: PlayerController {
     public float rotateSpeed = 100;
 
     public GameObject arrow;
-    public SpriteRenderer countCircle;
     public float moveSpeed = 6;
+    public AudioClip shotAudioClip;
+
+    public int magazineCapacity = 8;
+    public float curBulletsNum; 
+    private Coroutine ReloadCoroutine;
+    public Image bulletCountCircle;
 
     public override void Init(BattleMgr battle,StateMgr state) {
         battleMgr = battle;
@@ -26,7 +33,10 @@ public class RobotPlayer: PlayerController {
         PoolManager.Instance.InitPool(Bullet, 10,battleMgr.transform);
         Born();
         arrow.gameObject.SetActive(false);
-        countCircle.gameObject.SetActive(true);
+        if(bulletCountCircle) {
+            bulletCountCircle.gameObject.SetActive(true);
+        }
+        curBulletsNum = magazineCapacity;
     } 
 
     protected override void FixedUpdate() {
@@ -42,17 +52,15 @@ public class RobotPlayer: PlayerController {
     protected override void SetRotateAndShot() {
         // 找到距离最近的敌人
         GameObject closestEnemy = enemiesInRange[0];
-        if(closestEnemy) {
-            if(enemiesInRange.Count > 1) {
-                float minDistance = Vector3.Distance(transform.position,closestEnemy.transform.position);
-                foreach(GameObject enemy in enemiesInRange) {
-                    float distance = Vector3.Distance(transform.position,enemy.transform.position);
-                    if(distance < minDistance) {
-                        closestEnemy = enemy;
-                        minDistance = distance;
-                    }
+        if (closestEnemy) { 
+            float minDistance = Vector3.Distance(transform.position,closestEnemy.transform.position);
+            foreach(GameObject enemy in enemiesInRange) {
+                float distance = Vector3.Distance(transform.position,enemy.transform.position);
+                if(distance < minDistance) {
+                    closestEnemy = enemy;
+                    minDistance = distance;
                 }
-            }
+            } 
             Vector3 direction = closestEnemy.transform.position - transform.position;
             Quaternion toRotation = Quaternion.LookRotation(direction);
             transform.rotation = Quaternion.RotateTowards(transform.rotation,toRotation,rotateSpeed * Time.deltaTime); 
@@ -84,18 +92,26 @@ public class RobotPlayer: PlayerController {
 
     private void OnTriggerEnter(Collider other) {
         if(other.gameObject.layer == 14) {  
-            enemiesInRange.Add(other.gameObject); 
+            enemiesInRange.Add(other.gameObject);
+            other.gameObject.GetComponent<EnemyEntity>().OnEnemyDestroyed += OnEnemyKilled;
+        }
+    }
+
+    private void OnEnemyKilled(GameObject enemy) {
+        if(!enemiesInRange.Remove(enemy)) {
+            Debug.Log("Remove enemy failed");
         }
     }
 
     private void OnTriggerExit(Collider other) {
         if(other.gameObject.layer == 14) {
+            other.gameObject.GetComponent<EnemyEntity>().OnEnemyDestroyed -= OnEnemyKilled;
             enemiesInRange.Remove(other.gameObject);
         }
     }
 
     private void Shot() {
-        if(canShoot) {
+        if(canShoot && curBulletsNum > 0) {
             foreach(GameObject shootPoint in shootPoints) {
                 GameObject go = PoolManager.Instance.GetInstance<GameObject>(Bullet,BattleSys.Instance.battleMgr.transform);
                 if(go != null) {
@@ -105,6 +121,14 @@ public class RobotPlayer: PlayerController {
                     bullet.SetBulletSpeed(bulletSpeed);
                     Vector3 shotDir = shootPoint.transform.forward;
                     bullet.SetBulletShotDir(shotDir);
+                    AudioManager.Instance.PlaySound(shotAudioClip);
+                    curBulletsNum--;
+                    if(bulletCountCircle) {
+                        bulletCountCircle.fillAmount = curBulletsNum / magazineCapacity;
+                    }
+                    if(curBulletsNum==0) {
+                        ReloadCoroutine = StartCoroutine(ReloadAmmo());
+                    }
                 } else {
                     Debug.LogError("get Bullet failed");
                     return;
@@ -112,7 +136,22 @@ public class RobotPlayer: PlayerController {
             }
             StartCoroutine(ShootDelay());
         }
-    } 
+    }
+
+    private IEnumerator ReloadAmmo() {
+        while(curBulletsNum < magazineCapacity) {
+            // 等待一段时间后增加子弹
+            yield return new WaitForSeconds(1f);
+            curBulletsNum++;
+            if(bulletCountCircle) {
+                bulletCountCircle.fillAmount = curBulletsNum / magazineCapacity;
+            }
+            if(curBulletsNum >= magazineCapacity) { 
+                StopCoroutine(ReloadCoroutine); // 停止协程
+            }
+        }
+
+    }
 
     private IEnumerator ShootDelay() {
         canShoot = false;
@@ -121,13 +160,10 @@ public class RobotPlayer: PlayerController {
     }
 
     protected override void OnCollisionEnter(Collision collision) {
-        int collisionLayer = collision.gameObject.layer;
-        ContactPoint contactPoint = collision.contacts[0];
+        int collisionLayer = collision.gameObject.layer; 
 
         if(destructible && collisionLayer == 7) {//bullet 
             PlayerDead();
-        }// else if(collisionLayer == 14) {//enemy
-        //    battleMgr.EliminateEnemy();
-        //}  
+        }
     }
 }

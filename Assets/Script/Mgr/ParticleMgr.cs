@@ -86,6 +86,17 @@ public class ParticleMgr : MonoBehaviour
             enemyDeadCoin.coinValue = enemy.destoryCoinValue;
         }
     }
+    public void PlayEnemyDeadParticle(Transform trans, Transform player) {
+        GameObject go = PlayParticle(enemyDeadParticle, trans.position);
+        ParticleSystem[] particleSystems = go.GetComponentsInChildren<ParticleSystem>();
+        ParticleSystem lastParticleSystem = particleSystems[particleSystems.Length - 1];
+        EnemyDeadCoin enemyDeadCoin = lastParticleSystem.gameObject.GetComponent<EnemyDeadCoin>();
+        enemyDeadCoin.isPlaying = true;
+        enemyDeadCoin.player = player.gameObject;
+        if(trans.GetComponent<EnemyEntity>() is EnemyEntity enemy) {
+            enemyDeadCoin.coinValue = enemy.destoryCoinValue;
+        }
+    }
 
     public void PlayBulletDestoryParticle(Vector3 contact) {
         GameObject go = PlayParticle(bulletDestoryParticle,contact); 

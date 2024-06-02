@@ -9,7 +9,9 @@ public class PatrolBase: MonoBehaviour {
     private int _curIndex = 0;
 
     private void Update() {
-        Move();
+        if(BattleSys.Instance.battleMgr && BattleSys.Instance.battleMgr.player) {
+            Move();
+        }
     }
 
     public void Move() { 

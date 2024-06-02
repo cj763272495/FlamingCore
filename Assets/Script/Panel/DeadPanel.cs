@@ -8,7 +8,8 @@ public class DeadPanel : MonoBehaviour
     public Text countDownTxt;
     public Text reviveCoinTxt;
     private int m_reviveCost;
-    public Button continueBtn;
+    public Button hpContinueBtn;
+    public Button coinContinueBtn;
 
     public float countdownDuration = 5.0f; // 倒计时持续时间，单位为秒
     public float displayUpdateInterval = 1.0f; // 更新显示的间隔
@@ -24,13 +25,18 @@ public class DeadPanel : MonoBehaviour
         pds = PlayersDataSystem.Instance;
     }
 
-    public void CannotContinueByCoin() {
-        reviveCoinTxt.color = Color.red;
-        continueBtn.enabled = false;
+    public void ShowContinueBtn(bool hasHP) {
+        hpContinueBtn.gameObject.SetActive(hasHP);
+        coinContinueBtn.gameObject.SetActive(!hasHP);
+    }
+
+    public void SetContinueByCoinBtn(bool enoughCoin) {
+        reviveCoinTxt.color =enoughCoin? Color.white : Color.red;
+        hpContinueBtn.enabled = enoughCoin;
     }
 
     public void ShowAndStartCountDown() {
-        continueBtn.enabled = true;
+        hpContinueBtn.enabled = true;
         gameObject.SetActive(true);
         StartCoroutine(CountdownCoroutine());
     }
@@ -55,9 +61,9 @@ public class DeadPanel : MonoBehaviour
         ClickCancelBtn();
     }
 
-    public void ClickContinueBtn() {
+    public void ClickCoinContinueBtn() {
         //如果当前剩余金额大于所需，继续进行,玩家原地重生
-        if (pds.PlayerData.coin >= m_reviveCost) {
+        if(pds.PlayerData.coin >= m_reviveCost) {
             pds.PlayerData.coin -= m_reviveCost;
             BattleSys.Instance.ReviveAndContinueBattle();
             gameObject.SetActive(false);
@@ -65,9 +71,25 @@ public class DeadPanel : MonoBehaviour
         }
     }
 
-    public void ClickCancelBtn() {
+    public void ClickHpContinueBtn() {
+        //如果当前剩余金额大于所需，继续进行,玩家原地重生
+        //if (pds.PlayerData.coin >= m_reviveCost) {
+        //    pds.PlayerData.coin -= m_reviveCost;
+        //    BattleSys.Instance.ReviveAndContinueBattle();
+        //    gameObject.SetActive(false);
+        //    StopAllCoroutines();
+        //}
+        BattleSys.Instance.ReviveAndContinueBattle();
         gameObject.SetActive(false);
-        BattleSys.Instance.battleMgr.DestoryBattle();
-        GameRoot.Instance.EnterMainCity();
+        StopAllCoroutines();
+    }
+
+    public void ClickCancelBtn() {
+        UIManager.Instance.battleWnd.fail_panel.gameObject.SetActive(true);
+        gameObject.SetActive(false);
+        BattleSys.Instance.battleMgr.LevelSettlement();
+        //gameObject.SetActive(false);
+        //BattleSys.Instance.battleMgr.DestoryBattle();
+        //GameRoot.Instance.EnterMainCity();
     }
 }

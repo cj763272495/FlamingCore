@@ -14,7 +14,7 @@ public class PausePanel : MonoBehaviour
     }
     public void ClickRetry() {//重新开始
         gameObject.SetActive(false);
-        BattleSys.Instance.battleMgr.PlayAgain();
+        BattleSys.Instance.battleMgr.PlayAgain(BattleSys.Instance.battleMgr.CurLevelID);
     }
 
     public void LeaveScene() { //离开关卡场景

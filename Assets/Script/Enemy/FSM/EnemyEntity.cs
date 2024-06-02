@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,6 +15,8 @@ public class EnemyEntity:Entity {
     public bool canDestroy = true;
     public int destoryCoinValue = 5;
 
+    public event Action<GameObject> OnEnemyDestroyed;
+
     public virtual void Start() {
         turret = new Turret();
         stateMgr = BattleSys.Instance.battleMgr.stateMgr;
@@ -24,11 +27,11 @@ public class EnemyEntity:Entity {
         if(_player) {
             if(curAniState != AniState.Born) {
                 turret.SetMove(this,_player.transform);
-                turret.Rotate(_player.transform); 
+                turret.Rotate(_player.transform);
             }
-        }
-        if(canAttack) {
-            turret.Fire();
+            if(canAttack) {
+                turret.Fire();
+            }
         }
     }
 
@@ -40,6 +43,7 @@ public class EnemyEntity:Entity {
                 gameObject.SetActive(false);
                 Destroy(gameObject,1f);
                 BattleSys.Instance.battleMgr.EliminateEnemy();
+                OnEnemyDestroyed?.Invoke(gameObject);
             } 
         }
     }
