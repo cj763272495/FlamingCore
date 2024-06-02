@@ -192,10 +192,10 @@ SphereCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1024
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 32768
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -242,6 +242,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d20f38da290b43c4aa15b7041ef0183d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  curAniState: 0
+  ani: {fileID: 0}
   isMove: 0
   _rb: {fileID: 6004512381180363691}
   lastPos: {x: 0, y: 0, z: 0}
@@ -249,3 +251,4 @@ MonoBehaviour:
   battleMgr: {fileID: 0}
   destructible: 1
   overLoadField: {fileID: 7581749539656159062}
+  stateMgr: {fileID: 0}

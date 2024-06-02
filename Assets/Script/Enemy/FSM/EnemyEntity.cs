@@ -24,11 +24,11 @@ public class EnemyEntity:Entity {
         if(_player) {
             if(curAniState != AniState.Born) {
                 turret.SetMove(this,_player.transform);
-                turret.Rotate(_player.transform);
-                if(canAttack) {
-                    turret.Fire();
-                }
+                turret.Rotate(_player.transform); 
             }
+        }
+        if(canAttack) {
+            turret.Fire();
         }
     }
 

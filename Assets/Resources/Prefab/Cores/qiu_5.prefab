@@ -149,10 +149,10 @@ SphereCollider:
   m_Material: {fileID: 13400000, guid: 5948ee27cc147ec4cbbba92c5c9fcdc5, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1024
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 32768
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0

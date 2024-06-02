@@ -60,7 +60,7 @@ public class BattleMgr:MonoBehaviour {
 
     public void EliminateEnemy() {
         eliminateEnemyNum++;
-        if(eliminateEnemyNum == 1/*levelData.EnemyNum*/) {
+        if(eliminateEnemyNum ==  levelData.EnemyNum) {
             if(CurLevelID==4) {
                 //大关卡结束
                 player.destructible = false;
@@ -95,7 +95,7 @@ public class BattleMgr:MonoBehaviour {
         CurWaveIndex = waveid;
         CurLevelID = levelid;
         isRobotLevel = levelid !=0 && levelid %4 ==0;
-        //isRobotLevel = true;
+        isRobotLevel = true;
         if(levelid==0) {//大关开始
             stateMgr = gameObject.AddComponent<StateMgr>();
             stateMgr.Init();
@@ -129,13 +129,14 @@ public class BattleMgr:MonoBehaviour {
         joystick.OnPointerDownAction = OnPointerDown;
         joystick.OnPointerUpAction = OnPointerUp;
         cam = Camera.main;
-        SetCameraData(levelData);
-        defaultCamOffset = Constants.DefaultCamOffset;
 
         LoadPlayer(new Vector3(
             levelData.PlayerStartPosition.X,
             levelData.PlayerStartPosition.Y,
             levelData.PlayerStartPosition.Z));
+
+        SetCameraData(levelData);
+
         if(gameRoot.gameSettings.bgAudio) {
             gameRoot.bgPlayer.clipSource = resSvc.LoadAudio(Constants.BGGame);
             gameRoot.bgPlayer.PlaySound(true);
@@ -149,6 +150,31 @@ public class BattleMgr:MonoBehaviour {
         StartBattle = true;
         cb?.Invoke();
     }
+      
+    //Vector3[] CalculateArcPoints(Transform trans, Vector3 center, int steps) {
+    //    float radius = Vector3.Distance(trans.position,center);
+    //    Vector3[] points = new Vector3[steps + 1]; // 包含起始点
+
+    //    // 计算当前点在圆上的角度
+    //    Vector3 directionToTrans = trans.position - center;
+    //    float startAngle = Mathf.Atan2(directionToTrans.y,directionToTrans.x) - Mathf.PI / 2;
+    //    float angleStep = Mathf.PI / 2 / steps; // 90度圆弧的步长
+
+    //    for(int i = 0; i < steps; i++) {
+    //        // 计算圆弧上每个点的角度
+    //        float angle = startAngle + (i * angleStep);
+    //        points[i + 1] = new Vector3(
+    //            center.x + Mathf.Cos(angle) * radius,
+    //            trans.position.y, // 保持在同一个高度
+    //            center.z + Mathf.Sin(angle) * radius
+    //        );
+    //    }
+
+    //    // 添加起始点
+    //    points[0] = trans.position;
+
+    //    return points;
+    //}
 
     public void EnterBulletTime() {
         Time.timeScale = 0.1f;
@@ -213,15 +239,36 @@ public class BattleMgr:MonoBehaviour {
         guideLine.SetDir(player.transform, direction);
     }
     private void SetCameraData(LevelData levelData) {
-        cam.transform.position = new Vector3(
-            levelData.CameraOffset.X,
-            levelData.CameraOffset.Y,
-            levelData.CameraOffset.Z ); 
-        cam.transform.eulerAngles = new Vector3(
+        Vector3 camRotationSet = new Vector3(
             levelData.CameraRotation.X,
             levelData.CameraRotation.Y,
             levelData.CameraRotation.Z  );
+        cam.transform.eulerAngles = camRotationSet;
         cam.fieldOfView = DefaultFov = levelData.CamFOV;
+        defaultCamOffset = Constants.DefaultCamOffset;
+        cam.transform.position = player.transform.position + defaultCamOffset;
+
+        if(isRobotLevel) {
+            Sequence seq = DOTween.Sequence().SetUpdate(UpdateType.Normal,true);
+            seq.AppendInterval(0.3f);
+            seq.AppendCallback(() => { 
+                Time.timeScale = 0.5f;
+                ToolClass.ChangeCameraFov(cam,10,0.5f).SetEase(Ease.InOutSine);
+            });
+            //seq.AppendCallback(() => {
+            //    Vector3[] circlePoints = CalculateArcPoints(cam.transform,player.transform.position,90);
+            //    cam.transform.DOPath(circlePoints,2,PathType.CatmullRom)
+            //        //.SetLookAt(player.transform)
+            //        .SetEase(Ease.InOutSine);
+            //});
+            seq.AppendInterval(2f);
+            seq.AppendCallback(() => {
+                Time.timeScale = 1;
+                cam.transform.eulerAngles = camRotationSet;
+                ToolClass.ChangeCameraFov(cam,DefaultFov,0.7f).SetEase(Ease.InOutSine);
+            });
+            seq.Play();
+        }
     }
 
     private void LoadPlayer(Vector3 pos) {

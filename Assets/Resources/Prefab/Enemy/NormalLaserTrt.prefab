@@ -129,7 +129,7 @@ GameObject:
   - component: {fileID: 4919943428525768342}
   m_Layer: 14
   m_Name: NormalLaserTrt
-  m_TagString: Untagged
+  m_TagString: DestoryableEnemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -196,7 +196,8 @@ MonoBehaviour:
   canDestroy: 1
   destoryCoinValue: 5
   spwanLaser: {fileID: 0}
-  linerender: {fileID: 0}
+  linerenders: []
+  laserLen: 0
 --- !u!1001 &6820988974017082077
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -231,7 +232,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2991793543677993983, guid: a4b4f1a3caa795444aa1990b10b569f5, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.4027365
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 2991793543677993983, guid: a4b4f1a3caa795444aa1990b10b569f5, type: 3}
       propertyPath: m_LocalScale.z

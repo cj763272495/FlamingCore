@@ -1,9 +1,12 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class FixedAutoRotationContinuesLaserTurret: EnemyEntity {
 
     public GameObject spwanLaser;
-    public LineRenderer linerender; 
+    public List<LineRenderer> linerenders;
+    public float laserLen=20f;
+    public LayerMask layer;
 
     private FixedBase fixedBase;
     private AutoRotationMode rotationMode;
@@ -15,12 +18,12 @@ public class FixedAutoRotationContinuesLaserTurret: EnemyEntity {
         fixedBase = new FixedBase();
         turret.SetTurretBase(fixedBase);
 
-        rotationMode = new AutoRotationMode(transform);
+        rotationMode = new AutoRotationMode(transform,rotateSpeed);
         turret.SetRotationMode(rotationMode);
 
-        if(spwanLaser && linerender) {
+        if(spwanLaser && linerenders.Count>0) {
             laserWeapon = new LaserWeapon();
-            laser = new ContinuousLaser(spwanLaser,linerender,firePoints);
+            laser = new ContinuousLaser(spwanLaser,linerenders,firePoints,layer,laserLen);
             laserWeapon.SetFireMode(laser);
             turret.SetWeapon(laserWeapon);
         } 

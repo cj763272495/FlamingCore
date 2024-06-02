@@ -83,6 +83,7 @@ public class GameRoot : MonoBehaviour
     public void EnterMainCity() {
         resSvc.AsyncLoadScene("MainCity", () => {
             uIManager.homeWnd.Init();
+            PlayBgAudio(UIManager.Instance.setPanel.GetBgAudioOn());
         });
     }
 

@@ -1,3 +1,4 @@
+using System.Drawing;
 using UnityEngine;
 
 public class NormalBullet : MonoBehaviour
@@ -26,8 +27,7 @@ public class NormalBullet : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision) {
         if(collision.transform != owner) { 
-            ContactPoint point = collision.contacts[0];
-            ParticleMgr.Instance.PlayBulletDestoryParticle(point);
+            ParticleMgr.Instance.PlayBulletDestoryParticle(collision.contacts[0].point);
             ReturnBullet();
         }
     }

@@ -17,13 +17,15 @@ public class SingleFire : IFireMode
     }
 
     public void Fire() {
+        if(shootPoint == null || shootPoint.Count == 0)
+            return;
         if(shootTimer > shootTime) {
             foreach(Transform point in shootPoint) {
                 GameObject go = PoolManager.Instance.GetInstance<GameObject>(bullet,BattleSys.Instance.battleMgr.transform);
                 go.transform.position = point.position;
-                go.transform.localScale = new Vector3(0.5f,0.5f,0.5f);
+                go.transform.localScale = Vector3.one;
                 go.GetComponent<NormalBullet>().SetBulletShotDir(point.forward);
-                go.GetComponent<NormalBullet>().owner = point;//防止子弹碰撞到自己
+                go.GetComponent<NormalBullet>().owner = point.parent.parent;
             }
             shootTimer = 0;
             if(countDown) {

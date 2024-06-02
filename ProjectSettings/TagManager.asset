@@ -11,6 +11,9 @@ TagManager:
   - Boom
   - CheckPoint
   - Logo
+  - Wall
+  - Mirror
+  - DestoryableEnemy
   layers:
   - Default
   - TransparentFX

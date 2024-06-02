@@ -42,24 +42,25 @@ public class RobotPlayer: PlayerController {
     protected override void SetRotateAndShot() {
         // 找到距离最近的敌人
         GameObject closestEnemy = enemiesInRange[0];
-        if(enemiesInRange.Count>1) {
-            float minDistance = Vector3.Distance(transform.position,closestEnemy.transform.position);
-            foreach(GameObject enemy in enemiesInRange) {
-                float distance = Vector3.Distance(transform.position,enemy.transform.position);
-                if(distance < minDistance) {
-                    closestEnemy = enemy;
-                    minDistance = distance;
+        if(closestEnemy) {
+            if(enemiesInRange.Count > 1) {
+                float minDistance = Vector3.Distance(transform.position,closestEnemy.transform.position);
+                foreach(GameObject enemy in enemiesInRange) {
+                    float distance = Vector3.Distance(transform.position,enemy.transform.position);
+                    if(distance < minDistance) {
+                        closestEnemy = enemy;
+                        minDistance = distance;
+                    }
                 }
             }
+            Vector3 direction = closestEnemy.transform.position - transform.position;
+            Quaternion toRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation,toRotation,rotateSpeed * Time.deltaTime); 
+            if(Vector3.Dot(transform.forward,direction.normalized) > 0.9f) {
+                // 物体面向敌人，开始射击
+                Shot();
+            }
         }
-        Vector3 direction = closestEnemy.transform.position - transform.position;
-        Quaternion toRotation = Quaternion.LookRotation(direction); 
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotateSpeed * Time.deltaTime);
-        // 检查物体是否面向敌人
-        if(Vector3.Dot(transform.forward, direction.normalized) > 0.9f) {
-            // 物体面向敌人，允许射击
-            Shot();
-        } 
     }
 
     public override void OnPointerDown() {

@@ -7,7 +7,7 @@ public class ShotgunFire : IFireMode {
     private float shootTimer;
     public GameObject bullet;
     public Image countDown;
-    private List<Transform> shootPoint;
+    private List<Transform> shootPoints;
     
     private int bulletCount = 3;  // 默认同时发射3发
     private float _spreadAngle = 45f;  // 散射角度
@@ -15,23 +15,24 @@ public class ShotgunFire : IFireMode {
     public ShotgunFire(List<Transform> shootPoint, int bulletNum,float spreadAngle) {
         bullet = ResSvc.Instance.LoadPrefab("Prefab/Enemy/Bullet",true);
         PoolManager.Instance.InitPool(bullet,20,BattleSys.Instance.battleMgr.transform);
-        this.shootPoint = shootPoint;
+        shootPoints = shootPoint;
         bulletCount = bulletNum;
         _spreadAngle = spreadAngle;
     }
 
     public void Fire() {
-        if(shootPoint==null) {
+        if(shootPoints==null || shootPoints.Count==0) {
             return;
         }
         if(shootTimer > shootTime) {
             for(int i = 0; i < bulletCount; i++) {
-                foreach(Transform point in shootPoint) {
+                foreach(Transform point in shootPoints) {
                     GameObject go = PoolManager.Instance.GetInstance<GameObject>(bullet,BattleSys.Instance.battleMgr.transform);
                     go.transform.position = point.position;
-                    go.transform.localScale = new Vector3(0.5f,0.5f,0.5f);
+                    go.transform.localScale = Vector3.one;
                     float offsetAngle = (i - bulletCount / 2f) / (bulletCount - 1) * _spreadAngle;
                     go.GetComponent<NormalBullet>().SetBulletShotDir(Quaternion.Euler(0,offsetAngle,0) * point.forward);
+                    go.GetComponent<NormalBullet>().owner = point.parent.parent;
                 }
             }
             shootTimer = 0;

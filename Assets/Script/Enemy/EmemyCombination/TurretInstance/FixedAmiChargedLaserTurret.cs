@@ -1,9 +1,11 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class FixedAmiChargedLaserTurret: EnemyEntity {
 
     public GameObject spwanLaser;
-    public LineRenderer linerender; 
+    public List<LineRenderer> linerender;
+    public LayerMask layer;
 
     private FixedBase fixedBase;
     private AmiRotationMode rotationMode;
@@ -19,7 +21,7 @@ public class FixedAmiChargedLaserTurret: EnemyEntity {
         turret.SetRotationMode(rotationMode);
 
         laserWeapon = new LaserWeapon();
-        laser = new ChargedLaser(spwanLaser,linerender,firePoints,this);
+        laser = new ChargedLaser(spwanLaser,linerender,firePoints,this,layer);
         laserWeapon.SetFireMode(laser);
         turret.SetWeapon(laserWeapon);
     }

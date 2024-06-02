@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,6 +20,8 @@ public class TripleFire: IFireMode {
     }
 
     public void Fire() {
+        if(shootPoints == null || shootPoints.Count == 0)
+            return;
         if(bulletsFired >= 3) {
             shootTimer += Time.deltaTime;
             if(shootTimer > shootTime) {
@@ -38,9 +41,9 @@ public class TripleFire: IFireMode {
                 foreach(Transform shootPoint in shootPoints) {
                     GameObject go = PoolManager.Instance.GetInstance<GameObject>(bullet,BattleSys.Instance.battleMgr.transform);
                     go.transform.position = shootPoint.position;
-                    go.transform.localScale = new Vector3(0.5f,0.5f,0.5f);
+                    go.transform.localScale = Vector3.one;
                     go.GetComponent<NormalBullet>().SetBulletShotDir(shootPoint.forward);
-                    //go.GetComponent<NormalBullet>().owner = transform;//防止子弹碰撞到自己
+                    go.GetComponent<NormalBullet>().owner = shootPoint.parent.parent;
                     bulletsFired++;
                     bulletTimer = 0; 
                 }

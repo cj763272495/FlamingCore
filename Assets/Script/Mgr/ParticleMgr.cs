@@ -37,8 +37,9 @@ public class ParticleMgr : MonoBehaviour
 
     public GameObject InitParticlePool(string path,int num = 3) {
         GameObject particle = ResSvc.Instance.LoadPrefab(path);
+        particle.transform.parent = battleMgr.transform;
         if(particle != null) {
-            PoolManager.Instance.InitPool(particle,num,battleMgr.transform);
+            PoolManager.Instance.InitPool(particle, num, battleMgr.transform);
         } else {
             Debug.LogError("InitParticlePool failed, particle is null, path: " + path);
         }
@@ -50,7 +51,7 @@ public class ParticleMgr : MonoBehaviour
         go.transform.position = position;
         go.transform.parent = battleMgr.transform;
         go.GetComponentInChildren<ParticleSystem>().Play();
-        StartCoroutine(ReturnPool(go));
+        StartCoroutine(ReturnPool(go));//播放完成返回对象池
         return go;
     }
 
@@ -74,24 +75,23 @@ public class ParticleMgr : MonoBehaviour
         go.GetComponent<ParticleSystem>().transform.rotation = rotation; 
     }
 
-    public void PlayEnemyDeadParticle(ContactPoint contact, Transform player) {    
+    public void PlayEnemyDeadParticle(ContactPoint contact, Transform player) {
         GameObject go = PlayParticle(enemyDeadParticle,contact.point);
         ParticleSystem[] particleSystems = go.GetComponentsInChildren<ParticleSystem>();
         ParticleSystem lastParticleSystem = particleSystems[particleSystems.Length - 1];
         EnemyDeadCoin enemyDeadCoin = lastParticleSystem.gameObject.GetComponent<EnemyDeadCoin>();
         enemyDeadCoin.isPlaying = true;
-        enemyDeadCoin.player = player.gameObject;
-        EnemyEntity enemy = contact.otherCollider.GetComponent<EnemyEntity>();
-        if(enemy) {
+        enemyDeadCoin.player = player.gameObject; 
+        if(contact.otherCollider.GetComponent<EnemyEntity>() is EnemyEntity enemy) {
             enemyDeadCoin.coinValue = enemy.destoryCoinValue;
         }
     }
 
-    public void PlayBulletDestoryParticle(ContactPoint contact) {
-        GameObject go = PlayParticle(bulletDestoryParticle,contact.point); 
-        Vector3 normal = contact.normal;
-        Quaternion rotation = Quaternion.LookRotation(normal);
-        go.GetComponentInChildren<ParticleSystem>().transform.rotation = rotation; 
+    public void PlayBulletDestoryParticle(Vector3 contact) {
+        GameObject go = PlayParticle(bulletDestoryParticle,contact); 
+        //Vector3 normal = contact.normal;
+        //Quaternion rotation = Quaternion.LookRotation(normal);
+        //go.GetComponentInChildren<ParticleSystem>().transform.rotation = rotation; 
     }
 
     public void PlayGetCoinParticle(Vector3 point) {

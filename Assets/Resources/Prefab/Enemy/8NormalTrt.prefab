@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: -9150465020037899353}
   m_Layer: 14
   m_Name: 8NormalTrt
-  m_TagString: Untagged
+  m_TagString: DestoryableEnemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -78,8 +78,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3e69a3af24c217429c7705e8470c81c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canAttack: 1
   curAniState: 0
+  ani: {fileID: 0}
+  canAttack: 1
   rotateSpeed: 100
   firePoints:
   - {fileID: 8918780246344742433}
@@ -91,7 +92,6 @@ MonoBehaviour:
   - {fileID: 1733079920402024334}
   - {fileID: 1660446239793555825}
   countDown: {fileID: 0}
-  ani: {fileID: 0}
   canDestroy: 1
   destoryCoinValue: 5
 --- !u!135 &-9150465020037899353
