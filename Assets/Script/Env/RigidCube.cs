@@ -12,11 +12,7 @@ public class RigidCube : MonoBehaviour
     }
 
     void FixedUpdate() {
-        if(rb.velocity.magnitude > 0.2f) { 
-            Vector3 velocity = rb.velocity;
-            Vector3 frictionForce = -velocity.normalized * frictionCoefficient;
-            rb.AddForce(frictionForce,ForceMode.Force);
-        } else {
+        if(rb.velocity.magnitude < 0.2f) {  
             rb.velocity = Vector3.zero;
         }
     }

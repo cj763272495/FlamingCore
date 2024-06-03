@@ -37,14 +37,15 @@ public class EnemyEntity:Entity {
 
     protected virtual void OnCollisionEnter(Collision collision) {
         if(canDestroy) {
-            if(collision.gameObject.layer == 8 || collision.gameObject.layer == 17) {
+            float layer = collision.gameObject.layer;
+            if(layer == 8 || layer == 17 || layer==7 && collision.gameObject.tag=="Laser") {
                 ParticleMgr.Instance.PlayEnemyDeadParticle(collision.contacts[0],collision.transform);
                 AudioManager.Instance.PlaySound(ResSvc.Instance.LoadAudio(Constants.HitEnenmyClip));
                 gameObject.SetActive(false);
                 Destroy(gameObject,1f);
                 BattleSys.Instance.battleMgr.EliminateEnemy();
                 OnEnemyDestroyed?.Invoke(gameObject);
-            } 
+            }
         }
     }
 

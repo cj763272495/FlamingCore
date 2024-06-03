@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class FailPanel : MonoBehaviour
 {
-    
     public void ClickReturnHomeBtn() {
+        gameObject.SetActive(false);
         GameRoot.Instance.EnterMainCity();
     }
 

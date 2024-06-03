@@ -87,9 +87,6 @@ public class WinPanel:MonoBehaviour {
         ToolClass.MoveUpAndFadeOut(firstCoinTxt.gameObject,2f,1.5f);
     }
 
-
-
-
     public void SecndShowCoinTxt() {
         LeftTopCoinObj.SetActive(true);
         int coinNum = (int)BattleSys.Instance.battleMgr.GetCoin();

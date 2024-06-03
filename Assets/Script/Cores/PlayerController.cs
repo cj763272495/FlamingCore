@@ -1,8 +1,9 @@
 using System.Collections; 
-using UnityEngine; 
+using UnityEngine;
 
-public class PlayerController: Entity {
+public class PlayerController:Entity {
     protected float _speed;
+    public float Speed { get { return _speed; } }
     protected float _rotateSpeed;
     public bool isMove;
     protected Vector3 _dir;
