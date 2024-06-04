@@ -5,23 +5,19 @@ using DG.Tweening;
 
 public class WinPanel:MonoBehaviour {
     public TextMeshProUGUI curLevelTxt;
-    public TextMeshProUGUI firstCoinTxt;
-
-    public float breathRate = 2.0f;
-    public Image breathImage;
-    public Image breathImageFlash;
+    public TextMeshProUGUI gotCoinTxt;
+     
+    public Image breathImage; 
     public Chest chest;
     public Image curWaveBg;
     public RawImage chestShow;
     public GameObject chestGroup;
     public GameObject tongGuangTxt;
-
-    public GameObject LeftTopCoinObj;
+     
     public GameObject btnGroup;
     public GameObject tagsGroup;
     public ParticleSystem ps;
-    public AudioClip Hit2;
-    public Image blendImg;
+    public AudioClip Hit2; 
 
     private Sequence sequence;
 
@@ -38,8 +34,7 @@ public class WinPanel:MonoBehaviour {
 
         chestShow.gameObject.SetActive(false);
         chestGroup.SetActive(false);
-        tongGuangTxt.SetActive(false);
-        LeftTopCoinObj.SetActive(false);
+        tongGuangTxt.SetActive(false); 
         curLevelTxt.gameObject.SetActive(false);
         btnGroup.gameObject.SetActive(false);
         curWaveBg.transform.localScale = new Vector3(0.1f,0.1f,0.1f);
@@ -76,25 +71,15 @@ public class WinPanel:MonoBehaviour {
             chestShow.gameObject.SetActive(true);
             chestGroup.SetActive(true);
             btnGroup.gameObject.SetActive(true);
-            firstCoinTxt.text = "+ " + coinNum.ToString();
+            gotCoinTxt.text = "+ " + coinNum.ToString();
             chest.OpenChest();
             UIManager.Instance.FadeOut();
         };
     }
 
     public void Show1stCoinTxt() {
-        firstCoinTxt.gameObject.SetActive(true);
-        ToolClass.MoveUpAndFadeOut(firstCoinTxt.gameObject,2f,1.5f);
-    }
-
-    public void SecndShowCoinTxt() {
-        LeftTopCoinObj.SetActive(true);
-        int coinNum = (int)BattleSys.Instance.battleMgr.GetCoin();
-        var txt = LeftTopCoinObj.GetComponentInChildren<TextMeshProUGUI>();
-        txt.text = "+ 0";
-
-        DOTween.To(() => 0,x => txt.text = "+ " + x,coinNum,1f).SetEase(Ease.OutQuint);
-        ToolClass.MoveUpAndFadeOut(LeftTopCoinObj,3,1);
+        gotCoinTxt.gameObject.SetActive(true);
+        ToolClass.MoveUpAndFadeOut(gotCoinTxt.gameObject,2f,1.5f);
     }
 
     public void ClickReturnHomeBtn() {

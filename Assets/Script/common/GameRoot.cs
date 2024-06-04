@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class GameRoot : MonoBehaviour
@@ -13,8 +14,34 @@ public class GameRoot : MonoBehaviour
     public Transform canvasTrans;
 
     public int CurWaveIndex { private set;  get; }
-
     private PlayersDataSystem _pds;
+
+
+    public event Action<int> OnCoinChanged;//传入coin变化的值
+    private int _coinCached;
+    public int CoinCached {
+        get { return _coinCached; }
+        set {
+            if(_coinCached != value) {
+                OnCoinChanged?.Invoke(value - _coinCached);
+                _coinCached = Math.Min(value, 9999);
+                _pds.SetCoin(_coinCached); 
+            }
+        }
+    }
+
+    public event Action<int> OnEnergyChanged;
+    private int _energyCached;
+    public int EnergyCached { 
+        get { return _energyCached; }
+        set { 
+            if(_energyCached != value) {
+                _energyCached = Math.Min(value,99);
+                OnEnergyChanged?.Invoke(_energyCached);
+                _pds.SetEnergy(_energyCached); 
+            }
+        } 
+    }
 
     private void Awake() {
         if (Instance == null) {
@@ -61,28 +88,30 @@ public class GameRoot : MonoBehaviour
     }
 
     public void StartBattle(int wave) {
-        if (_pds.PlayerData.energy<0) {
+        if (_energyCached < 0) {
             Debug.Log("能量不足");
             return;
         }
-        if(wave >_pds.PlayerData.max_unLock_wave) {
+        if(wave >_pds.GetMaxUnLockWave()) {
             //关卡未解锁
             return;
         }
         uIManager.homeWnd.gameObject.SetActive(false);
         BattleSys.Instance.StartBattle(wave);
+        EnergyCached--;
         uIManager.ShowImgEnergyDecrease();
     }
 
     public void LevelSettlement(int coin) {//关卡结算
-        _pds.PlayerData.coin += coin;
-        _pds.PlayerData.max_unLock_wave = CurWaveIndex + 1;
+        CoinCached += coin;
+        _pds.SetMaxUnLockWave(CurWaveIndex + 1);
         _pds.SavePlayerData(); 
     }
 
     public void EnterMainCity() {
         resSvc.AsyncLoadScene("MainCity", () => {
             uIManager.homeWnd.Init();
+            uIManager.ShowPlayerAssets();
             PlayBgAudio(UIManager.Instance.setPanel.GetBgAudioOn());
         });
     }

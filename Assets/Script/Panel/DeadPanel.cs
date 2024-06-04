@@ -14,15 +14,11 @@ public class DeadPanel : MonoBehaviour
     public float countdownDuration = 5.0f; // 倒计时持续时间，单位为秒
     public float displayUpdateInterval = 1.0f; // 更新显示的间隔
 
-    private float elapsedTime = 0.0f; // 已经过去的秒数
-
-    private PlayersDataSystem pds;
-
+    private float elapsedTime = 0.0f; // 已经过去的秒数  
 
     private void Start() {
         m_reviveCost = Constants.ReviceCost;
-        reviveCoinTxt.text = m_reviveCost.ToString();
-        pds = PlayersDataSystem.Instance;
+        reviveCoinTxt.text = m_reviveCost.ToString(); 
     }
 
     public void ShowContinueBtn(bool hasHP) {
@@ -63,8 +59,8 @@ public class DeadPanel : MonoBehaviour
 
     public void ClickCoinContinueBtn() {
         //如果当前剩余金额大于所需，继续进行,玩家原地重生
-        if(pds.PlayerData.coin >= m_reviveCost) {
-            pds.PlayerData.coin -= m_reviveCost;
+        if(GameRoot.Instance.CoinCached >= m_reviveCost) {
+            GameRoot.Instance.CoinCached -= m_reviveCost;
             BattleSys.Instance.ReviveAndContinueBattle();
             gameObject.SetActive(false);
             StopAllCoroutines();

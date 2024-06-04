@@ -10,11 +10,11 @@ public static class ToolClass {
         player.transform.position = new Vector3(pos.x,player.transform.position.y,pos.z);
     }
 
-    public static void MoveUpAndFadeOut(GameObject obj,float delay,float duration) {
+    public static Tween MoveUpAndFadeOut(GameObject obj,float delay,float duration) {
         var children = obj.GetComponentsInChildren<Transform>();
         Vector3 startPos = obj.transform.position;
 
-        DOVirtual.DelayedCall(delay,() => {
+        return DOVirtual.DelayedCall(delay,() => {
             foreach(var child in children) {
                 var img = child.GetComponent<Image>();
                 var txt = child.GetComponent<TextMeshProUGUI>();
@@ -33,6 +33,7 @@ public static class ToolClass {
             });
         });
     }
+
     public static Tween ShowBlendImg(Image img) {
         //DOTween.Kill(img); // 停止img的所有动画
         img.gameObject.SetActive(true);

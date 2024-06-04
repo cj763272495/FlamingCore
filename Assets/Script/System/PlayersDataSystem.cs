@@ -1,11 +1,11 @@
-using System.Collections.Generic; 
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayersDataSystem : MonoBehaviour
 {
     public static PlayersDataSystem Instance = null;  
-    public string _playerID;//当前玩家ID
-    public PlayerData PlayerData { private set; get; }//当前玩家数据
+    public string playerID;//当前玩家ID
+    public PlayerData PlayerData;//当前玩家数据
     private ResSvc _resSvc; 
     private PlayerDataDic _playerDataDic = new();//所有玩家数据
 
@@ -26,9 +26,11 @@ public class PlayersDataSystem : MonoBehaviour
         if(!IsNewInviorment) {
             var firstPlayerData = _playerDataDic.GetEnumerator();
             firstPlayerData.MoveNext();
-            _playerID = firstPlayerData.Current.Key;
+            playerID = firstPlayerData.Current.Key;
             PlayerData = firstPlayerData.Current.Value;
         }
+        GameRoot.Instance.CoinCached = PlayerData.coin;
+        GameRoot.Instance.EnergyCached = PlayerData.energy;
     }
 
     public PlayerData GetPlayerData(string Playerid) {
@@ -41,9 +43,9 @@ public class PlayersDataSystem : MonoBehaviour
     }
 
     public bool PlayerLogin(string ID) {
-        _playerID = ID;
+        playerID = ID;
         PlayerData = GetPlayerData(ID);
-        if(PlayerData == null) {
+        if(PlayerData == null) {//新玩家初始数据
             PlayerData pd = new() {
                 coin = 0,
                 skin = new List<int> { 0 },
@@ -58,10 +60,27 @@ public class PlayersDataSystem : MonoBehaviour
         } 
         return true;
     }
+     
+    public int GetMaxUnLockWave() {
+        return PlayerData.max_unLock_wave;
+    }
 
     public bool SavePlayerData() {
-        _playerDataDic[_playerID] = PlayerData;
+        _playerDataDic[playerID] = PlayerData;
         return _resSvc.SavePlayerData(_playerDataDic);
     }
 
+    public void SetCoin(int coin) {
+        PlayerData.coin = coin;
+        SavePlayerData();
+    }
+    public void SetEnergy(int energy) {
+        PlayerData.energy = energy;
+        SavePlayerData();
+    }
+
+    public void SetMaxUnLockWave(int wave) {
+        PlayerData.max_unLock_wave = wave;
+        SavePlayerData();
+    }
 }

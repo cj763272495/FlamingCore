@@ -43,4 +43,10 @@ public class SetPanel : MonoBehaviour
             UIManager.Instance.homeWnd.mainShow.SetActive(false);
         });
     }
+
+    public void ClickGetCoin() {
+        int num = 999;
+        GameRoot.Instance.CoinCached += 999; 
+        UIManager.Instance.ShowUserMsg("恭喜您获得了"+ num + "金币");
+    }
 }

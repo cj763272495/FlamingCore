@@ -108,7 +108,7 @@ public class ShopPanel:MonoBehaviour {
         }
 
         _isEquipped = _currentViewID == currentPlayerDataIndex;
-        bool canBuy = pds.PlayerData.coin > _curPrice;
+        bool canBuy = GameRoot.Instance.CoinCached > _curPrice;
         equiptTxt.gameObject.SetActive(_hasBuy);
         equiptTxt.text = _isEquipped ? "已装备" : "装备";
 
@@ -152,11 +152,11 @@ public class ShopPanel:MonoBehaviour {
 
     public void ClickBuy() {
         if(!_hasBuy) {
-            if(pds.PlayerData.coin < _curPrice) {
-                Debug.Log("余额不足");
+            if(GameRoot.Instance.CoinCached < _curPrice) {
+                UIManager.Instance.ShowUserMsg("余额不足");
                 return;
             }
-            pds.PlayerData.coin -= _curPrice;
+            GameRoot.Instance.CoinCached -= _curPrice;
             if(selectBuySkin) {
                 pds.PlayerData.skin.Add(_currentViewID);
                 UpdateScrowViewLockInfo(skinView, pds.PlayerData.skin);

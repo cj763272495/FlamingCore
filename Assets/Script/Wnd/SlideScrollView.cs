@@ -62,7 +62,6 @@ public class SlideScrollView : MonoBehaviour,IBeginDragHandler,IEndDragHandler {
                 }
             }
         }
-
     }
 
     protected void ChangeImgAlpha(Image img, float a) {
@@ -209,6 +208,4 @@ public class SlideScrollView : MonoBehaviour,IBeginDragHandler,IEndDragHandler {
             gameObject.SendMessageUpwards("ToLastLevel");
         }
     }
-
-    
 }

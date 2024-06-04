@@ -55,10 +55,8 @@ public class BattleWnd:MonoBehaviour {
         return sequence.Play();
     }
 
-
     public void ShowHp(bool isShow = true) {
         hpShow.SetActive(isShow);
-        energyShow.SetActive(!isShow);
-        coinShow.SetActive(!isShow);
+        UIManager.Instance.ShowPlayerAssets(!isShow);
     }
 }

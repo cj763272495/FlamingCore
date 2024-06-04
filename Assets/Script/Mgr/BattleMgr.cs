@@ -9,7 +9,7 @@ public class BattleMgr:MonoBehaviour {
     public StateMgr stateMgr;
     private PlayersDataSystem _pds;
     private BattleSys battleSys;
-    private int coin;
+    private int coinGot;
 
     public Camera cam;
     public Vector3 defaultCamOffset;
@@ -52,10 +52,10 @@ public class BattleMgr:MonoBehaviour {
     public float DefaultFov { private set; get; }
 
     public void EarnCoin(int num) {
-        coin += num;
+        coinGot += num;
     }
-    public float GetCoin() {
-        return coin;
+    public int GetCoinNum() {
+        return coinGot;
     }
 
     public void EliminateEnemy() {
@@ -106,7 +106,7 @@ public class BattleMgr:MonoBehaviour {
             guideLine = battleWnd.guideLine;
             joystick = battleWnd.joystick; 
             hp = 3;
-            coin = 0;
+            coinGot = 0;
             hitWallClip = resSvc.LoadAudio(Constants.HitWallClip,true);
             deadClip = resSvc.LoadAudio(Constants.DeadClip);
         }
@@ -304,7 +304,6 @@ public class BattleMgr:MonoBehaviour {
             StartBattle = true;
             EnterBulletTime();
         };
-        battleWnd.ShowHp(); 
     }
 
     public void ReviveAndContinueBattle() {//消耗生命继续游戏
@@ -322,7 +321,8 @@ public class BattleMgr:MonoBehaviour {
     }
     public void StratNextWave() {//开始下一大关
         CurWaveIndex++;
-        Init(CurWaveIndex); 
+        Init(CurWaveIndex);
+        gameRoot.EnergyCached--;
         UIManager.Instance.ShowImgEnergyDecrease();
     }
     public void PlayAgain(int levelID=-1) { 
@@ -350,20 +350,20 @@ public class BattleMgr:MonoBehaviour {
             battleSys.battleWnd.dead_panel.ShowAndStartCountDown();
             UIManager.Instance.deadPanel.ShowContinueBtn(hp > 0);
             if(hp <= 0) {  
-                battleSys.battleWnd.dead_panel.SetContinueByCoinBtn(_pds.PlayerData.coin >= 80); 
+                battleSys.battleWnd.dead_panel.SetContinueByCoinBtn(gameRoot.CoinCached >= 80); 
             }
         }
     }
 
     private void GameWin() {
         StartBattle = false;
-        battleWnd.win_panel.OpenWinPanel(coin);
+        battleWnd.win_panel.OpenWinPanel(coinGot);
         PauseBattle();
         LevelSettlement();
     }
 
     public void LevelSettlement() {//关卡结算
-        GameRoot.Instance.LevelSettlement(coin);
+        GameRoot.Instance.LevelSettlement(coinGot);
     }
      
     public void DestoryBattle() {

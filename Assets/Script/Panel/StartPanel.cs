@@ -14,7 +14,7 @@ public class StartPanel : MonoBehaviour
     }
 
     private void GameStart() {//显示Start加载界面且同时获取加载数据
-        gameObject.SetActive(true);
+       gameObject.SetActive(true);
        ToolClass.BreathingImg(BreathImage);
 
         GameRoot.Instance.GameStart();  

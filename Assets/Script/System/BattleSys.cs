@@ -24,8 +24,6 @@ public class BattleSys : MonoBehaviour
 
         battleWnd.battleMgr = battleMgr;
         battleWnd.Init();
-
-        PlayersDataSystem.Instance.PlayerData.energy--;
     }
 
     public void ReviveAndContinueBattle() {//玩家重生继续游戏

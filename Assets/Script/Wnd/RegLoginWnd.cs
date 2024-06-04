@@ -1,5 +1,6 @@
 using UnityEngine; 
 using UnityEngine.UI;
+using static UnityEngine.Rendering.DebugUI;
 
 public class RegLoginWnd : MonoBehaviour
 {
@@ -14,7 +15,10 @@ public class RegLoginWnd : MonoBehaviour
         gameObject.SetActive(true);
         pds = PlayersDataSystem.Instance;
         if(!pds.IsNewInviorment) {
-            username.text = pds._playerID;
+            username.text = pds.playerID;
+        } else {
+            username.Select();
+            username.ActivateInputField();
         }
         startCanvas = GameObject.Find("startCanvas").gameObject;
         logo = GameObject.Find("Logo").gameObject;
@@ -25,6 +29,10 @@ public class RegLoginWnd : MonoBehaviour
     }
 
     public void ClickStart() {
+        if(string.IsNullOrEmpty(username.text)) {
+            UIManager.Instance.ShowUserMsg("请输入用户名");
+            return;
+        }
         if(pds.PlayerLogin(username.text)) { 
             isLogin = true;
             loginGroup.SetActive(false);

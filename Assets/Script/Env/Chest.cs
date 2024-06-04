@@ -32,7 +32,7 @@ public class Chest : MonoBehaviour
     public void PlayParticle() {
         UIManager.Instance.winPanel.Show1stCoinTxt();
         var emission = coinPS.emission;
-        emission.rateOverTime =  Mathf.Max(BattleSys.Instance.battleMgr.GetCoin(),40);
+        emission.rateOverTime =  Mathf.Max(BattleSys.Instance.battleMgr.GetCoinNum(),40);
         ps.Play();
         coinPS.Play();
         StartCoroutine(CheckParticleDistance());
@@ -85,6 +85,6 @@ public class Chest : MonoBehaviour
             coinPS.SetParticles(particles,numParticles); 
             yield return null;
         }
-        UIManager.Instance.winPanel.SecndShowCoinTxt();
+        GameRoot.Instance.CoinCached += BattleSys.Instance.battleMgr.GetCoinNum();
     }
 }
