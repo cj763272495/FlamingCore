@@ -171,37 +171,28 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0.03174591
-        value: 0.4189186
+        value: 0.2606926
         inSlope: 0.00000027292654
         outSlope: 0.00000027292654
         tangentMode: 0
         weightedMode: 0
         inWeight: 0
         outWeight: 0.506674
-      - serializedVersion: 3
-        time: 1
-        value: 0.37837806
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
       key0: {r: 0.9716981, g: 0.63796145, b: 0, a: 1}
-      key1: {r: 1, g: 1, b: 1, a: 0.015686275}
-      key2: {r: 1, g: 1, b: 1, a: 0}
+      key1: {r: 0.972549, g: 0.6392157, b: 0, a: 0.7058824}
+      key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0.23529413, g: 0.23529413, b: 0.23529413, a: 0}
       key4: {r: 1, g: 0.8506834, b: 0.2688679, a: 0}
       key5: {r: 1, g: 0.8506834, b: 0.2688679, a: 0}
       key6: {r: 0, g: 0, b: 0, a: 0}
       key7: {r: 0, g: 0, b: 0, a: 0}
-      ctime0: 0
-      ctime1: 65535
+      ctime0: 68
+      ctime1: 49544
       ctime2: 65535
       ctime3: 54163
       ctime4: 65535
@@ -209,7 +200,7 @@ LineRenderer:
       ctime6: 0
       ctime7: 0
       atime0: 0
-      atime1: 59453
+      atime1: 50911
       atime2: 65535
       atime3: 65535
       atime4: 0
@@ -218,13 +209,13 @@ LineRenderer:
       atime7: 0
       m_Mode: 0
       m_ColorSpace: 0
-      m_NumColorKeys: 2
+      m_NumColorKeys: 3
       m_NumAlphaKeys: 3
     numCornerVertices: 0
     numCapVertices: 0
     alignment: 0
     textureMode: 1
-    textureScale: {x: 3, y: 1}
+    textureScale: {x: 8, y: 1}
     shadowBias: 0
     generateLightingData: 0
   m_MaskInteraction: 0
@@ -310,7 +301,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6955709258241098785}
   serializedVersion: 4
-  m_Mass: 0.0001
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -318,7 +309,7 @@ Rigidbody:
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 17665
+    m_Bits: 25857
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 15103

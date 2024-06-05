@@ -80,7 +80,7 @@ public class BattleMgr:MonoBehaviour {
         }
     }
 
-    private void HandleStartBattleChanged(bool startBattle) {
+    public void HandleStartBattleChanged(bool startBattle) {
         gameRoot.bgPlayer.audioSource.volume = StartBattle ? 1 : 0.5f;
         if(player) {
             player.gameObject.SetActive(startBattle);
@@ -89,39 +89,57 @@ public class BattleMgr:MonoBehaviour {
             joystick.gameObject.SetActive(startBattle);
         }
         battleWnd.ShowHp(startBattle);
+        Time.timeScale = startBattle ? 1 : 0;
     }
 
-    public void Init(int waveid,int levelid=0,Action cb = null) {
-        CurWaveIndex = waveid;
-        CurLevelID = levelid;
-        isRobotLevel = levelid !=0 && levelid %4 ==0;
-        //isRobotLevel = true;
-        if(levelid==0) {//大关开始
-            stateMgr = gameObject.AddComponent<StateMgr>();
-            stateMgr.Init();
-            gameRoot = GameRoot.Instance;
-            _pds = PlayersDataSystem.Instance;
-            battleSys = BattleSys.Instance;
-            resSvc = ResSvc.Instance;
-            guideLine = battleWnd.guideLine;
-            joystick = battleWnd.joystick; 
-            hp = 3;
-            coinGot = 0;
-            hitWallClip = resSvc.LoadAudio(Constants.HitWallClip,true);
-            deadClip = resSvc.LoadAudio(Constants.DeadClip);
-        }
-        eliminateEnemyNum = 0;
-        string waveName = $"Level{waveid * 5 + levelid}";
+    public void Init(int waveid,int levelid=0, Action cb = null) { 
+        //isRobotLevel = true; 
+        gameRoot = GameRoot.Instance;
+        _pds = PlayersDataSystem.Instance;
+        battleSys = BattleSys.Instance;
+        resSvc = ResSvc.Instance;
+        guideLine = battleWnd.guideLine;
+        joystick = battleWnd.joystick;
+        hitWallClip = resSvc.LoadAudio(Constants.HitWallClip,true);
+        deadClip = resSvc.LoadAudio(Constants.DeadClip);
+        battleSys.CleanBattleRoot();
+
         battleWnd.hp_txt.text = $"x {hp}";
 
-        battleSys.CleanBattleRoot(); 
-        levelData = resSvc.GetMapCfgData(waveName);
-        if(levelData != null) {
-            resSvc.AsyncLoadScene(waveName, ()=>OnSceneLoaded(cb));
-        } else {
-            Debug.Log("load scen failed, name:" + waveName);
+        if(!gameObject.GetComponent<ParticleMgr>()) {
+            particleMgr = gameObject.AddComponent<ParticleMgr>();
+            particleMgr.Init(this);
         }
+        if(!gameObject.GetComponent<StateMgr>()) { 
+            stateMgr = gameObject.AddComponent<StateMgr>();
+            stateMgr.Init();
+        }
+        if(gameRoot.gameSettings.bgAudio) {
+            gameRoot.bgPlayer.clipSource = resSvc.LoadAudio(Constants.BGGame);
+            gameRoot.bgPlayer.PlaySound(true);
+        }
+        StartLevel(waveid, levelid, cb);
     }
+
+    private void StartLevel(int waveid,int levelid = 0, Action cb = null) {
+        string waveName = $"Level{waveid * 5 + levelid}";
+        levelData = resSvc.GetMapCfgData(waveName);
+        if(levelData == null) {
+            UIManager.Instance.ShowUserMsg("持续开发中,敬请期待");
+            return;
+        }
+        eliminateEnemyNum = 0;
+        CurWaveIndex = waveid;
+        CurLevelID = levelid;
+        if(levelid==0) {
+            hp = 3;
+            coinGot = 0;
+        }
+        isRobotLevel = levelid != 0 && levelid % 4 == 0; 
+
+        resSvc.AsyncLoadScene(waveName,() => OnSceneLoaded(cb)); 
+    }
+
     private void OnSceneLoaded(Action cb) {
         guideLine.gameObject.SetActive(false);
         joystick.gameObject.SetActive(true);
@@ -136,17 +154,6 @@ public class BattleMgr:MonoBehaviour {
             levelData.PlayerStartPosition.Z));
 
         SetCameraData(levelData);
-
-        if(gameRoot.gameSettings.bgAudio) {
-            gameRoot.bgPlayer.clipSource = resSvc.LoadAudio(Constants.BGGame);
-            gameRoot.bgPlayer.PlaySound(true);
-        }
-
-        if(gameObject.GetComponent<ParticleMgr>() == null) {
-            particleMgr = gameObject.AddComponent<ParticleMgr>();
-            particleMgr.Init(this);
-        }
-        OnStartBattleChanged += HandleStartBattleChanged;
         StartBattle = true;
         cb?.Invoke();
     }
@@ -300,6 +307,9 @@ public class BattleMgr:MonoBehaviour {
     }
 
     public void ResumeBattle() {//取消暂停,恢复游戏
+        if(player) {
+            player.gameObject.SetActive(true);
+        }
         battleWnd.StartCountDown3Seconds().onComplete+=()=> {
             StartBattle = true;
             EnterBulletTime();
@@ -321,16 +331,16 @@ public class BattleMgr:MonoBehaviour {
     }
     public void StratNextWave() {//开始下一大关
         CurWaveIndex++;
-        Init(CurWaveIndex);
+        StartLevel(CurWaveIndex);
         gameRoot.EnergyCached--;
         UIManager.Instance.ShowImgEnergyDecrease();
     }
     public void PlayAgain(int levelID=-1) { 
-        Init(CurWaveIndex, levelID==-1? CurLevelID:levelID); 
+        StartLevel(CurWaveIndex, levelID==-1? CurLevelID:levelID); 
     }
     public void StratNextLevel() {//开始下一关小关
         CurLevelID++;
-        Init(CurWaveIndex,CurLevelID);
+        StartLevel(CurWaveIndex,CurLevelID);
     }
 
     public void EndBattle(bool isWin, Vector3 pos = new Vector3()) {

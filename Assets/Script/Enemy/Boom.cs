@@ -69,6 +69,8 @@ public class Boom : MonoBehaviour
         foreach(var obj in objects) {
             if(obj.layer == 14) {//摧毁可被摧毁的敌人
                 Destroy(obj);
+            } else if(obj.layer == 8) {
+                obj.GetComponent<PlayerController>().PlayerDead();
             }
         }
     }
@@ -81,7 +83,7 @@ public class Boom : MonoBehaviour
             float rotationAmount = _speed * 100 * Time.deltaTime;
             transform.Rotate(rotationAxis,-rotationAmount,Space.World);
             rangeShow.transform.rotation = Quaternion.identity;
-            rangeShow.transform.position = new Vector3(rangeShow.transform.position.x,initialY,rangeShow.transform.position.z);
+            rangeShow.transform.position = new Vector3(transform.position.x, initialY, transform.position.z);
             yield return null;
         }
     }

@@ -8,7 +8,7 @@ public class GuideLine : MonoBehaviour
     public LayerMask collisionLayer; // 用于射线检测的层
     public PlayerController player;
     private int index = 1;
-    private GameObject curPointObj;
+    private GameObject curPointBoom;
 
     void Awake(){
         lineRenderer = GetComponent<LineRenderer>();
@@ -28,7 +28,7 @@ public class GuideLine : MonoBehaviour
             lineRenderer.SetPosition(0,startPos);
             BounceRay(startPos,dir,m_len);
         } else {
-            HideBoom();
+            HideBoomGuideLine();
         }
     }
 
@@ -37,7 +37,7 @@ public class GuideLine : MonoBehaviour
             Vector3 reflectionDir = Vector3.Reflect(direction,hit.normal);
             float newRemainingLength = remainingLength - hit.distance;
             if(hit.collider.gameObject.tag == "Boom") {
-                HandleBoom(hit);
+                HandlePointToBoom(hit);
                 hitBoom = true;
             }
             if(newRemainingLength > 0) {
@@ -51,25 +51,26 @@ public class GuideLine : MonoBehaviour
             }
         } else {
             if(!hitBoom) {
-                HideBoom();
+                HideBoomGuideLine();
             }
             lineRenderer.SetPosition(index,origin + direction * remainingLength);
         }
     }
 
 
-    private void HandleBoom(RaycastHit hit) {
-        if(curPointObj && curPointObj != hit.collider.gameObject) {
-            curPointObj.GetComponent<Boom>().guideLine.gameObject.SetActive(false);
-        }
-        curPointObj = hit.collider.gameObject;
+    private void HandlePointToBoom(RaycastHit hit) {
+        //if(curPointBoom && curPointBoom != hit.collider.gameObject) {
+        //    curPointBoom.GetComponent<Boom>().guideLine.gameObject.SetActive(false);
+        //}
+        curPointBoom = hit.collider.gameObject;
         Boom boom = hit.collider.gameObject.GetComponent<Boom>();
         boom.ShowGudieLine(-hit.normal);
     }
-    private void HideBoom() {
-        if(curPointObj) {
-            curPointObj.GetComponent<Boom>().guideLine.gameObject.SetActive(false);
-            curPointObj = null;
+
+    private void HideBoomGuideLine() {
+        if(curPointBoom) {
+            curPointBoom.GetComponent<Boom>().guideLine.gameObject.SetActive(false);
+            curPointBoom = null;
         }
     }
 }

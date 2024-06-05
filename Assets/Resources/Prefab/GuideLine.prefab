@@ -134,7 +134,7 @@ LineRenderer:
     numCapVertices: 2
     alignment: 1
     textureMode: 1
-    textureScale: {x: 5, y: 1}
+    textureScale: {x: 8, y: 1}
     shadowBias: 0
     generateLightingData: 0
   m_MaskInteraction: 0
@@ -155,5 +155,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collisionLayer:
     serializedVersion: 2
-    m_Bits: 17472
+    m_Bits: 25664
   player: {fileID: 0}

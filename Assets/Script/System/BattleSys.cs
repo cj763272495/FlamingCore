@@ -21,6 +21,7 @@ public class BattleSys : MonoBehaviour
         battleMgr = battleRoot.AddComponent<BattleMgr>();
         battleMgr.battleWnd = battleWnd;
         battleMgr.Init(wave);
+        battleMgr.OnStartBattleChanged += battleMgr.HandleStartBattleChanged;
 
         battleWnd.battleMgr = battleMgr;
         battleWnd.Init();

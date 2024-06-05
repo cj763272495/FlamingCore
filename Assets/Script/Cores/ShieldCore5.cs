@@ -9,10 +9,10 @@ public class ShieldCore : PlayerController
 
         //可摧毁并且撞到子弹
         //不可摧毁或者撞到其他东西
-        if(!destructible || collisionLayer != 7) {//bullet
+        if(destructible && collisionLayer != 7) {//bullet
             GetField(); 
             battleMgr.joystick.OnPointerUpAction += OnPointerUpAction;
-        } else if(destructible && collisionLayer==7) {
+        } else if(!destructible && collisionLayer==7) {
             ToolClass.CallAfterDelay(0.5f,() => { // 被击0.5秒后销毁护盾
                 DisappearField();
             });

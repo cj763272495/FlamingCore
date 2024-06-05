@@ -136,10 +136,12 @@ public class PlayerController:Entity {
         StopAllCoroutines();
     }
 
-    IEnumerator ReviveIncincibility(){
+    IEnumerator ReviveIncincibility() {
+        overLoadField.Play();
         gameObject.layer = LayerMask.NameToLayer("Default");
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(2f);
         gameObject.layer = LayerMask.NameToLayer("Player");
+        overLoadField.Stop();
     }
 
     public void EnterOverloadMode() {
@@ -151,7 +153,10 @@ public class PlayerController:Entity {
         ToolClass.ChangeCameraFov(Camera.main,Constants.OverloadFov,1);
     }
 
-    public void ExitOverloadMode() { 
+    public void ExitOverloadMode() {
+        if(_speed!=Constants.OverloadSpeed) {
+            return;
+        }
         _speed = Constants.PlayerSpeed;
         destructible = true;
         overLoadField.Stop();
