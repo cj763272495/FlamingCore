@@ -108,7 +108,7 @@ public class GameRoot : MonoBehaviour
         _pds.SavePlayerData(); 
     }
 
-    public void EnterMainCity() {
+    public void EnterMainCity() { 
         resSvc.AsyncLoadScene("MainCity", () => {
             uIManager.homeWnd.Init();
             uIManager.ShowPlayerAssets();

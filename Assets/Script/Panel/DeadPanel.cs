@@ -84,8 +84,5 @@ public class DeadPanel : MonoBehaviour
         UIManager.Instance.battleWnd.fail_panel.gameObject.SetActive(true);
         gameObject.SetActive(false);
         BattleSys.Instance.battleMgr.LevelSettlement();
-        //gameObject.SetActive(false);
-        //BattleSys.Instance.battleMgr.DestoryBattle();
-        //GameRoot.Instance.EnterMainCity();
     }
 }

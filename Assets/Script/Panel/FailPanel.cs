@@ -3,6 +3,7 @@ using UnityEngine;
 public class FailPanel : MonoBehaviour
 {
     public void ClickReturnHomeBtn() {
+        BattleSys.Instance.battleMgr.DestoryBattle();
         gameObject.SetActive(false);
         GameRoot.Instance.EnterMainCity();
     }
