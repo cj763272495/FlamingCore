@@ -55,7 +55,6 @@ MonoBehaviour:
   curSpeed: 0
   acceleration: 6
   avoidDistance: 4
-  player: {fileID: 0}
   rotationSpeed: 250
   startChase: 0
   bulletLayerMask:

@@ -62,7 +62,7 @@ MonoBehaviour:
   laserLen: 20
   layer:
     serializedVersion: 2
-    m_Bits: 30528
+    m_Bits: 21824
 --- !u!1 &4291992099870844761
 GameObject:
   m_ObjectHideFlags: 0

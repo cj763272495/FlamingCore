@@ -27,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 256538692478932128}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0.09480335, z: 0, w: 0.99549603}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -37,7 +37,7 @@ Transform:
   - {fileID: 881702114648903562}
   - {fileID: 6833237982694967419}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 10.88, z: 0}
 --- !u!114 &-8852071187910807593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -51,6 +51,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   explosionParticle: {fileID: 714061726999648127}
+  tailGasParticle: {fileID: 6147567298467907058}
   speed: 8
   riseTime: 4
   AmiCanvas: {fileID: 5890440007727189954}
@@ -65,10 +66,10 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 32768
+    m_Bits: 33792
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 229375
+    m_Bits: 228351
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -383,7 +384,7 @@ Transform:
   m_GameObject: {fileID: 8918015004153100610}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0.31, y: -0.055, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -729,6 +730,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c3e61a0b094054b4fa9365ce7d6bca4c, type: 3}
+--- !u!198 &6147567298467907058 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 4509544584215399321, guid: c3e61a0b094054b4fa9365ce7d6bca4c, type: 3}
+  m_PrefabInstance: {fileID: 7765777007502085739}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6313683096971269568 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4349105429269355435, guid: c3e61a0b094054b4fa9365ce7d6bca4c, type: 3}

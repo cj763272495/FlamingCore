@@ -5,6 +5,7 @@ public class PaiJiPaoDan : MonoBehaviour
 {
     private GameObject _player;
     public ParticleSystem explosionParticle;
+    public ParticleSystem tailGasParticle;
 
     public float speed = 5f; // 升空的速度
     public float riseTime = 5.0f; // 升空的时间
@@ -12,27 +13,28 @@ public class PaiJiPaoDan : MonoBehaviour
 
     public Canvas AmiCanvas;
     public Image countDown;
-    private Vector3 targetPos = Vector3.zero;
-    private Vector3 beginDropDownPos = Vector3.zero;
+    private Vector3 targetPos ;
+    private Vector3 beginDropDownPos;
 
     private void Start() {
         ParticleMgr.Instance.AddCustomParticle(explosionParticle.gameObject,2);
     }
-
-    private void OnEnable() {
+     
+    public void Shot(GameObject player) {
         riseTimer = 0.0f;
         targetPos = Vector3.zero;
         beginDropDownPos = Vector3.zero;
         AmiCanvas.gameObject.SetActive(false);
-    }
-
-    public void SetPlayer(GameObject player) {
         _player = player;
+        tailGasParticle.Play();
     }
 
     void Update() {
+        if(!_player) {
+            return;
+        }
         if(riseTimer < riseTime) {
-            transform.position += Vector3.up * speed * Time.deltaTime;
+            transform.position += transform.forward * speed * Time.deltaTime;
             riseTimer += Time.deltaTime;
         } else { 
             if(targetPos==Vector3.zero) {
@@ -41,16 +43,17 @@ public class PaiJiPaoDan : MonoBehaviour
                     transform.position.y,_player.transform.position.z);
                 beginDropDownPos = transform.position;
                 targetPos = _player.transform.position;
-                AmiCanvas.transform.position = targetPos;
+                transform.forward = -transform.forward;
             }
             countDown.fillAmount =(transform.position.y - beginDropDownPos.y) / (targetPos.y - beginDropDownPos.y);
-            Vector3 offset = Vector3.up * speed * Time.deltaTime;
-            transform.position -= offset;
-            AmiCanvas.transform.position += offset;
+            Vector3 offset = transform.forward * speed * Time.deltaTime;
+            transform.position += offset;
+            AmiCanvas.transform.position = targetPos;
         }
     }
 
     private void OnCollisionEnter(Collision collision) {
+        tailGasParticle.Stop();
         AmiCanvas.gameObject.SetActive(false);
         explosionParticle.Play();
         ToolClass.CallAfterDelay(0.5f,Explode);

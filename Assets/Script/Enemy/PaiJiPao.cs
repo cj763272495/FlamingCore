@@ -15,9 +15,9 @@ public class PaiJiPao : MonoBehaviour
         if(other.tag == "Player" && Time.time > nextFireTime) {
             PaiJiPaoDan paodan = PoolManager.Instance.GetInstance<GameObject>(paiJiPaoDan,
                 BattleSys.Instance.battleMgr.transform).GetComponent<PaiJiPaoDan>();
-            paodan.SetPlayer(other.gameObject);
+            paodan.Shot(other.gameObject);
             paodan.transform.position = firePoint.position;
-            paodan.transform.up = firePoint.forward;
+            paodan.transform.forward = firePoint.forward;
 
             nextFireTime = Time.time + fireRate;
         }

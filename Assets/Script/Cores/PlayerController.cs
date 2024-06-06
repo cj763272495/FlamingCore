@@ -137,19 +137,18 @@ public class PlayerController:Entity {
     }
 
     IEnumerator ReviveIncincibility() {
-        overLoadField.Play();
+        GetShield();
         gameObject.layer = LayerMask.NameToLayer("Default");
         yield return new WaitForSeconds(2f);
         gameObject.layer = LayerMask.NameToLayer("Player");
-        overLoadField.Stop();
+        DestoryShield();
     }
 
     public void EnterOverloadMode() {
         _speed = Constants.OverloadSpeed;
-        destructible = false;
         lastPos = transform.position;
         CancelInvoke("ExitOverloadMode");
-        overLoadField.Play();
+        GetShield();
         ToolClass.ChangeCameraFov(Camera.main,Constants.OverloadFov,1);
     }
 
@@ -158,16 +157,25 @@ public class PlayerController:Entity {
             return;
         }
         _speed = Constants.PlayerSpeed;
-        destructible = true;
-        overLoadField.Stop();
+        DestoryShield();
         CancelInvoke("EnterOverloadMode");
         ToolClass.ChangeCameraFov(Camera.main,battleMgr.DefaultFov,0.2f);
+    }
+
+    public void GetShield() { 
+        destructible = false;
+        overLoadField.Play();
+    }
+    public void DestoryShield() {
+        overLoadField.Stop(); 
+        destructible = true;
     }
 
     public void EnterIdleState(bool isActive) {
         gameObject.SetActive(isActive);
         isMove = false;
         lastPos = transform.position;
+        _rb.velocity = Vector3.zero;
     }
     public void ExitIdleState() {
         isMove = true;

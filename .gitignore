@@ -44,6 +44,7 @@ ExportedObj/
 *.svd
 *.pdb
 *.mdb
+*.utmp
 *.opendb
 *.VC.db
 
