@@ -36,8 +36,9 @@ public class ShopPanel:MonoBehaviour {
 
     public event Action<int> OnCurrentViewIDChanged;
 
-    private Sprite disableSprite;
-    private Sprite normalSprite;
+    public Sprite disableSprite;
+    public Sprite normalSprite;
+    public Sprite equiptSprite;
 
     public Text descript;
     public ShopPlayer player;
@@ -52,8 +53,6 @@ public class ShopPanel:MonoBehaviour {
         UpdateScrowViewLockInfo(skinView,pds.PlayerData.skin);
         UpdateScrowViewLockInfo(trailView,pds.PlayerData.trail);
 
-        disableSprite = ResSvc.Instance.LoadSprite("Sprite/bg_btn_small_disable_new");
-        normalSprite = ResSvc.Instance.LoadSprite("Sprite/bg_btn_small_normal_new");
         OnCurrentViewIDChanged += HandleCurrentViewIDChanged;
         UpdatePurchaseBtnInfo();
     }
@@ -71,17 +70,18 @@ public class ShopPanel:MonoBehaviour {
         int newIndex = selectBuySkin ? skinView.CurrentIndex - 1 : trailView.CurrentIndex - 1;
         if(CurrentViewID != newIndex) {
             CurrentViewID = newIndex;
-            HandleCurrentViewIDChanged(newIndex);
         }
     }
 
     void HandleCurrentViewIDChanged(int newViewID) {
+        UpdatePurchaseBtnInfo();
         if(selectBuySkin) {
             player.ChangeModes(newViewID);
+            UpdateScrowViewLockInfo(skinView,pds.PlayerData.trail);
         } else {
             player.ChangeTrails(newViewID);
-        }
-        UpdatePurchaseBtnInfo();
+            UpdateScrowViewLockInfo(trailView,pds.PlayerData.trail);
+        } 
     }
 
     // 设置购买按钮和装备文本的状态
@@ -151,7 +151,7 @@ public class ShopPanel:MonoBehaviour {
     }
 
     public void ClickBuy() {
-        if(!_hasBuy) {
+        if(!_hasBuy) {//没有购买
             if(GameRoot.Instance.CoinCached < _curPrice) {
                 UIManager.Instance.ShowUserMsg("余额不足");
                 return;
@@ -164,23 +164,32 @@ public class ShopPanel:MonoBehaviour {
                 pds.PlayerData.trail.Add(_currentViewID);
                 UpdateScrowViewLockInfo(trailView, pds.PlayerData.trail);
             } 
-        } else {
-            if(selectBuySkin) {//已经购买直接装备上
+        } else {//已经购买
+            if(selectBuySkin) {//直接装备上
                 pds.PlayerData.cur_skin = _currentViewID;
+                UpdateScrowViewLockInfo(skinView,pds.PlayerData.skin);
             } else {
                 pds.PlayerData.cur_trail = _currentViewID;
+                UpdateScrowViewLockInfo(trailView,pds.PlayerData.trail);
             }
         }
         pds.SavePlayerData();
         UpdatePurchaseBtnInfo();
     }
 
-    public void UpdateScrowViewLockInfo(SlideScrollView view,List<int> data) {
-        foreach(var num in data) {
-            Transform curTrans = view.content.transform.GetChild(num);
-            Image imgLock = curTrans.Find("lock").GetComponent<Image>();
-            if(imgLock) {
-                imgLock.gameObject.SetActive(false);
+    public void UpdateScrowViewLockInfo(SlideScrollView view, List<int> data) {
+        int equiptItemIndex = selectBuySkin ? pds.PlayerData.cur_skin : pds.PlayerData.cur_trail;
+        foreach(var id in data) {
+            Transform curTrans = view.content.transform.GetChild(id); 
+            Image[] imgs = curTrans.GetComponentsInChildren<Image>(true);
+            if(imgs.Length >= 2) {
+                if( id== equiptItemIndex) {
+                    imgs[1].gameObject.SetActive(true);
+                    imgs[1].sprite = equiptSprite;
+                    imgs[1].rectTransform.sizeDelta = new Vector2(21, 21);
+                } else {
+                    imgs[1].gameObject.SetActive(false);
+                }
             }
         }
     }

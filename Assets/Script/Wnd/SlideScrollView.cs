@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using DG.Tweening;
+using System;
 
 /// <summary>
 /// 单滑
@@ -24,7 +25,18 @@ public class SlideScrollView : MonoBehaviour,IBeginDragHandler,IEndDragHandler {
     protected Vector2 contentTransSize;//Content初始大小
 
     public int totalItemNum;
-    public int CurrentIndex { protected set; get; }
+
+    public event Action<int> OnIndexChanged;
+    private int _currentIndex;
+    public int CurrentIndex { 
+        protected set {
+            if(_currentIndex != value) {
+                _currentIndex = value;
+                OnIndexChange();
+                OnIndexChanged?.Invoke(value);
+            }
+        } 
+        get { return _currentIndex; } }
 
     public Text pageText;
 
@@ -42,23 +54,23 @@ public class SlideScrollView : MonoBehaviour,IBeginDragHandler,IEndDragHandler {
         currentContentLocalPos = contentTrans.localPosition;
         contentTransSize = contentTrans.sizeDelta;
         contentInitPos = contentTrans.localPosition;
-        CurrentIndex = 1;
+        _currentIndex = 1;
         if (pageText != null) {
-            pageText.text = CurrentIndex.ToString() + "/" + totalItemNum;
+            pageText.text = _currentIndex.ToString() + "/" + totalItemNum;
         } 
     }
 
-    protected virtual void Update() {
+    protected virtual void OnIndexChange() {
         if(changeScale) {
             for(int i = 0; i <= totalItemNum - 1; i++) {
                 Transform curTrans = content.transform.GetChild(i);
                 Image img = curTrans.GetComponent<Image>();
-                if(i == CurrentIndex - 1) {
+                if(i == _currentIndex - 1) {
                     curTrans.localScale = new Vector3(maxScale,maxScale,maxScale);
-                    ChangeImgAlpha(img,1);
+                    ChangeImgAlpha(img, 1);
                 } else {
                     curTrans.localScale = new Vector3(minScale,minScale,minScale);
-                    ChangeImgAlpha(img,0.5f);
+                    ChangeImgAlpha(img, 0.5f);
                 }
             }
         }
@@ -96,7 +108,7 @@ public class SlideScrollView : MonoBehaviour,IBeginDragHandler,IEndDragHandler {
 
         if (offSetX>0)//右滑
         {
-            if (CurrentIndex>=totalItemNum)
+            if (_currentIndex >=totalItemNum)
             {
                 return;
             }
@@ -110,7 +122,7 @@ public class SlideScrollView : MonoBehaviour,IBeginDragHandler,IEndDragHandler {
         }
         else//左滑
         {
-            if (CurrentIndex<=1)
+            if (_currentIndex <=1)
             {
                 return;
             }
@@ -123,7 +135,7 @@ public class SlideScrollView : MonoBehaviour,IBeginDragHandler,IEndDragHandler {
         }
         if (pageText != null)
         {
-            pageText.text = CurrentIndex.ToString() + "/" + totalItemNum;
+            pageText.text = _currentIndex.ToString() + "/" + totalItemNum;
         }
         DOTween.To(
             ()=>contentTrans.localPosition,lerpValue
@@ -138,7 +150,7 @@ public class SlideScrollView : MonoBehaviour,IBeginDragHandler,IEndDragHandler {
     public void ToNextPage()
     {
         float moveDistance = 0;
-        if (CurrentIndex>=totalItemNum)
+        if (_currentIndex >=totalItemNum)
         {
             return;
         }
@@ -147,7 +159,7 @@ public class SlideScrollView : MonoBehaviour,IBeginDragHandler,IEndDragHandler {
         CurrentIndex++;
         if (pageText!=null)
         {
-            pageText.text = CurrentIndex.ToString() + "/" + totalItemNum;
+            pageText.text = _currentIndex.ToString() + "/" + totalItemNum;
         }
         if (needSendMessage)
         {
@@ -160,7 +172,7 @@ public class SlideScrollView : MonoBehaviour,IBeginDragHandler,IEndDragHandler {
     public void ToLastPage()
     {
         float moveDistance = 0;
-        if (CurrentIndex <=1)
+        if (_currentIndex <=1)
         {
             return;
         }
@@ -168,7 +180,7 @@ public class SlideScrollView : MonoBehaviour,IBeginDragHandler,IEndDragHandler {
         moveDistance = moveOneItemLength;
         CurrentIndex--;
         if (pageText != null){
-            pageText.text = CurrentIndex.ToString() + "/" + totalItemNum;
+            pageText.text = _currentIndex.ToString() + "/" + totalItemNum;
         }
         if (needSendMessage)
         {

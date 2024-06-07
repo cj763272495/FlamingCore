@@ -5,7 +5,7 @@ using UnityEngine.UI;
  
 public class LevelScrowView : SlideScrollView{
 
-    protected override void Update() {
+    protected override void OnIndexChange() {
         if(ResSvc.Instance) {
             for(int i = 0; i <= totalItemNum - 1; i++) {
                 Transform curTrans = content.transform.GetChild(i);
