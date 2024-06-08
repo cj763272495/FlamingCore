@@ -103,13 +103,14 @@ public class GameRoot : MonoBehaviour
     }
 
     public void LevelSettlement(int coin) {//¹Ø¿¨½áËã
-        CoinCached += coin;
+        //CoinCached += coin;
         _pds.SetMaxUnLockWave(CurWaveIndex + 1);
         _pds.SavePlayerData(); 
     }
 
-    public void EnterMainCity() { 
+    public void EnterMainCity() {
         resSvc.AsyncLoadScene("MainCity", () => {
+            Time.timeScale = 1;
             uIManager.homeWnd.Init();
             uIManager.ShowPlayerAssets();
             PlayBgAudio(UIManager.Instance.setPanel.GetBgAudioOn());

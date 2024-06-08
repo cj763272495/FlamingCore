@@ -9214,6 +9214,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: qiu_0
       objectReference: {fileID: 0}
+    - target: {fileID: 6137123489044143428, guid: 978f0f3b9db36b1439ded7f559d4d166, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6800613423888386046, guid: 978f0f3b9db36b1439ded7f559d4d166, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -33492,6 +33496,10 @@ PrefabInstance:
     - target: {fileID: 2233004598684864915, guid: 75f5fbeb93ff1364fb4292f8291cb60c, type: 3}
       propertyPath: m_Name
       value: TrapLaserDouble
+      objectReference: {fileID: 0}
+    - target: {fileID: 2233004598684864915, guid: 75f5fbeb93ff1364fb4292f8291cb60c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4533629770763998855, guid: 75f5fbeb93ff1364fb4292f8291cb60c, type: 3}
       propertyPath: m_LocalPosition.x

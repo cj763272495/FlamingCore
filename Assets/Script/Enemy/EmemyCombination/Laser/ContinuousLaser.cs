@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Diagnostics.Tracing;
 using UnityEngine;
 
 public class ContinuousLaser:IFireMode {
@@ -9,6 +8,7 @@ public class ContinuousLaser:IFireMode {
     protected GameObject _spawnedLaser;
     protected List<LineRenderer> _lineRenderers;
     protected LayerMask _layer;
+    private List<ParticleSystem> hitParticles;
 
     public ContinuousLaser(GameObject spawnedLaser,List<LineRenderer> lineRenderers,
         List<Transform> firePoints,LayerMask layer,float len = 20) {
@@ -16,6 +16,10 @@ public class ContinuousLaser:IFireMode {
         _firePoints = firePoints;
         _spawnedLaser = spawnedLaser;
         _lineRenderers = lineRenderers;
+        hitParticles = new();
+        foreach(var item in _lineRenderers) {
+            hitParticles.Add(item.GetComponentInChildren<ParticleSystem>());
+        }
         _layer = layer;
         EnableLaser();
     }
@@ -27,15 +31,16 @@ public class ContinuousLaser:IFireMode {
             _lineRenderers[i].positionCount = 2;
             _lineRenderers[i].SetPosition(0,origin);
             RaycastHit hit;
-            if(Physics.Raycast(origin,direction,out hit,_len,_layer)) {
+            if(Physics.Raycast(origin,direction,out hit,_len,_layer,QueryTriggerInteraction.Ignore)) {
                 _lineRenderers[i].SetPosition(1,hit.point);
                 GameObject hitGo = hit.collider.gameObject;
-                if(hitGo.tag == "Player") {
+                if(!hit.collider.isTrigger && hitGo.tag == "Player") {
                     hitGo.GetComponent<PlayerController>().PlayerDead();
                 }
             } else {
-                _lineRenderers[i].SetPosition(1,origin + direction * _len);
+                _lineRenderers[i].SetPosition(1, origin + direction * _len);
             }
+            hitParticles[i].transform.position = _lineRenderers[i].GetPosition(1);
         }
     }
 

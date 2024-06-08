@@ -81,7 +81,7 @@ public class DeadPanel : MonoBehaviour
     }
 
     public void ClickCancelBtn() {
-        UIManager.Instance.battleWnd.fail_panel.gameObject.SetActive(true);
+        UIManager.Instance.battleWnd.fail_panel.Show();
         gameObject.SetActive(false);
         BattleSys.Instance.battleMgr.LevelSettlement();
     }

@@ -24,7 +24,7 @@ public class SingleFire : IFireMode
                 GameObject go = PoolManager.Instance.GetInstance<GameObject>(bullet,BattleSys.Instance.battleMgr.transform);
                 go.transform.position = point.position;
                 go.transform.localScale = Vector3.one;
-                go.GetComponent<NormalBullet>().SetBulletShotDir(point.forward);
+                go.GetComponent<NormalBullet>().SetBulletShot(point.forward);
                 go.GetComponent<NormalBullet>().owner = point.parent.parent;
             }
             shootTimer = 0;

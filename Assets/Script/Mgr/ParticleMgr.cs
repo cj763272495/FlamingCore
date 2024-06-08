@@ -118,7 +118,7 @@ public class ParticleMgr : MonoBehaviour
         StartCoroutine(OverLoadParticleFollowPlayer(go, player));
     }
     private IEnumerator OverLoadParticleFollowPlayer(GameObject particle, PlayerController player) {
-        while(particle != null && particle.GetComponentInChildren<ParticleSystem>().isPlaying) {
+        while(particle && particle.GetComponentInChildren<ParticleSystem>().isPlaying) {
             particle.transform.position = player.transform.position; 
             particle.transform.forward = player.Dir;
             yield return null;

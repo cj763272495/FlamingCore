@@ -58,8 +58,8 @@ public static class ToolClass {
         function();
     }
 
-    public static void BreathingImg(Image img) {
-        img.color = new Color(img.color.r,img.color.g,img.color.b,1);
-        img.DOFade(0.3f,1).SetLoops(-1,LoopType.Yoyo).SetEase(Ease.InOutSine);
+    public static void BreathingImg(Image img,float duration=1) {
+        img.color = new Color(img.color.r, img.color.g,img.color.b, 1);
+        img.DOFade(0, duration).SetLoops(-1,LoopType.Yoyo).SetEase(Ease.InOutSine);
     }
 }

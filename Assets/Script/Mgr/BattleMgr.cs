@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using System; 
-using DG.Tweening; 
+using DG.Tweening;
 
 public class BattleMgr:MonoBehaviour {
     private ResSvc resSvc;
@@ -61,10 +61,12 @@ public class BattleMgr:MonoBehaviour {
     public void EliminateEnemy() {
         eliminateEnemyNum++;
         if(eliminateEnemyNum ==  levelData.EnemyNum) {
+            //EndBattle(true);
+            //return;
             if(CurLevelID==4) {
                 //大关卡结束
-                player.destructible = false;
                 EndBattle(true);
+                player.destructible = false;
             } else {
                 //小关卡结束
                 Time.timeScale = 0.2f;
@@ -93,7 +95,6 @@ public class BattleMgr:MonoBehaviour {
     }
 
     public void Init(int waveid,int levelid=0, Action cb = null) { 
-        //isRobotLevel = true; 
         gameRoot = GameRoot.Instance;
         _pds = PlayersDataSystem.Instance;
         battleSys = BattleSys.Instance;
@@ -102,9 +103,6 @@ public class BattleMgr:MonoBehaviour {
         joystick = battleWnd.joystick;
         hitWallClip = resSvc.LoadAudio(Constants.HitWallClip,true);
         deadClip = resSvc.LoadAudio(Constants.DeadClip);
-        battleSys.CleanBattleRoot();
-
-        battleWnd.hp_txt.text = $"x {hp}";
 
         if(!gameObject.GetComponent<ParticleMgr>()) {
             particleMgr = gameObject.AddComponent<ParticleMgr>();
@@ -121,12 +119,13 @@ public class BattleMgr:MonoBehaviour {
         StartLevel(waveid, levelid, cb);
     }
 
-    private void StartLevel(int waveid,int levelid = 0, Action cb = null) {
+    private bool StartLevel(int waveid,int levelid = 0, Action cb = null) {
+        battleSys.CleanBattleRoot();
         string waveName = $"Level{waveid * 5 + levelid}";
         levelData = resSvc.GetMapCfgData(waveName);
         if(levelData == null) {
             UIManager.Instance.ShowUserMsg("持续开发中,敬请期待");
-            return;
+            return false;
         }
         eliminateEnemyNum = 0;
         CurWaveIndex = waveid;
@@ -135,9 +134,12 @@ public class BattleMgr:MonoBehaviour {
             hp = 3;
             coinGot = 0;
         }
-        isRobotLevel = levelid != 0 && levelid % 4 == 0; 
 
-        resSvc.AsyncLoadScene(waveName,() => OnSceneLoaded(cb)); 
+        battleWnd.hp_txt.text = $"x {hp}";
+        isRobotLevel = levelid != 0 && levelid % 4 == 0;
+        //isRobotLevel = true; 
+        resSvc.AsyncLoadScene(waveName,() => OnSceneLoaded(cb));
+        return true;
     }
 
     private void OnSceneLoaded(Action cb) {
@@ -157,31 +159,6 @@ public class BattleMgr:MonoBehaviour {
         StartBattle = true;
         cb?.Invoke();
     }
-      
-    //Vector3[] CalculateArcPoints(Transform trans, Vector3 center, int steps) {
-    //    float radius = Vector3.Distance(trans.position,center);
-    //    Vector3[] points = new Vector3[steps + 1]; // 包含起始点
-
-    //    // 计算当前点在圆上的角度
-    //    Vector3 directionToTrans = trans.position - center;
-    //    float startAngle = Mathf.Atan2(directionToTrans.y,directionToTrans.x) - Mathf.PI / 2;
-    //    float angleStep = Mathf.PI / 2 / steps; // 90度圆弧的步长
-
-    //    for(int i = 0; i < steps; i++) {
-    //        // 计算圆弧上每个点的角度
-    //        float angle = startAngle + (i * angleStep);
-    //        points[i + 1] = new Vector3(
-    //            center.x + Mathf.Cos(angle) * radius,
-    //            trans.position.y, // 保持在同一个高度
-    //            center.z + Mathf.Sin(angle) * radius
-    //        );
-    //    }
-
-    //    // 添加起始点
-    //    points[0] = trans.position;
-
-    //    return points;
-    //}
 
     public void EnterBulletTime() {
         Time.timeScale = 0.1f;
@@ -295,10 +272,10 @@ public class BattleMgr:MonoBehaviour {
         player.transform.position = pos;
         player.transform.localEulerAngles = Vector3.zero;
         player.transform.localScale = Vector3.one;
-        player.Init(this,stateMgr);
+        player.Init(this, stateMgr);
         EventManager.PlayerLoaded(player);
         joystick.OnPointerDownAction += player.OnPointerDown;
-        joystick.OnDragAction += player.OnDrag;
+        joystick.OnDragAction = player.OnDrag;
         joystick.OnPointerUpAction += player.OnPointerUp;
     }
 
@@ -329,11 +306,14 @@ public class BattleMgr:MonoBehaviour {
         player.GetComponent<PlayerController>().Revive();
         ResumeBattle();
     }
-    public void StratNextWave() {//开始下一大关
+    public bool StratNextWave() {//开始下一大关
         CurWaveIndex++;
-        StartLevel(CurWaveIndex);
+        if(!StartLevel(CurWaveIndex)) {
+            return false;
+        }
         gameRoot.EnergyCached--;
         UIManager.Instance.ShowImgEnergyDecrease();
+        return true;
     }
     public void PlayAgain(int levelID=-1) { 
         StartLevel(CurWaveIndex, levelID==-1? CurLevelID:levelID); 
@@ -354,6 +334,9 @@ public class BattleMgr:MonoBehaviour {
         } else {
             ParticleMgr.Instance.PlayDeadParticle(pos);
             AudioManager.Instance.PlaySound(deadClip);
+            joystick.OnPointerDownAction -= player.OnPointerDown;
+            joystick.OnDragAction -= player.OnDrag;
+            joystick.OnPointerUpAction -= player.OnPointerUp;
             StartBattle = false;
             Time.timeScale = 1;
             deadPos = pos;

@@ -54,7 +54,6 @@ public class ShopPanel:MonoBehaviour {
         UpdateScrowViewLockInfo(trailView,pds.PlayerData.trail);
 
         OnCurrentViewIDChanged += HandleCurrentViewIDChanged;
-        UpdatePurchaseBtnInfo();
     }
 
     private void OnEnable() {

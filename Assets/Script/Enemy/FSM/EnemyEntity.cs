@@ -38,18 +38,19 @@ public class EnemyEntity:Entity {
     protected virtual void OnCollisionEnter(Collision collision) {
         if(canDestroy) {
             float layer = collision.gameObject.layer;
-            if(layer == 8 || layer == 17 || layer==7 && collision.gameObject.tag=="Laser") {
-                ParticleMgr.Instance.PlayEnemyDeadParticle(collision.contacts[0],collision.transform);
-                AudioManager.Instance.PlaySound(ResSvc.Instance.LoadAudio(Constants.HitEnenmyClip));
-                gameObject.SetActive(false);
-                Destroy(gameObject,1f);
-                BattleSys.Instance.battleMgr.EliminateEnemy();
-                OnEnemyDestroyed?.Invoke(gameObject);
+            if(layer ==7) { 
+                return;
             }
+            ParticleMgr.Instance.PlayEnemyDeadParticle(collision.contacts[0],collision.transform);
+            AudioManager.Instance.PlaySound(ResSvc.Instance.LoadAudio(Constants.HitEnenmyClip));
+            gameObject.SetActive(false);
+            Destroy(gameObject,1f);
+            BattleSys.Instance.battleMgr.EliminateEnemy();
+            OnEnemyDestroyed?.Invoke(gameObject);
         }
     }
 
-    public void Born() { 
+    public void Born() {
         stateMgr.ChangeStatus(this,AniState.Born,null);
     }
     public void Take() {
@@ -62,12 +63,12 @@ public class EnemyEntity:Entity {
     public void Attack() {
         stateMgr.ChangeStatus(this,AniState.Attack,null);
     }
-     
-    void OnDisable() { 
+
+    void OnDisable() {
         EventManager.OnPlayerLoaded -= HandlePlayerLoaded;
     }
 
     void HandlePlayerLoaded(PlayerController player) {
         _player = player;
-    } 
+    }
 }

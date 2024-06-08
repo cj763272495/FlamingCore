@@ -13,19 +13,15 @@ public class Chest : MonoBehaviour
     public Camera chestCam;
     public AudioClip getCoinClip;
 
-    private void Start() {
-        gameObject.SetActive(false);
-    }
-
     private void Update() {
         if(startRotate) {
             transform.Rotate(rotateSpeed * Time.deltaTime * Vector3.up);
         }
     }
     public void OpenChest() {
-        Quad.SetActive(false);
-        startRotate = true;
         gameObject.SetActive(true);
+       // Quad.SetActive(false);
+        startRotate = true;
         animator.SetBool("Open", true);
     }
 
@@ -42,7 +38,6 @@ public class Chest : MonoBehaviour
     public void Exit() {
         startRotate = false;
         ps.Stop();
-        gameObject.SetActive(false);
     }
 
     private ParticleSystem.Particle[] particles;

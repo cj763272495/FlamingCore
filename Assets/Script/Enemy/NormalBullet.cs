@@ -8,11 +8,7 @@ public class NormalBullet : MonoBehaviour
     public Transform owner;
     private float timer = 0;
     private bool startTimer; 
-
-    private void OnEnable() {
-        timer = 0;
-        startTimer = true;
-    }
+    
     void Update() {
         transform.Translate(bulletSpeed * Time.deltaTime * shootDir);
         if(startTimer) {
@@ -27,6 +23,7 @@ public class NormalBullet : MonoBehaviour
     private void OnCollisionEnter(Collision collision) {
         if(collision.transform != owner) { 
             ParticleMgr.Instance.PlayBulletDestoryParticle(collision.contacts[0].point);
+            gameObject.SetActive(false);
             ReturnBullet();
         }
     }
@@ -34,7 +31,9 @@ public class NormalBullet : MonoBehaviour
     public void SetBulletSpeed(float sp) {
         bulletSpeed = sp;
     }
-    public void SetBulletShotDir(Vector3 dir) {
+    public void SetBulletShot(Vector3 dir) {
+        timer = 0;
+        startTimer = true;
         shootDir = dir;
     }
 

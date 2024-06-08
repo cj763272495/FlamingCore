@@ -42,7 +42,7 @@ public class TripleFire: IFireMode {
                     GameObject go = PoolManager.Instance.GetInstance<GameObject>(bullet,BattleSys.Instance.battleMgr.transform);
                     go.transform.position = shootPoint.position;
                     go.transform.localScale = Vector3.one;
-                    go.GetComponent<NormalBullet>().SetBulletShotDir(shootPoint.forward);
+                    go.GetComponent<NormalBullet>().SetBulletShot(shootPoint.forward);
                     go.GetComponent<NormalBullet>().owner = shootPoint.parent.parent;
                     bulletsFired++;
                     bulletTimer = 0; 

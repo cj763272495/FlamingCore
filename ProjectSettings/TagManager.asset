@@ -15,6 +15,7 @@ TagManager:
   - Mirror
   - DestoryableEnemy
   - Laser
+  - Bullet
   layers:
   - Default
   - TransparentFX

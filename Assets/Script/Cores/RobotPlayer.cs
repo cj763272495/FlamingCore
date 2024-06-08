@@ -36,7 +36,7 @@ public class RobotPlayer: PlayerController {
         if(bulletCountCircle) {
             bulletCountCircle.gameObject.SetActive(true);
         }
-        curBulletsNum = magazineCapacity;
+        curBulletsNum = magazineCapacity; 
     } 
 
     protected override void FixedUpdate() {
@@ -75,7 +75,7 @@ public class RobotPlayer: PlayerController {
         arrow.gameObject.SetActive(true);
     }
 
-    public override void OnDrag() {
+    public override void OnDrag() { 
         arrow.gameObject.SetActive(true);
         Vector3 dir = Vector3.forward * battleMgr.joystick.Vertical + Vector3.right * battleMgr.joystick.Horizontal;
         SetDir(dir); 
@@ -120,7 +120,7 @@ public class RobotPlayer: PlayerController {
                     bullet.transform.position = shootPoint.transform.position;
                     bullet.SetBulletSpeed(bulletSpeed);
                     Vector3 shotDir = shootPoint.transform.forward;
-                    bullet.SetBulletShotDir(shotDir);
+                    bullet.SetBulletShot(shotDir);
                     AudioManager.Instance.PlaySound(shotAudioClip);
                     curBulletsNum--;
                     if(bulletCountCircle) {

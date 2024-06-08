@@ -64,6 +64,7 @@ public class PlayerController:Entity {
     protected virtual void OnCollisionEnter(Collision collision) {
         int collisionLayer = collision.gameObject.layer;
         ContactPoint contactPoint = collision.contacts[0];
+        Debug.Log(collision.gameObject.tag);
 
         if(destructible && collisionLayer == 7) {//bullet 
             PlayerDead();

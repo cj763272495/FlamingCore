@@ -31,7 +31,7 @@ public class ShotgunFire : IFireMode {
                     go.transform.position = point.position;
                     go.transform.localScale = Vector3.one;
                     float offsetAngle = (i - bulletCount / 2f) / (bulletCount - 1) * _spreadAngle;
-                    go.GetComponent<NormalBullet>().SetBulletShotDir(Quaternion.Euler(0,offsetAngle,0) * point.forward);
+                    go.GetComponent<NormalBullet>().SetBulletShot(Quaternion.Euler(0,offsetAngle,0) * point.forward);
                     go.GetComponent<NormalBullet>().owner = point.parent.parent;
                 }
             }

@@ -68,6 +68,7 @@ public class Boom : MonoBehaviour
         var objects = Physics.OverlapSphere(transform.position,attackRange).Select(collider => collider.gameObject);
         foreach(var obj in objects) {
             if(obj.layer == 14) {//摧毁可被摧毁的敌人
+                BattleSys.Instance.battleMgr.EliminateEnemy();
                 Destroy(obj);
             } else if(obj.layer == 8) {
                 obj.GetComponent<PlayerController>().PlayerDead();
