@@ -95,6 +95,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5610667576237703866}
   - component: {fileID: 2040093928280756694}
+  - component: {fileID: 6153689128354204235}
   m_Layer: 14
   m_Name: TripleShootTrt
   m_TagString: DestoryableEnemy
@@ -141,6 +142,26 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.25, y: 0.245, z: 0.25}
   m_Center: {x: 0, y: 0.1, z: 0}
+--- !u!114 &6153689128354204235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5610667576237703867}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f153bbb37354e0439d78ab37c4f92cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curAniState: 0
+  ani: {fileID: 0}
+  canAttack: 1
+  rotateSpeed: 100
+  firePoints: []
+  countDown: {fileID: 5610667577246653361}
+  canDestroy: 1
+  destoryCoinValue: 5
 --- !u!1 &5610667577246653367
 GameObject:
   m_ObjectHideFlags: 0
@@ -227,7 +248,6 @@ GameObject:
   - component: {fileID: 5610667577681394814}
   - component: {fileID: 5610667577681394811}
   - component: {fileID: 5610667577681394808}
-  - component: {fileID: 5610667577681394809}
   m_Layer: 14
   m_Name: Canvas
   m_TagString: Untagged
@@ -301,23 +321,6 @@ MonoBehaviour:
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
   m_PresetInfoIsWorld: 1
---- !u!114 &5610667577681394809
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5610667577681394815}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!1 &7414044164991043072
 GameObject:
   m_ObjectHideFlags: 0
