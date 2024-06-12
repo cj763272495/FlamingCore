@@ -1,8 +1,10 @@
-using UnityEngine; 
+using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using static UnityEngine.Rendering.DebugUI;
 
-public class RegLoginWnd : MonoBehaviour
+public class RegLoginWnd : MonoBehaviour,IPointerDownHandler
 {
     public InputField username;
     private PlayersDataSystem pds;
@@ -40,9 +42,20 @@ public class RegLoginWnd : MonoBehaviour
             logo.SetActive(true);
         }
     }
+     
 
     //实现点击窗口任意位置关闭窗口
-    private void Update() {
+    //private void Update() {
+    //    if(Input.GetMouseButtonDown(0)) {
+    //        if(!isLogin) {
+    //            return;
+    //        }
+    //        gameObject.SetActive(false);
+    //        GameRoot.Instance.EnterMainCity();
+    //    }
+    //}
+
+    public void OnPointerDown(PointerEventData eventData) {
         if(Input.GetMouseButtonDown(0)) {
             if(!isLogin) {
                 return;
@@ -51,6 +64,5 @@ public class RegLoginWnd : MonoBehaviour
             GameRoot.Instance.EnterMainCity();
         }
     }
- 
 }
 

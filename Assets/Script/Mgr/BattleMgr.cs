@@ -303,7 +303,7 @@ public class BattleMgr:MonoBehaviour {
 
         LoadPlayer(deadPos);
         guideLine.player = player;
-        player.GetComponent<PlayerController>().Revive();
+        player.Revive();
         ResumeBattle();
     }
     public bool StratNextWave() {//开始下一大关

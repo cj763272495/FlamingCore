@@ -1,4 +1,6 @@
 using DG.Tweening;
+using System.Threading;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -46,14 +48,18 @@ public class UIManager : MonoBehaviour
         gameRoot.OnEnergyChanged += OnEnergyChanged;
     }
 
+    private Tween tween;
     private void OnCoinChanged(int changedNum) {
         coinChangedShow.SetActive(true); 
         coinChangedTxt.text = "+ 0";
-
+        coinChangedShow.transform.DOKill();
         DOTween.To(() => 0,x => UpdateCoinText(changedNum,x), Mathf.Abs(changedNum), 1f).SetEase(Ease.OutQuint);
-        ToolClass.MoveUpAndFadeOut(coinChangedShow,3,1).onComplete += () => {
-            coinTxt.text = gameRoot.CoinCached.ToString();
-        };
+        if(tween!=null) {
+            tween = ToolClass.MoveUpAndFadeOut(coinChangedShow,3,1);
+            tween.onComplete += () => {
+                coinTxt.text = gameRoot.CoinCached.ToString();
+            };
+        }
     }
     private void OnEnergyChanged(int totalEnergy) {
         energyTxt.text = totalEnergy.ToString()+"/5";
@@ -103,10 +109,15 @@ public class UIManager : MonoBehaviour
         ToolClass.MoveUpAndFadeOut(ImgEnergyDecrease,0,1);
     }
 
-    public void ShowUserMsg(string msg) {
+    private  CancellationTokenSource _cts; 
+    public async void ShowUserMsg(string msg) {
         msgTxt.text = msg;
         userMessage.SetActive(true);
-        ToolClass.CallAfterDelay(2, () => { userMessage.gameObject.SetActive(false); });
+        if(_cts != null) {
+            _cts.Cancel();
+        }
+        _cts = new CancellationTokenSource();
+        await ToolClass.CallAfterDelay(2, () => { userMessage.gameObject.SetActive(false); }, _cts);
     }
 
     public void ShowPlayerAssets(bool isShow=true) {

@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 using System.Threading.Tasks;
+using System.Threading;
 
 public static class ToolClass {
     public static void SetGameObjectXZPos(GameObject player,Vector3 pos) {
@@ -53,8 +54,12 @@ public static class ToolClass {
         return camera.DOFieldOfView(targetFov,duration).SetUpdate(UpdateType.Normal,true); 
     }
 
-    public static async void CallAfterDelay(float delay,Action function) {
-        await Task.Delay(TimeSpan.FromSeconds(delay));
+    public static async Task CallAfterDelay(float delayTime, Action function,CancellationTokenSource _cts=null) {
+        if(_cts!=null) {
+            await Task.Delay(TimeSpan.FromSeconds(delayTime),_cts.Token);
+        } else {
+            await Task.Delay(TimeSpan.FromSeconds(delayTime));
+        }
         function();
     }
 

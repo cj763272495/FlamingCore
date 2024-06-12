@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
+using TMPro;
 
 public class ToggleBtn : MonoBehaviour
 {
@@ -11,7 +13,11 @@ public class ToggleBtn : MonoBehaviour
 
     public HomeWnd HomeWnd;
     private Toggle toggle;
+    public Image targetImg;
+    public Sprite inactiveSprite;
+    public Sprite activeSprite;
     public PageType pageType;
+    private bool On;
 
     public void ChangeTextAlpha(Text textComponent, float alpha) {
         Color textColor = textComponent.color;
@@ -25,17 +31,17 @@ public class ToggleBtn : MonoBehaviour
     }
 
     private void OnToggleValueChanged(bool isOn) {
-        if (isOn) {
-            //soundPlayer.clipSource = Resources.Load<AudioClip>(Constants.ButtonClip);
-            //soundPlayer.PlayOneShot();
-            imgBarSelect.SetActive(true);
+        On = isOn;
+        if (On) {
             bg.SetActive(true);
             ChangeTextAlpha(txt, 1f);
+            targetImg.sprite = activeSprite;
             HomeWnd.ChangePage(pageType);
         } else {
-            imgBarSelect.SetActive(false);
             bg.SetActive(false);
             ChangeTextAlpha(txt, 0.5f);
+            targetImg.sprite = inactiveSprite;
         }
+        imgBarSelect.transform.DOMoveX(transform.position.x, 0.1f);
     }
 }

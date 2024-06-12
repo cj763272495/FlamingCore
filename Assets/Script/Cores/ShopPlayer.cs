@@ -27,9 +27,9 @@ public class ShopPlayer:PlayerController {
         }
     }
 
-    private void SetScale(float contineuTime) {
+    private async void SetScale(float contineuTime) {
         Time.timeScale = 0.3f;
-        ToolClass.CallAfterDelay(contineuTime,() => { Time.timeScale = 1; });
+        await ToolClass.CallAfterDelay(contineuTime,() => { Time.timeScale = 1; });
     }
 
     protected override void FixedUpdate() {

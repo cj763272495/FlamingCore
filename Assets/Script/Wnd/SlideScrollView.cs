@@ -29,7 +29,7 @@ public class SlideScrollView : MonoBehaviour,IBeginDragHandler,IEndDragHandler {
     public event Action<int> OnIndexChanged;
     private int _currentIndex;
     public int CurrentIndex { 
-        protected set {
+        set {
             if(_currentIndex != value) {
                 _currentIndex = value;
                 OnIndexChange();
@@ -43,10 +43,10 @@ public class SlideScrollView : MonoBehaviour,IBeginDragHandler,IEndDragHandler {
     public bool needSendMessage;
 
     public bool changeScale; 
-    public float maxScale;
-    public float minScale; 
+    public Vector3 maxScale;
+    public Vector3 minScale;
 
-    private void Start()
+    private void Awake()
     {
         scrollRect = GetComponent<ScrollRect>();
         contentTrans = scrollRect.content;
@@ -54,7 +54,7 @@ public class SlideScrollView : MonoBehaviour,IBeginDragHandler,IEndDragHandler {
         currentContentLocalPos = contentTrans.localPosition;
         contentTransSize = contentTrans.sizeDelta;
         contentInitPos = contentTrans.localPosition;
-        _currentIndex = 1;
+        CurrentIndex = 1;
         if (pageText != null) {
             pageText.text = _currentIndex.ToString() + "/" + totalItemNum;
         } 
@@ -65,13 +65,15 @@ public class SlideScrollView : MonoBehaviour,IBeginDragHandler,IEndDragHandler {
             for(int i = 0; i <= totalItemNum - 1; i++) {
                 Transform curTrans = content.transform.GetChild(i);
                 Image img = curTrans.GetComponent<Image>();
+                Vector3 targetScale;
                 if(i == _currentIndex - 1) {
-                    curTrans.localScale = new Vector3(maxScale,maxScale,maxScale);
+                    targetScale = maxScale;
                     ChangeImgAlpha(img, 1);
                 } else {
-                    curTrans.localScale = new Vector3(minScale,minScale,minScale);
+                    targetScale = minScale;
                     ChangeImgAlpha(img, 0.5f);
                 }
+                curTrans.transform.DOScale(targetScale, 0.2f);
             }
         }
     }
@@ -137,10 +139,8 @@ public class SlideScrollView : MonoBehaviour,IBeginDragHandler,IEndDragHandler {
         {
             pageText.text = _currentIndex.ToString() + "/" + totalItemNum;
         }
-        DOTween.To(
-            ()=>contentTrans.localPosition,lerpValue
-            =>contentTrans.localPosition=lerpValue,
-            currentContentLocalPos + new Vector3(moveDistance,0,0),0.3f).SetEase(Ease.Linear);
+        DOTween.To( ()=>contentTrans.localPosition,lerpValue =>contentTrans.localPosition=lerpValue,
+            currentContentLocalPos + new Vector3(moveDistance,0,0),0.1f).SetEase(Ease.Linear);
         currentContentLocalPos += new Vector3(moveDistance, 0, 0);
     }
 

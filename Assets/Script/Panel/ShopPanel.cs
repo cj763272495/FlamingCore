@@ -1,5 +1,7 @@
+using DG.Tweening;
 using System; 
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
  
@@ -40,16 +42,19 @@ public class ShopPanel:MonoBehaviour {
     public Sprite normalSprite;
     public Sprite equiptSprite;
 
-    public Text descript;
+    public TextMeshProUGUI descript;
     public ShopPlayer player;
+    private DOTweenAnimation typeGroupAni;
+    private DOTweenAnimation buyBtnAni;
     public GameObject Shopgroup;
 
     private void Start() {
         skinView.gameObject.SetActive(true);
         trailView.gameObject.SetActive(false);
-        pds = PlayersDataSystem.Instance;
-
-        selectBuySkin = true;
+        typeGroupAni = skintg.GetComponentInParent<DOTweenAnimation>();
+        buyBtnAni = buyBtn.GetComponent<DOTweenAnimation>();
+        pds = PlayersDataSystem.Instance; 
+        SelectBuyCore();
         UpdateScrowViewLockInfo(skinView,pds.PlayerData.skin);
         UpdateScrowViewLockInfo(trailView,pds.PlayerData.trail);
 
@@ -58,6 +63,8 @@ public class ShopPanel:MonoBehaviour {
 
     private void OnEnable() {
         Shopgroup.SetActive(true);
+        typeGroupAni.DORestart();
+        buyBtnAni.DORestart();
         player.Init();
     }
     private void OnDisable() {
@@ -92,6 +99,7 @@ public class ShopPanel:MonoBehaviour {
                 Constants.CoresInfo.TryGetValue((CoreType)Enum.Parse(typeof(CoreType),_currentViewID.ToString()),out CoreInfo coreinfo);
                 _curPrice = coreinfo.price;
                 descript.text = coreinfo.descript;
+                descript.GetComponent<DOTweenAnimation>().DORestart();
             } catch(Exception ex) {
                 Debug.LogError("Exception occurred: " + ex.Message);
             }
@@ -128,6 +136,7 @@ public class ShopPanel:MonoBehaviour {
             }
             buyBtn.enabled = canBuy;
         }
+        buyBtn.GetComponent<DOTweenAnimation>().DORestart();
     }
 
     private void SetBuyInfoView(bool show) {
@@ -176,6 +185,7 @@ public class ShopPanel:MonoBehaviour {
         UpdatePurchaseBtnInfo();
     }
 
+    private Vector3 equiptImgSize = new Vector2(21,21); 
     public void UpdateScrowViewLockInfo(SlideScrollView view, List<int> data) {
         int equiptItemIndex = selectBuySkin ? pds.PlayerData.cur_skin : pds.PlayerData.cur_trail;
         foreach(var id in data) {
@@ -185,7 +195,7 @@ public class ShopPanel:MonoBehaviour {
                 if( id== equiptItemIndex) {
                     imgs[1].gameObject.SetActive(true);
                     imgs[1].sprite = equiptSprite;
-                    imgs[1].rectTransform.sizeDelta = new Vector2(21, 21);
+                    imgs[1].rectTransform.sizeDelta = equiptImgSize;
                 } else {
                     imgs[1].gameObject.SetActive(false);
                 }

@@ -99,10 +99,7 @@ public class ParticleMgr : MonoBehaviour
     }
 
     public void PlayBulletDestoryParticle(Vector3 contact) {
-        GameObject go = PlayParticle(bulletDestoryParticle,contact); 
-        //Vector3 normal = contact.normal;
-        //Quaternion rotation = Quaternion.LookRotation(normal);
-        //go.GetComponentInChildren<ParticleSystem>().transform.rotation = rotation; 
+        PlayParticle(bulletDestoryParticle, contact);
     }
 
     public void PlayGetCoinParticle(Vector3 point) {

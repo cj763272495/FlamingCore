@@ -10,17 +10,18 @@ public class LevelScrowView : SlideScrollView{
             for(int i = 0; i <= totalItemNum - 1; i++) {
                 Transform curTrans = content.transform.GetChild(i);
                 Image img = curTrans.GetComponent<Image>();
-
+                Vector3 targetScale;
                 if(i <= PlayersDataSystem.Instance.GetMaxUnLockWave() - 1) {
                     if(i == CurrentIndex - 1) {
-                        curTrans.localScale = new Vector3(maxScale,maxScale,maxScale);
+                        targetScale = maxScale;
                         img.sprite = ResSvc.Instance.LoadSprite("Sprite/bg_stage_selected");
                         ChangeImgAlpha(img,1);
                     } else {
-                        curTrans.localScale = new Vector3(minScale,minScale,minScale);
+                        targetScale = minScale;
                         img.sprite = ResSvc.Instance.LoadSprite("Sprite/bg_stage_passed");
                         ChangeImgAlpha(img,0.5f);
                     }
+                    curTrans.DOScale(targetScale,0.2f).SetRelative(false);
                 } else {
                     img.sprite = ResSvc.Instance.LoadSprite("Sprite/bg_stage_locked");
                 } 
@@ -64,7 +65,7 @@ public class LevelScrowView : SlideScrollView{
         DOTween.To(
             () => contentTrans.localPosition,lerpValue
             => contentTrans.localPosition = lerpValue,
-            currentContentLocalPos + new Vector3(moveDistance,0,0),0.3f).SetEase(Ease.Linear);
+            currentContentLocalPos + new Vector3(moveDistance,0,0),0.1f).SetEase(Ease.Linear).SetRelative(false);
         currentContentLocalPos += new Vector3(moveDistance,0,0);
     }
 

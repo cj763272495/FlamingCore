@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using DG.Tweening;
+using UnityEditor.Rendering;
 
 public class HomeWnd : MonoBehaviour,IPointerDownHandler
 { 
@@ -18,44 +20,67 @@ public class HomeWnd : MonoBehaviour,IPointerDownHandler
     public Toggle tgSet;
 
     public GameObject mainShow;
+    public PageType curPageType;
+
+    private DOTweenAnimation dialogAni;
 
     public class PageChangedEvent : UnityEvent<PageType> {
     }
 
     public void Init() {
         gameObject.SetActive(true);
-        ActivatePanel(levelPanel);
+        DisActivatePanel(levelPanel);
         tgLevel.isOn = true;
-        buyEnergyDialog.SetActive(false); 
+        buyEnergyDialog.SetActive(false);
+        dialogAni = buyEnergyDialog.GetComponentInChildren<DOTweenAnimation>();
     }
      
     public void OnPointerDown(PointerEventData eventData) {
         if(!buyList.rect.Contains(eventData.position)&& buyEnergyDialog.activeSelf) {
-            buyEnergyDialog.SetActive(false);
+            dialogAni.onComplete.AddListener(() => {
+                buyEnergyDialog.SetActive(false);
+                dialogAni.onComplete.RemoveAllListeners();
+            });
+            dialogAni.DOPlayBackwards();
         }
     } 
 
-    public void ActivatePanel(GameObject panel) {
+    public void DisActivatePanel(GameObject panel, bool showMainCity=true) {
         levelPanel.SetActive(panel == levelPanel);
         shopPanel.SetActive(panel == shopPanel);
         settingsPanel.SetActive(panel == settingsPanel);
+        mainShow.SetActive(showMainCity);
     }
 
     public PageChangedEvent onPageChanged;
 
-    public void ChangePage(PageType pageType) {
-        switch (pageType) {
-            case PageType.Level:
-                ActivatePanel(levelPanel);
-                mainShow.SetActive(true);
+
+    public void PanelTweenComplete() {
+        switch(curPageType) {
+            case PageType.Level: 
+                DisActivatePanel(levelPanel);
                 break;
             case PageType.Store:
-                ActivatePanel(shopPanel);
-                mainShow.SetActive(false);
+                DisActivatePanel(shopPanel,false);
                 break;
             case PageType.Settings:
-                ActivatePanel(settingsPanel);
-                mainShow.SetActive(true);
+                DisActivatePanel(settingsPanel);
+                break;
+        }
+    }
+
+
+    public void ChangePage(PageType pageType) {
+        curPageType = pageType;
+        switch(curPageType) {
+            case PageType.Level:
+                levelPanel.SetActive(true);
+                break;
+            case PageType.Store:
+                shopPanel.SetActive(true);
+                break;
+            case PageType.Settings:
+                settingsPanel.SetActive(true);
                 break;
         }
         onPageChanged?.Invoke(pageType);

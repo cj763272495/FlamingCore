@@ -1,5 +1,6 @@
 using System.Collections; 
 using UnityEngine;
+using DG.Tweening;
 
 public class PlayerController:Entity {
     protected float _speed;
@@ -75,7 +76,7 @@ public class PlayerController:Entity {
 
         if(_speed == Constants.OverloadSpeed && collisionLayer ==14 || _speed == Constants.OverloadSpeed && collisionLayer==7) {
             return;
-        }  
+        }
         //计算反射方向
         Vector3 inDirection = (transform.position - lastPos).normalized;
         Vector3 inNormal = contactPoint.normal;
@@ -87,7 +88,14 @@ public class PlayerController:Entity {
             _dir = Vector3.Reflect(tempDir,inNormal).normalized;
         }
         lastPos = transform.position; //更新上一次位置，用于计算反射方向
-       
+
+        Vector3 originalPosition = camTrans.localPosition;
+
+        // 抖动相机
+        Camera.main.DOShakePosition(0.1f,0.1f).OnComplete(() => {
+            // 抖动完成后重置位置
+            camTrans.transform.localPosition = originalPosition;
+        });
     }
 
     public void PlayerDead() {
