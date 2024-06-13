@@ -20,16 +20,18 @@ public class ShopPlayer:PlayerController {
      
     private IEnumerator CallSetDir() {
         while(true) {
-            Vector3 randomVector = new Vector3(Random.Range(-1f,1f),0,Random.Range(-1f,1f));
-            SetDir(randomVector);
-            SetScale(1f);
-            yield return new WaitForSeconds(Random.Range(3,5));
+            SetScale(Random.Range(1f,2f));
+            yield return new WaitForSeconds(Random.Range(4f,6f));
         }
     }
 
     private async void SetScale(float contineuTime) {
-        Time.timeScale = 0.3f;
-        await ToolClass.CallAfterDelay(contineuTime,() => { Time.timeScale = 1; });
+        Time.timeScale = 0.2f;
+        await ToolClass.CallAfterDelay(contineuTime,() => { 
+            Time.timeScale = 1;
+            Vector3 randomDir = new Vector3(Random.Range(-1f,1f),0,Random.Range(-1f,1f));
+            SetDir(randomDir);
+        });
     }
 
     protected override void FixedUpdate() {
@@ -67,7 +69,7 @@ public class ShopPlayer:PlayerController {
 
     public void ChangeProps(int index ,GameObject[] props) {
         if(index > props.Length-1) {
-            Debug.LogError("out of range");
+            ToolClass.PrintLog("out of range");
             return;
         }
         foreach(GameObject item in props) {

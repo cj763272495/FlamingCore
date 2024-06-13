@@ -27,10 +27,10 @@ public class Portal : MonoBehaviour
         gameObject.SetActive(true);
         GetComponent<Collider>().enabled = true;
     }
-    public void EnterPortalCD() {
+    public async void EnterPortalCD() {
         Collider collider = GetComponent<Collider>();
         collider.enabled = false; 
-        ToolClass.CallAfterDelay(0.5f,() => {
+       await  ToolClass.CallAfterDelay(0.5f,() => {
             gameObject.SetActive(false);
             Invoke("ShowPortal",0.5f);
         });

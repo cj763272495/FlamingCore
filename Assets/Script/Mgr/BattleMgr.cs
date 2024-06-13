@@ -326,6 +326,7 @@ public class BattleMgr:MonoBehaviour {
     public void EndBattle(bool isWin, Vector3 pos = new Vector3()) {
         if(isWin) { 
             Time.timeScale = 0.2f;
+            player.destructible = false;
             ToolClass.ChangeCameraFov(cam,20,3f).onComplete+=()=> {
                 Time.timeScale = 1;
                 GameWin();

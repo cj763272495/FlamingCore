@@ -44,15 +44,13 @@ public class ShopPanel:MonoBehaviour {
 
     public TextMeshProUGUI descript;
     public ShopPlayer player;
-    private DOTweenAnimation typeGroupAni;
-    private DOTweenAnimation buyBtnAni;
+    public DOTweenAnimation typeGroupAni;
+    public DOTweenAnimation buyBtnAni;
     public GameObject Shopgroup;
 
     private void Start() {
         skinView.gameObject.SetActive(true);
-        trailView.gameObject.SetActive(false);
-        typeGroupAni = skintg.GetComponentInParent<DOTweenAnimation>();
-        buyBtnAni = buyBtn.GetComponent<DOTweenAnimation>();
+        trailView.gameObject.SetActive(false); 
         pds = PlayersDataSystem.Instance; 
         SelectBuyCore();
         UpdateScrowViewLockInfo(skinView,pds.PlayerData.skin);
@@ -101,7 +99,7 @@ public class ShopPanel:MonoBehaviour {
                 descript.text = coreinfo.descript;
                 descript.GetComponent<DOTweenAnimation>().DORestart();
             } catch(Exception ex) {
-                Debug.LogError("Exception occurred: " + ex.Message);
+                ToolClass.PrintLog("Exception occurred: " + ex.Message);
             }
         } else {
             _hasBuy = pds.PlayerData.trail.Contains(_currentViewID); 

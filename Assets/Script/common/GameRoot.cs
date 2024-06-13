@@ -89,7 +89,7 @@ public class GameRoot : MonoBehaviour
 
     public void StartBattle(int wave) {
         if (_energyCached < 0) {
-            Debug.Log("能量不足");
+            ToolClass.PrintLog("能量不足");
             return;
         }
         if(wave >_pds.GetMaxUnLockWave()) {

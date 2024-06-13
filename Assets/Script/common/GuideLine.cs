@@ -59,9 +59,6 @@ public class GuideLine : MonoBehaviour
 
 
     private void HandlePointToBoom(RaycastHit hit) {
-        //if(curPointBoom && curPointBoom != hit.collider.gameObject) {
-        //    curPointBoom.GetComponent<Boom>().guideLine.gameObject.SetActive(false);
-        //}
         curPointBoom = hit.collider.gameObject;
         Boom boom = hit.collider.gameObject.GetComponent<Boom>();
         boom.ShowGudieLine(-hit.normal);

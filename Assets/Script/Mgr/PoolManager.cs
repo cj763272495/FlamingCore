@@ -67,7 +67,7 @@ public class PoolManager:MonoBehaviour {
             CreateGameObjectAndSetActive(itemGo,true,parent,true);
             return itemGo as T;
         }
-        Debug.LogError("还没有当前类型的资源池被实例化");
+        ToolClass.PrintLog("还没有当前类型的资源池被实例化");
         return null;
     }
 
@@ -79,7 +79,7 @@ public class PoolManager:MonoBehaviour {
             CreateGameObjectAndSetActive(obj,false,null,false);
             queue.Enqueue(obj);
         } else {
-            Debug.LogError("还没有当前类型的资源池被实例化");
+            ToolClass.PrintLog("还没有当前类型的资源池被实例化");
         }
     }
 }

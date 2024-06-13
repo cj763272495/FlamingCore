@@ -3,9 +3,8 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using DG.Tweening;
-using UnityEditor.Rendering;
 
-public class HomeWnd : MonoBehaviour,IPointerDownHandler
+public class HomeWnd : MonoBehaviour, IPointerDownHandler
 { 
     public BattleWnd battleWnd; 
     [SerializeField] private ToggleGroup toggleGroup;
@@ -18,13 +17,11 @@ public class HomeWnd : MonoBehaviour,IPointerDownHandler
     public Toggle tgLevel;
     public Toggle tgShop;
     public Toggle tgSet;
-
     public GameObject mainShow;
     public PageType curPageType;
-
     private DOTweenAnimation dialogAni;
 
-    public class PageChangedEvent : UnityEvent<PageType> {
+    public class PageChangedEvent : UnityEvent<PageType>{
     }
 
     public void Init() {
@@ -34,16 +31,16 @@ public class HomeWnd : MonoBehaviour,IPointerDownHandler
         buyEnergyDialog.SetActive(false);
         dialogAni = buyEnergyDialog.GetComponentInChildren<DOTweenAnimation>();
     }
-     
+
+    public void OnBuyDialogClosed(){
+        buyEnergyDialog.SetActive(false);
+    }
+
     public void OnPointerDown(PointerEventData eventData) {
         if(!buyList.rect.Contains(eventData.position)&& buyEnergyDialog.activeSelf) {
-            dialogAni.onComplete.AddListener(() => {
-                buyEnergyDialog.SetActive(false);
-                dialogAni.onComplete.RemoveAllListeners();
-            });
-            dialogAni.DOPlayBackwards();
+            dialogAni.DOPlayBackwards(); 
         }
-    } 
+    }
 
     public void DisActivatePanel(GameObject panel, bool showMainCity=true) {
         levelPanel.SetActive(panel == levelPanel);
@@ -53,7 +50,6 @@ public class HomeWnd : MonoBehaviour,IPointerDownHandler
     }
 
     public PageChangedEvent onPageChanged;
-
 
     public void PanelTweenComplete() {
         switch(curPageType) {
@@ -68,7 +64,6 @@ public class HomeWnd : MonoBehaviour,IPointerDownHandler
                 break;
         }
     }
-
 
     public void ChangePage(PageType pageType) {
         curPageType = pageType;
@@ -88,6 +83,7 @@ public class HomeWnd : MonoBehaviour,IPointerDownHandler
 
     public void ClickAddEnergy() {
         buyEnergyDialog.SetActive(true);
+        dialogAni.DORestart();
     }
 
     public void BuyOneEnergyByCoin() {

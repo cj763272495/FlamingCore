@@ -1,12 +1,12 @@
 using DG.Tweening;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIManager : MonoBehaviour
-{
+public class UIManager:MonoBehaviour {
     public HomeWnd homeWnd;
     public PausePanel pausePanel;
     public DeadPanel deadPanel;
@@ -32,7 +32,7 @@ public class UIManager : MonoBehaviour
     private TextMeshProUGUI msgTxt;
 
     private GameRoot gameRoot;
-    
+
     private void Awake() {
         Instance = this;
         canvasGroup = blendImg.GetComponent<CanvasGroup>();
@@ -50,19 +50,20 @@ public class UIManager : MonoBehaviour
 
     private Tween tween;
     private void OnCoinChanged(int changedNum) {
-        coinChangedShow.SetActive(true); 
+        coinChangedShow.SetActive(true);
         coinChangedTxt.text = "+ 0";
         coinChangedShow.transform.DOKill();
-        DOTween.To(() => 0,x => UpdateCoinText(changedNum,x), Mathf.Abs(changedNum), 1f).SetEase(Ease.OutQuint);
-        if(tween!=null) {
-            tween = ToolClass.MoveUpAndFadeOut(coinChangedShow,3,1);
-            tween.onComplete += () => {
-                coinTxt.text = gameRoot.CoinCached.ToString();
-            };
+        DOTween.To(() => 0,x => UpdateCoinText(changedNum,x),Mathf.Abs(changedNum),1f).SetEase(Ease.OutQuint);
+        if(tween != null) {
+            tween.Complete();
         }
+        tween = ToolClass.MoveUpAndFadeOut(coinChangedShow,3,1);
+        tween.onComplete += () => {
+            coinTxt.text = gameRoot.CoinCached.ToString();
+        };
     }
     private void OnEnergyChanged(int totalEnergy) {
-        energyTxt.text = totalEnergy.ToString()+"/5";
+        energyTxt.text = totalEnergy.ToString() + "/5";
     }
 
     private void UpdateCoinText(int changedNum,int value) {
@@ -73,7 +74,7 @@ public class UIManager : MonoBehaviour
     }
 
     private void Update() {
-        if(Input.touchCount>0 && userMessage.activeSelf || Input.GetMouseButtonDown(0) &&userMessage.activeSelf) {
+        if(Input.touchCount > 0 && userMessage.activeSelf || Input.GetMouseButtonDown(0) && userMessage.activeSelf) {
             userMessage.SetActive(false);
         }
     }
@@ -99,7 +100,7 @@ public class UIManager : MonoBehaviour
 
     public Tween FadeOut() {
         canvasGroup.alpha = 1;
-        return  canvasGroup.DOFade(0,1f).SetUpdate(UpdateType.Normal,true).OnComplete(() => {
+        return canvasGroup.DOFade(0,1f).SetUpdate(UpdateType.Normal,true).OnComplete(() => {
             blendImg.raycastTarget = false;
         });
     }
@@ -109,18 +110,24 @@ public class UIManager : MonoBehaviour
         ToolClass.MoveUpAndFadeOut(ImgEnergyDecrease,0,1);
     }
 
-    private  CancellationTokenSource _cts; 
+    private CancellationTokenSource _cts;
     public async void ShowUserMsg(string msg) {
-        msgTxt.text = msg;
-        userMessage.SetActive(true);
-        if(_cts != null) {
-            _cts.Cancel();
+        try {
+            msgTxt.text = msg;
+            userMessage.SetActive(true);
+            if(_cts != null) {
+                _cts.Cancel();
+            }
+            _cts = new CancellationTokenSource();
+            await ToolClass.CallAfterDelay(2,() => { userMessage.gameObject.SetActive(false); },_cts);
+        } catch(OperationCanceledException) {
+            ToolClass.PrintLog("ShowUserMsg 任务被取消。");
+        } catch(Exception ex) {
+            ToolClass.PrintLog("ShowUserMsg 发生异常: " + ex.Message);
         }
-        _cts = new CancellationTokenSource();
-        await ToolClass.CallAfterDelay(2, () => { userMessage.gameObject.SetActive(false); }, _cts);
     }
 
-    public void ShowPlayerAssets(bool isShow=true) {
+    public void ShowPlayerAssets(bool isShow = true) {
         coinTxt.transform.parent.gameObject.SetActive(isShow);
         energyTxt.transform.parent.gameObject.SetActive(isShow);
         coinTxt.text = gameRoot.CoinCached.ToString();

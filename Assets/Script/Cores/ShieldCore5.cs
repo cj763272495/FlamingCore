@@ -3,7 +3,7 @@ using UnityEngine;
 public class ShieldCore : PlayerController
 {
     public ParticleSystem sheildParticle; 
-    protected override void OnCollisionEnter(Collision collision) {
+    protected override async void OnCollisionEnter(Collision collision) {
         base.OnCollisionEnter(collision);
         int collisionLayer = collision.gameObject.layer;
 
@@ -13,7 +13,7 @@ public class ShieldCore : PlayerController
             GetField(); 
             battleMgr.joystick.OnPointerUpAction += OnPointerUpAction;
         } else if(!destructible && collisionLayer==7) {
-            ToolClass.CallAfterDelay(0.5f,() => { // 被击0.5秒后销毁护盾
+            await ToolClass.CallAfterDelay(0.5f,() => { // 被击0.5秒后销毁护盾
                 DisappearField();
             });
         }

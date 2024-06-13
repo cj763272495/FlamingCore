@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine; 
 using UnityEngine.UI;
 
@@ -99,7 +98,7 @@ public class RobotPlayer: PlayerController {
 
     private void OnEnemyKilled(GameObject enemy) {
         if(!enemiesInRange.Remove(enemy)) {
-            Debug.Log("Remove enemy failed");
+            ToolClass.PrintLog("Remove enemy failed");
         }
     }
 
@@ -130,7 +129,7 @@ public class RobotPlayer: PlayerController {
                         ReloadCoroutine = StartCoroutine(ReloadAmmo());
                     }
                 } else {
-                    Debug.LogError("get Bullet failed");
+                    ToolClass.PrintLog("get Bullet failed");
                     return;
                 }
             }

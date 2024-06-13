@@ -28,9 +28,9 @@ public class CheckPoint : MonoBehaviour
         }
     }
 
-    public void PlayAni() {
+    public async void PlayAni() {
         ani.Play("checkpoint_2");
-        ToolClass.CallAfterDelay(2.7f,OpenEnd);
+        await ToolClass.CallAfterDelay(2.7f,OpenEnd);
     }
 
     public void OpenEnd() {

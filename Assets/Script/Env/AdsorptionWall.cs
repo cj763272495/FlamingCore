@@ -15,9 +15,9 @@ public class AdsorptionWall : MonoBehaviour
         }
     }
 
-    public void OnPointerUp() {
+    public async void OnPointerUp() {
         _player.ExitIdleState();
-        ToolClass.CallAfterDelay(0.5f, () => {
+        await ToolClass.CallAfterDelay(0.5f, () => {
             BattleSys.Instance.battleMgr.joystick.OnPointerUpAction -= OnPointerUp;
         });
     }

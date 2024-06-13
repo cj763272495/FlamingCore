@@ -52,11 +52,11 @@ public class PaiJiPaoDan : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision collision) {
+    private async void OnCollisionEnter(Collision collision) {
         tailGasParticle.Stop();
         AmiCanvas.gameObject.SetActive(false);
         explosionParticle.Play();
-        ToolClass.CallAfterDelay(0.5f,Explode);
+        await ToolClass.CallAfterDelay(0.5f,Explode);
         ParticleMgr.Instance.PlayCustomParticle(explosionParticle.gameObject,transform.position);
     }
      

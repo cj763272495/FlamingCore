@@ -14,7 +14,7 @@ public class ParticleMgr : MonoBehaviour
 
     private void Awake() {
         if(Instance != null) {
-            Debug.LogError("Another instance of ParticleMgr already exists!");
+            ToolClass.PrintLog("Another instance of ParticleMgr already exists!");
             return;
         }
         Instance = this;
@@ -41,7 +41,7 @@ public class ParticleMgr : MonoBehaviour
         if(particle != null) {
             PoolManager.Instance.InitPool(particle, num, battleMgr.transform);
         } else {
-            Debug.LogError("InitParticlePool failed, particle is null, path: " + path);
+            ToolClass.PrintLog("InitParticlePool failed, particle is null, path: " + path);
         }
         return particle;
     }

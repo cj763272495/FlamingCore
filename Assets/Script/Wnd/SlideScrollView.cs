@@ -73,7 +73,7 @@ public class SlideScrollView : MonoBehaviour,IBeginDragHandler,IEndDragHandler {
                     targetScale = minScale;
                     ChangeImgAlpha(img, 0.5f);
                 }
-                curTrans.transform.DOScale(targetScale, 0.2f);
+                curTrans.transform.DOScale(targetScale, 0.2f).SetUpdate(true);
             }
         }
     }
@@ -140,7 +140,7 @@ public class SlideScrollView : MonoBehaviour,IBeginDragHandler,IEndDragHandler {
             pageText.text = _currentIndex.ToString() + "/" + totalItemNum;
         }
         DOTween.To( ()=>contentTrans.localPosition,lerpValue =>contentTrans.localPosition=lerpValue,
-            currentContentLocalPos + new Vector3(moveDistance,0,0),0.1f).SetEase(Ease.Linear);
+            currentContentLocalPos + new Vector3(moveDistance,0,0),0.1f).SetEase(Ease.Linear).SetUpdate(true);
         currentContentLocalPos += new Vector3(moveDistance, 0, 0);
     }
 
@@ -165,7 +165,10 @@ public class SlideScrollView : MonoBehaviour,IBeginDragHandler,IEndDragHandler {
         {
             UpdatePanel(true);
         }
-        DOTween.To(() => contentTrans.localPosition, lerpValue => contentTrans.localPosition = lerpValue, currentContentLocalPos + new Vector3(moveDistance, 0, 0), 0.5f).SetEase(Ease.OutQuint);
+        DOTween.To(() => contentTrans.localPosition, 
+            lerpValue => contentTrans.localPosition = lerpValue, currentContentLocalPos + new Vector3(moveDistance, 0, 0), 0.5f)
+                .SetEase(Ease.OutQuint)
+                .SetUpdate(true);
         currentContentLocalPos += new Vector3(moveDistance, 0, 0);
     }
 
@@ -186,7 +189,10 @@ public class SlideScrollView : MonoBehaviour,IBeginDragHandler,IEndDragHandler {
         {
             UpdatePanel(false);
         }
-        DOTween.To(() => contentTrans.localPosition, lerpValue => contentTrans.localPosition = lerpValue, currentContentLocalPos + new Vector3(moveDistance, 0, 0), 0.5f).SetEase(Ease.OutQuint);
+        DOTween.To(() => contentTrans.localPosition, 
+            lerpValue => contentTrans.localPosition = lerpValue, currentContentLocalPos + new Vector3(moveDistance, 0, 0), 0.5f)
+            .SetEase(Ease.OutQuint)
+            .SetUpdate(true);
         currentContentLocalPos += new Vector3(moveDistance, 0, 0);
     }
 

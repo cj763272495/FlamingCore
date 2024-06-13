@@ -67,4 +67,11 @@ public static class ToolClass {
         img.color = new Color(img.color.r, img.color.g,img.color.b, 1);
         img.DOFade(0, duration).SetLoops(-1,LoopType.Yoyo).SetEase(Ease.InOutSine);
     }
+
+    public static void PrintLog(string str) {
+    #if UNITY_EDITOR
+        Debug.Log(str);
+    #endif
+    }
+
 }

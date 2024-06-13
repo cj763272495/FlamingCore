@@ -8,7 +8,7 @@ public class TrackAmiShotGunTurret: EnemyEntity  {
     public int bulletNum = 3;
     public float spreadAngle = 45f; 
 
-    public override void Start() { 
+    public override async void Start() { 
         base.Start();
         trackingBase = new TrackingBase();
         turret.SetTurretBase(trackingBase);
@@ -22,7 +22,7 @@ public class TrackAmiShotGunTurret: EnemyEntity  {
         rotationMode = new AmiRotationMode(transform); 
         turret.SetRotationMode(rotationMode);
         Born();
-        ToolClass.CallAfterDelay(1.06f, Idle);
+        await ToolClass.CallAfterDelay(1.06f, Idle);
     }
     
 

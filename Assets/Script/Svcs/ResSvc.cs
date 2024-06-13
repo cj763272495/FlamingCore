@@ -121,10 +121,10 @@ public class ResSvc : MonoBehaviour {
             if(levelConfig != null) {
                 mapCfgDataDic = levelConfig;
             } else {
-                Debug.LogError("Failed to parse JSON data.");
+                ToolClass.PrintLog("Failed to parse JSON data.");
             }
         } else {
-            Debug.LogError("Failed to load resource: " + Constants.MapCfg);
+            ToolClass.PrintLog("Failed to load resource: " + Constants.MapCfg);
         }
     }
     public LevelData GetMapCfgData(string waveName) { 
@@ -154,7 +154,7 @@ public class ResSvc : MonoBehaviour {
             WriteJsonToFile(json,Constants.PlayerDataPath);
             return true;
         } catch(Exception ex) {
-            Debug.LogError("An error occurred while saving player data: " + ex.Message);
+            ToolClass.PrintLog("An error occurred while saving player data: " + ex.Message);
             return false;
         }
     }

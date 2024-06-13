@@ -177,7 +177,7 @@ public class EditorWindow:UnityEditor.EditorWindow {
             instanceNum++;
             return instance;
         } else {
-            Debug.LogError("预制体未找到，请检查路径是否正确。");
+            ToolClass.PrintLog("预制体未找到，请检查路径是否正确。");
             return null;
         }
     }
