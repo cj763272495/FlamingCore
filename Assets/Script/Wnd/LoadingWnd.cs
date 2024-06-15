@@ -1,14 +1,13 @@
-using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine; 
 
-public class LoadingWnd : MonoBehaviour { 
-    public Image logo; 
+public class LoadingWnd : MonoBehaviour
+{ 
+    public void StartLoading() {//显示Start加载界面且同时获取加载数据
+       gameObject.SetActive(true); 
+    }
 
-    private void Start() {
-        ToolClass.BreathingImg(logo);
+    public void LoadingEnd() {
+        gameObject.SetActive(false);
     }
-      
-    public void SetWndState(bool state = true) {
-        gameObject.SetActive(state);
-    }
+     
 }

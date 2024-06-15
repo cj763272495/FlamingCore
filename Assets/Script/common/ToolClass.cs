@@ -28,7 +28,7 @@ public static class ToolClass {
                     txt.color = new Color(txt.color.r,txt.color.g,txt.color.b,1));
                 }
             }
-            obj.transform.DOMove(startPos + new Vector3(0,5,0),duration).OnComplete(() => {
+            obj.transform.DOMove(startPos + new Vector3(0,15,0),duration).OnComplete(() => {
                 obj.transform.position = startPos;
                 obj.SetActive(false);
             });
@@ -63,7 +63,7 @@ public static class ToolClass {
         function();
     }
 
-    public static void BreathingImg(Image img,float duration=1) {
+    public static void BreathingImg(Image img, float duration=1) {
         img.color = new Color(img.color.r, img.color.g,img.color.b, 1);
         img.DOFade(0, duration).SetLoops(-1,LoopType.Yoyo).SetEase(Ease.InOutSine);
     }

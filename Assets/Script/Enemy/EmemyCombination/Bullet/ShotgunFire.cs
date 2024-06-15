@@ -13,7 +13,7 @@ public class ShotgunFire : IFireMode {
     private float _spreadAngle = 45f;  // …¢…‰Ω«∂»
 
     public ShotgunFire(List<Transform> shootPoint, int bulletNum,float spreadAngle) {
-        bullet = ResSvc.Instance.LoadPrefab("Prefab/Enemy/Bullet",true);
+        bullet = Resources.Load<GameObject> ("Prefab/Enemy/Bullet");
         PoolManager.Instance.InitPool(bullet,20,BattleSys.Instance.battleMgr.transform);
         shootPoints = shootPoint;
         bulletCount = bulletNum;

@@ -17,65 +17,61 @@ public class HomeWnd : MonoBehaviour, IPointerDownHandler
     public Toggle tgLevel;
     public Toggle tgShop;
     public Toggle tgSet;
-    public GameObject mainShow;
-    public PageType curPageType;
-    private DOTweenAnimation dialogAni;
+    public PageType curPageType; 
+    public DOTweenAnimation bottomBtnBroupAni;
+
+    public GameObject shopGroup;
+    public Camera cityCam;
+
 
     public class PageChangedEvent : UnityEvent<PageType>{
+    }
+    private void Start() { 
     }
 
     public void Init() {
         gameObject.SetActive(true);
-        DisActivatePanel(levelPanel);
-        tgLevel.isOn = true;
-        buyEnergyDialog.SetActive(false);
-        dialogAni = buyEnergyDialog.GetComponentInChildren<DOTweenAnimation>();
-    }
+        ActivatePanel(levelPanel);
 
-    public void OnBuyDialogClosed(){
-        buyEnergyDialog.SetActive(false);
+        cityCam = Camera.main;
+        shopGroup = GameObject.Find("ShopGroup"); 
+        ShowCity();
+
+        tgLevel.isOn = true;
+        buyEnergyDialog.SetActive(false); 
+        bottomBtnBroupAni.DORestart();
+        UIManager.Instance.ShowPlayerAssets();
+
+        levelPanel.GetComponent<LevelPanel>().Init();
+        settingsPanel.GetComponent<SetPanel>().Init();
+        shopPanel.GetComponent<ShopPanel>().Init(); 
     }
 
     public void OnPointerDown(PointerEventData eventData) {
         if(!buyList.rect.Contains(eventData.position)&& buyEnergyDialog.activeSelf) {
-            dialogAni.DOPlayBackwards(); 
+            buyEnergyDialog.SetActive(false);
         }
     }
 
-    public void DisActivatePanel(GameObject panel, bool showMainCity=true) {
+    public void ActivatePanel(GameObject panel) {
         levelPanel.SetActive(panel == levelPanel);
         shopPanel.SetActive(panel == shopPanel);
-        settingsPanel.SetActive(panel == settingsPanel);
-        mainShow.SetActive(showMainCity);
+        settingsPanel.SetActive(panel == settingsPanel); 
     }
 
     public PageChangedEvent onPageChanged;
-
-    public void PanelTweenComplete() {
-        switch(curPageType) {
-            case PageType.Level: 
-                DisActivatePanel(levelPanel);
-                break;
-            case PageType.Store:
-                DisActivatePanel(shopPanel,false);
-                break;
-            case PageType.Settings:
-                DisActivatePanel(settingsPanel);
-                break;
-        }
-    }
 
     public void ChangePage(PageType pageType) {
         curPageType = pageType;
         switch(curPageType) {
             case PageType.Level:
-                levelPanel.SetActive(true);
+                ActivatePanel(levelPanel);
                 break;
             case PageType.Store:
-                shopPanel.SetActive(true);
+                ActivatePanel(shopPanel);
                 break;
             case PageType.Settings:
-                settingsPanel.SetActive(true);
+                ActivatePanel(settingsPanel);
                 break;
         }
         onPageChanged?.Invoke(pageType);
@@ -83,7 +79,6 @@ public class HomeWnd : MonoBehaviour, IPointerDownHandler
 
     public void ClickAddEnergy() {
         buyEnergyDialog.SetActive(true);
-        dialogAni.DORestart();
     }
 
     public void BuyOneEnergyByCoin() {
@@ -102,5 +97,14 @@ public class HomeWnd : MonoBehaviour, IPointerDownHandler
             return;
         }
         GameRoot.Instance.CoinCached -= cost;
+    }
+
+    public void ShowCity() {
+        cityCam.enabled = true;
+        shopGroup.gameObject.SetActive(false);
+    }
+    public void ShowShopInfo() {
+        shopGroup.gameObject.SetActive(true);
+        cityCam.enabled = false;
     }
 }

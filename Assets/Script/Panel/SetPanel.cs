@@ -6,9 +6,10 @@ public class SetPanel : MonoBehaviour
     public Toggle bgAuidoTg; 
     public Toggle joyStickTg;
 
-    private void Start() {
+    public void Init() {
         bgAuidoTg.onValueChanged.AddListener(OnBgAuidoTgValueChanged);
         joyStickTg.onValueChanged.AddListener(OnJoyStickTgValueChanged);
+        Application.targetFrameRate = 90;
     }
     private void OnBgAuidoTgValueChanged(bool isOn) {
         GameRoot.Instance.PlayBgAudio(isOn);
@@ -40,7 +41,6 @@ public class SetPanel : MonoBehaviour
             GameRoot.Instance.ClearUIRoot();
             gameObject.SetActive(false);
             UIManager.Instance.regLogInWnd.Init();
-            UIManager.Instance.homeWnd.mainShow.SetActive(false);
         });
     }
 

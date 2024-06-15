@@ -8,7 +8,7 @@ public class EditorWindow:UnityEditor.EditorWindow {
     private int gridHeight = 20; 
 
     private int instanceNum;
-    readonly string path_front = "Assets/Resources/Prefab/Env/";  
+    readonly string path_front = "Assets/Resources/Prefab/Env/";
     private string[] prefabNames;
     private int selectedPrefabIndex = 0; // 选中的预制体索引
 
@@ -136,8 +136,8 @@ public class EditorWindow:UnityEditor.EditorWindow {
         } 
     }
     void DrawGrid() {
-        float cellWidth = position.width / gridWidth; // Change this to change the cell width
-        float cellHeight = position.height / gridHeight; // Change this to change the cell height
+        float cellWidth = position.width / gridWidth;
+        float cellHeight = position.height / gridHeight;
 
         Handles.color = Color.gray;
         for(int i = 0; i < gridWidth; i++) {
@@ -229,6 +229,5 @@ public class EditorWindow:UnityEditor.EditorWindow {
             DestroyImmediate(child.gameObject);
         } 
     }
-
 }
 

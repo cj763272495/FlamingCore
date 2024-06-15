@@ -11,8 +11,7 @@ public class UIManager:MonoBehaviour {
     public PausePanel pausePanel;
     public DeadPanel deadPanel;
     public WinPanel winPanel;
-    public SetPanel setPanel;
-    public StartPanel startPanel;
+    public SetPanel setPanel; 
     public RegLoginWnd regLogInWnd;
     public LoadingWnd loadingWnd;
     public BattleWnd battleWnd;
@@ -32,12 +31,14 @@ public class UIManager:MonoBehaviour {
     private TextMeshProUGUI msgTxt;
 
     private GameRoot gameRoot;
+    public GameObject playerAssetShow;
 
     private void Awake() {
         Instance = this;
         canvasGroup = blendImg.GetComponent<CanvasGroup>();
         msgTxt = userMessage.GetComponentInChildren<TextMeshProUGUI>();
         userMessage.SetActive(false);
+        asstesAni = playerAssetShow.GetComponent<DOTweenAnimation>();
     }
 
     private void Start() {
@@ -46,6 +47,7 @@ public class UIManager:MonoBehaviour {
         coinChangedShow.SetActive(false);
         gameRoot.OnCoinChanged += OnCoinChanged;
         gameRoot.OnEnergyChanged += OnEnergyChanged;
+        winPanel.Init();
     }
 
     private Tween tween;
@@ -97,6 +99,15 @@ public class UIManager:MonoBehaviour {
         canvasGroup.alpha = 0;
         return canvasGroup.DOFade(1,0.5f).SetUpdate(UpdateType.Normal,true);
     }
+    public void FadeIn2() {
+        canvasGroup.gameObject.SetActive(true);
+        blendImg.raycastTarget = true;
+        canvasGroup.alpha = 1;
+    }
+    public void FadeOut2() {
+        blendImg.raycastTarget = false;
+        canvasGroup.alpha = 0;
+    }
 
     public Tween FadeOut() {
         canvasGroup.alpha = 1;
@@ -127,10 +138,20 @@ public class UIManager:MonoBehaviour {
         }
     }
 
+    private DOTweenAnimation asstesAni;
     public void ShowPlayerAssets(bool isShow = true) {
-        coinTxt.transform.parent.gameObject.SetActive(isShow);
-        energyTxt.transform.parent.gameObject.SetActive(isShow);
+        ToolClass.PrintLog(" ShowPlayerAssets "+isShow);
+        if(isShow) {
+            playerAssetShow.SetActive(isShow);
+            asstesAni.DORestart();
+        } else {
+            asstesAni.DOPlayBackwards();
+        }
         coinTxt.text = gameRoot.CoinCached.ToString();
         energyTxt.text = gameRoot.EnergyCached.ToString();
+    }
+
+    public void OnPlayerAssetsRewind() {
+        playerAssetShow.SetActive(false);
     }
 }

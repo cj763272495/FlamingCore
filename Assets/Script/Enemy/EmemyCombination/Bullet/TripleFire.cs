@@ -14,7 +14,7 @@ public class TripleFire: IFireMode {
     private List<Transform> shootPoints;
 
     public TripleFire(List<Transform> shootPoints) {
-        bullet = ResSvc.Instance.LoadPrefab("Prefab/Enemy/Bullet",true);
+        bullet = Resources.Load<GameObject>("Prefab/Enemy/Bullet");
         PoolManager.Instance.InitPool(bullet,20,BattleSys.Instance.battleMgr.transform);
         this.shootPoints = shootPoints;
     }

@@ -61,6 +61,7 @@ public class DashBall: PlayerController {
         ParticleMgr.Instance.PlayCustomParticle(dashParticle,transform.position);
         //闪现到落地的位置
         transform.position = new Vector3(_targetPosImg.transform.position.x,transform.position.y,_targetPosImg.transform.position.z);
+        lastPos = transform.position;
         _showTargetPos = false;
         _targetPosImg.gameObject.SetActive(false);
     }

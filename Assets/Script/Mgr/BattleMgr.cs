@@ -61,8 +61,8 @@ public class BattleMgr:MonoBehaviour {
     public void EliminateEnemy() {
         eliminateEnemyNum++;
         if(eliminateEnemyNum ==  levelData.EnemyNum) {
-            //EndBattle(true);
-            //return;
+            EndBattle(true);
+            return;
             if(CurLevelID==4) {
                 //大关卡结束
                 EndBattle(true);
@@ -150,16 +150,39 @@ public class BattleMgr:MonoBehaviour {
         joystick.OnPointerUpAction = OnPointerUp;
         cam = Camera.main;
 
-        LoadPlayer(new Vector3(
-            levelData.PlayerStartPosition.X,
+        Vector3 OrgPos = new Vector3(levelData.PlayerStartPosition.X,
             levelData.PlayerStartPosition.Y,
-            levelData.PlayerStartPosition.Z));
+            levelData.PlayerStartPosition.Z);
+        LoadPlayer(OrgPos);
 
         SetCameraData(levelData);
         StartBattle = true;
         cb?.Invoke();
     }
 
+    private void LoadPlayer(Vector3 pos) {
+        if(isRobotLevel) {
+            string robotName = levelData.RobotName;
+            player = resSvc.LoadPrefab("Prefab/Robot/" + robotName).GetComponent<PlayerController>();
+        } else {
+            string skinId = _pds.PlayerData.cur_skin.ToString();
+            string trailId = _pds.PlayerData.cur_trail.ToString();
+            player = resSvc.LoadPrefab("Prefab/Cores/qiu_" + skinId).GetComponent<PlayerController>();
+            GameObject trail = resSvc.LoadPrefab("Prefab/Trails/" + trailId);
+            trail.transform.parent = player.transform;
+            trail.transform.localScale = Vector3.one;
+            trail.transform.localPosition = Vector3.zero;
+        }
+
+        player.transform.position = pos;
+        player.transform.localEulerAngles = Vector3.zero;
+        player.transform.localScale = Vector3.one;
+        player.Init(this,stateMgr);
+        EventManager.PlayerLoaded(player);
+        joystick.OnPointerDownAction += player.OnPointerDown;
+        joystick.OnDragAction = player.OnDrag;
+        joystick.OnPointerUpAction += player.OnPointerUp;
+    }
     public void EnterBulletTime() {
         Time.timeScale = 0.1f;
         guideLine.gameObject.SetActive(true);
@@ -232,19 +255,13 @@ public class BattleMgr:MonoBehaviour {
         defaultCamOffset = Constants.DefaultCamOffset;
         cam.transform.position = player.transform.position + defaultCamOffset;
 
-        if(isRobotLevel) {
+        if(isRobotLevel) {//机器人关卡出生镜头动画
             Sequence seq = DOTween.Sequence().SetUpdate(UpdateType.Normal,true);
             seq.AppendInterval(0.3f);
-            seq.AppendCallback(() => { 
+            seq.AppendCallback(() => {
                 Time.timeScale = 0.5f;
                 ToolClass.ChangeCameraFov(cam,10,0.5f).SetEase(Ease.InOutSine);
             });
-            //seq.AppendCallback(() => {
-            //    Vector3[] circlePoints = CalculateArcPoints(cam.transform,player.transform.position,90);
-            //    cam.transform.DOPath(circlePoints,2,PathType.CatmullRom)
-            //        //.SetLookAt(player.transform)
-            //        .SetEase(Ease.InOutSine);
-            //});
             seq.AppendInterval(2f);
             seq.AppendCallback(() => {
                 Time.timeScale = 1;
@@ -255,29 +272,7 @@ public class BattleMgr:MonoBehaviour {
         }
     }
 
-    private void LoadPlayer(Vector3 pos) {
-        if(isRobotLevel) {
-            string robotName = levelData.RobotName;
-            player = resSvc.LoadPrefab("Prefab/Robot/" + robotName).GetComponent<PlayerController>();
-        } else {
-            string skinId = _pds.PlayerData.cur_skin.ToString();
-            string trailId = _pds.PlayerData.cur_trail.ToString();
-            player = resSvc.LoadPrefab("Prefab/Cores/qiu_" + skinId).GetComponent<PlayerController>();
-            GameObject trail = resSvc.LoadPrefab("Prefab/Trails/" + trailId); 
-            trail.transform.parent = player.transform;
-            trail.transform.localScale = Vector3.one;
-            trail.transform.localPosition = Vector3.zero;
-        }
 
-        player.transform.position = pos;
-        player.transform.localEulerAngles = Vector3.zero;
-        player.transform.localScale = Vector3.one;
-        player.Init(this, stateMgr);
-        EventManager.PlayerLoaded(player);
-        joystick.OnPointerDownAction += player.OnPointerDown;
-        joystick.OnDragAction = player.OnDrag;
-        joystick.OnPointerUpAction += player.OnPointerUp;
-    }
 
     public void PauseBattle() {
         StartBattle = false; 
@@ -324,6 +319,9 @@ public class BattleMgr:MonoBehaviour {
     }
 
     public void EndBattle(bool isWin, Vector3 pos = new Vector3()) {
+        if(guideLine.isActiveAndEnabled) {
+            guideLine.gameObject.SetActive(false);
+        }
         if(isWin) { 
             Time.timeScale = 0.2f;
             player.destructible = false;
@@ -357,14 +355,15 @@ public class BattleMgr:MonoBehaviour {
     }
 
     public void LevelSettlement() {//关卡结算
-        GameRoot.Instance.LevelSettlement(coinGot);
+        GameRoot.Instance.LevelSettlement();
     }
      
     public void DestoryBattle() {
+        StartBattle = false;
         Destroy(gameObject);
     }
 
     public int GetHP() {
-           return hp;
+        return hp;
     }
 }

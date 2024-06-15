@@ -24,7 +24,7 @@ public class LevelConfig: Dictionary<string, LevelData> {
 }
 
 [System.Serializable]
-public class PlayerData {
+public class LocalPlayerData {
     public int coin;
     public List<int> skin;
     public List<int> trail;
@@ -34,5 +34,5 @@ public class PlayerData {
     public int cur_trail;
 }
 
-public class PlayerDataDic: Dictionary<string, PlayerData> { 
+public class PlayerDataDic: Dictionary<string, LocalPlayerData> { 
 }

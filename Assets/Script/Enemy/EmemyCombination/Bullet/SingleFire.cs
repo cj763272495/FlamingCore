@@ -11,7 +11,7 @@ public class SingleFire : IFireMode
     private List<Transform> shootPoint;
 
     public SingleFire(List<Transform> shootPoint) {
-        bullet = ResSvc.Instance.LoadPrefab("Prefab/Enemy/Bullet",true);
+        bullet = Resources.Load<GameObject>("Prefab/Enemy/Bullet");
         PoolManager.Instance.InitPool(bullet,20,BattleSys.Instance.battleMgr.transform);
         this.shootPoint = shootPoint;
     }

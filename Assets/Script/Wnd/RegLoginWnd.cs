@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -35,25 +36,13 @@ public class RegLoginWnd : MonoBehaviour,IPointerDownHandler
             UIManager.Instance.ShowUserMsg("请输入用户名");
             return;
         }
-        if(pds.PlayerLogin(username.text)) { 
+        if(pds.PlayerLogin(username.text)) {
             isLogin = true;
             loginGroup.SetActive(false);
             startCanvas.SetActive(true);
             logo.SetActive(true);
         }
     }
-     
-
-    //实现点击窗口任意位置关闭窗口
-    //private void Update() {
-    //    if(Input.GetMouseButtonDown(0)) {
-    //        if(!isLogin) {
-    //            return;
-    //        }
-    //        gameObject.SetActive(false);
-    //        GameRoot.Instance.EnterMainCity();
-    //    }
-    //}
 
     public void OnPointerDown(PointerEventData eventData) {
         if(Input.GetMouseButtonDown(0)) {

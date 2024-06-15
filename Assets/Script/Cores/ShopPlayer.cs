@@ -16,6 +16,8 @@ public class ShopPlayer:PlayerController {
         StartCoroutine(coroutine);
         coreModes[0].SetActive(true);
         trails[0].SetActive(true);
+        Vector3 randomDir = new Vector3(Random.Range(-1f,1f),0,Random.Range(-1f,1f));
+        SetDir(randomDir);
     }
      
     private IEnumerator CallSetDir() {

@@ -19,8 +19,9 @@ public class WinPanel:MonoBehaviour {
 
     private Vector3 tagsOrgScale = new Vector3(0.5f,0.5f,1);
 
-    private void Start() {
-        ResetUI();
+    public void Init() {
+        //ResetUI();
+        gameObject.SetActive(true);
         sequence = DOTween.Sequence().SetUpdate(UpdateType.Normal,true);
         sequence.Append(curWaveBg.transform.DOScale(1,1f).OnComplete(() => {
             curLevelTxt.gameObject.SetActive(true);
@@ -46,9 +47,7 @@ public class WinPanel:MonoBehaviour {
 
     public void ResetUI() {
         tagsGroup.SetActive(true);
-        gameObject.SetActive(true);
         curWaveBg.gameObject.SetActive(true);
-        breathImage.color = new Color(breathImage.color.r,breathImage.color.g,breathImage.color.b,0);
         breathImage.gameObject.SetActive(false);
         rewardGroup.alpha = 0;
         chestGroup.SetActive(false);
@@ -65,6 +64,7 @@ public class WinPanel:MonoBehaviour {
     }
 
     public void ShowClearance() {
+        gameObject.SetActive(true);
         ResetUI();
         sequence.Restart();
     }
@@ -78,6 +78,7 @@ public class WinPanel:MonoBehaviour {
             chestGroup.SetActive(true); 
             gotCoinTxt.text = "+ " + coinNum.ToString();
             chest.OpenChest();
+            UIManager.Instance.ShowPlayerAssets();
         };
     }
 
@@ -87,8 +88,7 @@ public class WinPanel:MonoBehaviour {
     }
 
     public void ClickReturnHomeBtn() {
-        LeaveWinPanel();
-        GameRoot.Instance.EnterMainCity();
+        GameRoot.Instance.EnterMainCity(LeaveWinPanel);
         BattleSys.Instance.battleMgr.DestoryBattle();
     }
 

@@ -1,17 +1,19 @@
+using DG.Tweening;
 using UnityEngine;
 
 public class LevelPanel : MonoBehaviour
 {
-    private SlideScrollView scrollView;
-    private void Start() {
+    private SlideScrollView scrollView; 
+
+    public void Init() {
         scrollView = GetComponentInChildren<SlideScrollView>();
-        scrollView.Init();
+        scrollView.Init(); 
     }
 
     public void ClickStartBtn() {
         if (PlayersDataSystem.Instance.GetMaxUnLockWave() < scrollView.CurrentIndex) {
             return;
         }
-        GameRoot.Instance.StartBattle(scrollView.CurrentIndex-1);
+        GameRoot.Instance.StartBattle(scrollView.CurrentIndex-1); 
     }
 }

@@ -17,8 +17,7 @@ public class LevelScrowView:SlideScrollView {
                         ChangeImgAlpha(img,1);
                     } else {
                         targetScale = minScale;
-                        img.sprite = ResSvc.Instance.LoadSprite("Sprite/bg_stage_passed");
-                        ChangeImgAlpha(img,0.5f);
+                        img.sprite = ResSvc.Instance.LoadSprite("Sprite/bg_stage_passed"); 
                     }
                     curTrans.DOScale(targetScale,0.2f).SetUpdate(true);
                 } else {

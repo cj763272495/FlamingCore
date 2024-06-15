@@ -37,7 +37,7 @@ public class BattleWnd:MonoBehaviour {
 
     public void ClickPauseBtn() {
         pause_panel.gameObject.SetActive(true); 
-        battleMgr.PauseBattle(); 
+        battleMgr.PauseBattle();
     }
     public Tween StartCountDown3Seconds() {
         countdownText.text = "3";
@@ -57,6 +57,5 @@ public class BattleWnd:MonoBehaviour {
 
     public void ShowHp(bool isShow = true) {
         hpShow.SetActive(isShow);
-        UIManager.Instance.ShowPlayerAssets(!isShow);
     }
 }

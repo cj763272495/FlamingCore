@@ -3,70 +3,68 @@ using UnityEngine;
 using System;
 using System.IO;
 using UnityEngine.SceneManagement;
-using Newtonsoft.Json; 
+using Newtonsoft.Json;
 
-public class ResSvc : MonoBehaviour {
+public class ResSvc:MonoBehaviour {
     public static ResSvc Instance = null;
     public TextAsset jsonConfig;
 
     public void InitSvc() {
         Instance = this;
-        LoadMap(); 
+        LoadMap();
     }
 
     private Action prgCB = null;
-    public void AsyncLoadScene(string sceneName, Action loaded) {
+    public void AsyncLoadScene(string sceneName,Action loaded) {
         UIManager uIManager = UIManager.Instance;
-        uIManager.FadeIn().onComplete += () => {  
-            AsyncOperation sceneAsync = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
-            Camera.main.clearFlags = CameraClearFlags.SolidColor;
-            Camera.main.backgroundColor = new Color(0,0,0,0);
-            prgCB = () => {
-                float val = sceneAsync.progress;
-                //uIManager.loadingWnd.SetProgress(val); 
-                if(val == 1) {
-                    if(loaded != null) {
-                        loaded();
-                    }
-                    prgCB = null;
-                    sceneAsync = null;
-                    //uIManager.loadingWnd.SetWndState(false);
-                    uIManager.FadeOut();
+        uIManager.loadingWnd.StartLoading();
+        AsyncOperation sceneAsync = SceneManager.LoadSceneAsync(sceneName,LoadSceneMode.Single); 
+        prgCB = () => {
+            float val = sceneAsync.progress; 
+            if(val == 1) {
+                if(loaded != null) {
+                    loaded();
                 }
-            };
+                prgCB = null;
+                uIManager.loadingWnd.LoadingEnd();
+            }
         };
-
-
     }
 
-    private readonly Dictionary<string, GameObject> goDic = new();
-    public GameObject LoadPrefab(string path, bool cache = false) {
-        if (!goDic.TryGetValue(path, out GameObject prefab)) {
+    private void Update() {
+        if(prgCB != null) {
+            prgCB();
+        }
+    }
+
+    private readonly Dictionary<string,GameObject> goDic = new();
+    public GameObject LoadPrefab(string path,bool cache = false) {
+        if(!goDic.TryGetValue(path,out GameObject prefab)) {
             prefab = Resources.Load<GameObject>(path);
-            if (cache) {
-                goDic.Add(path, prefab);
+            if(cache) {
+                goDic.Add(path,prefab);
             }
         }
         return prefab != null ? Instantiate(prefab) : null;
     }
 
-    private readonly Dictionary<string, AudioClip> adDic = new();
-    public AudioClip LoadAudio(string path, bool cache = false) { 
-        if (!adDic.TryGetValue(path, out AudioClip au)) {
+    private readonly Dictionary<string,AudioClip> adDic = new();
+    public AudioClip LoadAudio(string path,bool cache = false) {
+        if(!adDic.TryGetValue(path,out AudioClip au)) {
             au = Resources.Load<AudioClip>(path);
-            if (cache) {
-                adDic.Add(path, au);
+            if(cache) {
+                adDic.Add(path,au);
             }
         }
         return au;
     }
 
-    private readonly Dictionary<string, Sprite> spDic = new();
-    public Sprite LoadSprite(string path, bool cache = false) { 
-        if (!spDic.TryGetValue(path, out Sprite sp)) {
+    private readonly Dictionary<string,Sprite> spDic = new();
+    public Sprite LoadSprite(string path,bool cache = false) {
+        if(!spDic.TryGetValue(path,out Sprite sp)) {
             sp = Resources.Load<Sprite>(path);
-            if (cache) {
-                spDic.Add(path, sp);
+            if(cache) {
+                spDic.Add(path,sp);
             }
         }
         return sp;
@@ -78,42 +76,38 @@ public class ResSvc : MonoBehaviour {
     /// </summary>
     private GameSettings gameSetting;
 
-    private void Update() {
-        if (prgCB != null) {
-            prgCB();
-        }
-    }
+
     public GameSettings LoadConf() {
         string filePath = Constants.ConfigPath;
-        if (File.Exists(filePath)) {
+        if(File.Exists(filePath)) {
             string textAsset = File.ReadAllText(filePath);
             gameSetting = JsonConvert.DeserializeObject<GameSettings>(textAsset);
         } else {
-            gameSetting = new GameSettings { bgAudio = true, showJoyStick = true };
+            gameSetting = new GameSettings { bgAudio = true,showJoyStick = true };
             SaveConf();
-        } 
+        }
         return gameSetting;
     }
     public void ChangeBgAudioConf(bool isOn) {
         gameSetting.bgAudio = isOn;
         SaveConf();
     }
-    
+
     public void ChangeShowJoyStickConf(bool isShow) {
         gameSetting.showJoyStick = isShow;
         SaveConf();
     }
 
     public void SaveConf() {
-        File.WriteAllText(Constants.ConfigPath, JsonUtility.ToJson(gameSetting));
-    } 
+        File.WriteAllText(Constants.ConfigPath,JsonUtility.ToJson(gameSetting));
+    }
     #endregion
 
     #region MapCfg 
     /// <summary>
     /// 关卡文件
     /// </summary>
-    private Dictionary<string, LevelData> mapCfgDataDic = new();
+    private Dictionary<string,LevelData> mapCfgDataDic = new();
     public void LoadMap() {
         TextAsset textAsset = Resources.Load<TextAsset>(Constants.MapCfg);
         if(textAsset != null) {
@@ -127,8 +121,8 @@ public class ResSvc : MonoBehaviour {
             ToolClass.PrintLog("Failed to load resource: " + Constants.MapCfg);
         }
     }
-    public LevelData GetMapCfgData(string waveName) { 
-        if (mapCfgDataDic.TryGetValue(waveName, out LevelData data)) {
+    public LevelData GetMapCfgData(string waveName) {
+        if(mapCfgDataDic.TryGetValue(waveName,out LevelData data)) {
             return data;
         }
         return null;
@@ -146,7 +140,7 @@ public class ResSvc : MonoBehaviour {
         }
         return playerDataDic;
     }
-    
+
 
     public bool SavePlayerData(PlayerDataDic playerDataDic) {
         try {
@@ -160,11 +154,11 @@ public class ResSvc : MonoBehaviour {
     }
     #endregion
 
-    void WriteJsonToFile(string json, string filePath) {
+    void WriteJsonToFile(string json,string filePath) {
         string directoryPath = Path.GetDirectoryName(filePath); // 确保文件路径的目录存在
-        if (!string.IsNullOrEmpty(directoryPath) && !Directory.Exists(directoryPath)) {
+        if(!string.IsNullOrEmpty(directoryPath) && !Directory.Exists(directoryPath)) {
             Directory.CreateDirectory(directoryPath);
         }
-        File.WriteAllText(filePath, json);
+        File.WriteAllText(filePath,json);
     }
 }

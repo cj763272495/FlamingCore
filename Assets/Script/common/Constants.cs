@@ -8,6 +8,8 @@ using System.IO;
 using System.Collections.Generic;
 
 public class Constants {
+    public const string StartScene = "StartScene";
+
     //Ð¡ÇòËÙ¶È
     public const float PlayerSpeed = 12;
     public const float RotateSpeed = 100;

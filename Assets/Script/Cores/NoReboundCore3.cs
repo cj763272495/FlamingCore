@@ -1,7 +1,6 @@
 using UnityEngine;
 
-public class NoReboundCore : PlayerController
-{
+public class NoReboundCore:PlayerController {
     protected override void OnCollisionEnter(Collision collision) {
         int collisionLayer = collision.gameObject.layer;
         ContactPoint contactPoint = collision.contacts[0];
@@ -14,7 +13,7 @@ public class NoReboundCore : PlayerController
             battleMgr.PlayHitWallClip();
         }
 
-        if(collisionLayer!=14) {
+        if(collisionLayer != 14) {
             //计算反射方向
             Vector3 inDirection = (transform.position - lastPos).normalized;
             Vector3 inNormal = contactPoint.normal;
@@ -24,8 +23,8 @@ public class NoReboundCore : PlayerController
                 _dir = tempDir;
             } else {
                 _dir = Vector3.Reflect(tempDir,inNormal).normalized;
-            } 
+            }
         }
-        lastPos = transform.position; //更新上一次位置，用于计算反射方向
+        lastPos = transform.position;
     }
 }

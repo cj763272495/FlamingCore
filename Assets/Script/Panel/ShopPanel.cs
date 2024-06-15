@@ -3,8 +3,8 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
- 
+using UnityEngine.UI; 
+
 public class ShopPanel:MonoBehaviour {
     public HomeWnd homeWnd;
     public SlideScrollView skinView;
@@ -43,12 +43,11 @@ public class ShopPanel:MonoBehaviour {
     public Sprite equiptSprite;
 
     public TextMeshProUGUI descript;
-    public ShopPlayer player;
+    private ShopPlayer player;
     public DOTweenAnimation typeGroupAni;
-    public DOTweenAnimation buyBtnAni;
-    public GameObject Shopgroup;
+    public DOTweenAnimation buyBtnAni; 
 
-    private void Start() {
+    public void Init() {
         skinView.gameObject.SetActive(true);
         trailView.gameObject.SetActive(false); 
         pds = PlayersDataSystem.Instance; 
@@ -57,16 +56,21 @@ public class ShopPanel:MonoBehaviour {
         UpdateScrowViewLockInfo(trailView,pds.PlayerData.trail);
 
         OnCurrentViewIDChanged += HandleCurrentViewIDChanged;
+        skinView.Init();
+        trailView.Init();
+        player = homeWnd.shopGroup.transform.Find("ShopPlayer").GetComponent<ShopPlayer>();
     }
 
-    private void OnEnable() {
-        Shopgroup.SetActive(true);
+    private void OnEnable() { 
+        homeWnd.ShowShopInfo();
+        player.Init();
         typeGroupAni.DORestart();
         buyBtnAni.DORestart();
-        player.Init();
+        skinView.GetComponent<SlideScrollView>().ToItem(pds.PlayerData.cur_skin+1);
+        trailView.GetComponent<SlideScrollView>().ToItem(pds.PlayerData.cur_trail+1);
     }
     private void OnDisable() {
-        Shopgroup.SetActive(false);
+        homeWnd.ShowCity();
         player.gameObject.SetActive(false);
     }
 
@@ -89,7 +93,7 @@ public class ShopPanel:MonoBehaviour {
     }
 
     // 设置购买按钮和装备文本的状态
-    void UpdatePurchaseBtnInfo() {
+    void UpdatePurchaseBtnInfo() { 
         int currentPlayerDataIndex = selectBuySkin ? pds.PlayerData.cur_skin : pds.PlayerData.cur_trail;
         if(selectBuySkin) {
             _hasBuy = pds.PlayerData.skin.Contains(_currentViewID);

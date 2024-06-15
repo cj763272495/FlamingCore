@@ -1,24 +1,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayersDataSystem : MonoBehaviour
-{
-    public static PlayersDataSystem Instance = null;  
+public class PlayersDataSystem:MonoBehaviour {
+    public static PlayersDataSystem Instance = null;
     public string playerID;//当前玩家ID
-    public PlayerData PlayerData;//当前玩家数据
-    private ResSvc _resSvc; 
+    public LocalPlayerData PlayerData;//当前玩家数据
+    private ResSvc _resSvc;
     private PlayerDataDic _playerDataDic = new();//所有玩家数据
 
     private bool _isNewInviorment;
     public bool IsNewInviorment {
-        get { return  _isNewInviorment; }
+        get { return _isNewInviorment; }
     }
-      
+
     public void InitSys() {
         _resSvc = ResSvc.Instance;
         Instance = this;
         _playerDataDic = _resSvc.LoadPlayerData();
-        if(_playerDataDic==null || _playerDataDic.Count==0) {
+        if(_playerDataDic == null || _playerDataDic.Count == 0) {
             _isNewInviorment = true;
         } else {
             _isNewInviorment = false;
@@ -33,8 +32,8 @@ public class PlayersDataSystem : MonoBehaviour
         GameRoot.Instance.EnergyCached = PlayerData.energy;
     }
 
-    public PlayerData GetPlayerData(string Playerid) {
-        if(_playerDataDic.TryGetValue(Playerid,out PlayerData data)) {
+    public LocalPlayerData GetPlayerData(string Playerid) {
+        if(_playerDataDic.TryGetValue(Playerid,out LocalPlayerData data)) {
             return data;
         } else {
             //Debug.Log("未获取到玩家数据");
@@ -43,10 +42,9 @@ public class PlayersDataSystem : MonoBehaviour
     }
 
     public bool PlayerLogin(string ID) {
-        playerID = ID;
         PlayerData = GetPlayerData(ID);
         if(PlayerData == null) {//新玩家初始数据
-            PlayerData pd = new() {
+            LocalPlayerData pd = new() {
                 coin = 0,
                 skin = new List<int> { 0 },
                 trail = new List<int> { 0 },
@@ -56,11 +54,10 @@ public class PlayersDataSystem : MonoBehaviour
                 cur_trail = 0
             };
             PlayerData = pd;
-            return SavePlayerData();
-        } 
-        return true;
+        }
+        return SavePlayerData();
     }
-     
+
     public int GetMaxUnLockWave() {
         return PlayerData.max_unLock_wave;
     }
